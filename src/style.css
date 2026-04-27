@@ -117,6 +117,58 @@ body {
   margin-bottom: 5px;
 }
 
+/* Tela de login */
+.login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; 
+  padding: 0 20px;
+}
+
+.login-card {
+  background-color: #13294b;
+  padding: 40px;
+  border-radius: 10px;
+  border-top: 4px solid #caa34d;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.login-card h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.input-group {
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #0b1b34;
+  color: #fff;
+}
+
+.login-card .btn-primary {
+  width: 100%;
+  margin-top: 10px;
+}
+
+
 /* TABLET (até 1024px) */
 @media (max-width: 1024px) {
   .header {
@@ -198,5 +250,13 @@ body {
 
   .nav a {
     font-size: 12px;
+  }
+
+  .login-card {
+    padding: 20px; 
+  }
+  
+  .login-card h2 {
+    font-size: 20px; 
   }
 }
