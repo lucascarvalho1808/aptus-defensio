@@ -4,10 +4,10 @@ export function CreateLoginScreen() {
 
     section.innerHTML = `
     <div class="login-card">
-      <h2>Acesso - Aptus Defensio</h2>
+      <h2>Login - Aptus Defensio</h2>
       <form id="login-form">
         <div class="input-group">
-          <label for="email">E-mail ou Matrícula</label>
+          <label for="email">E-mail</label>
           <input type="text" id="email" required placeholder="Insira seus dados">
         </div>
         <div class="input-group">

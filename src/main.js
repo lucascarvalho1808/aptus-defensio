@@ -1,4 +1,5 @@
 import "./style.css";
+import { CreateLoginScreen } from "./modules/login";
 
 const app = document.querySelector("#app");
 
@@ -92,6 +93,22 @@ function createCards() {
 }
 
 // Render
-app.appendChild(createHeader());
-app.appendChild(createHero());
-app.appendChild(createCards());
+function renderApp() {
+  app.innerHTML = ""; 
+
+  // Simulador temporário de autenticação (mude para true para ver o sistema interno)
+  const isLogged = false; 
+
+  if (!isLogged) {
+    // Tela de login isolada
+    app.appendChild(CreateLoginScreen());
+  } else {
+    // Layout interno 
+    app.appendChild(createHeader());
+    app.appendChild(createHero());
+    app.appendChild(createCards());
+  }
+}
+
+// Inicia o sistema chamando a função renderApp()
+renderApp();
