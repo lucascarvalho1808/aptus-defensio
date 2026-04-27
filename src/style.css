@@ -1,0 +1,202 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Georgia", serif;
+}
+
+body {
+  background-color: #0b1b34;
+  color: #fff;
+}
+
+/* HEADER */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 60px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.logo img {
+  width: 50px;
+}
+
+.nav a {
+  margin-left: 30px;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 14px;
+}
+
+.nav a:hover {
+  color: #fff;
+}
+
+/* HERO */
+.hero {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.hero h1 {
+  font-size: 42px;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.hero p {
+  color: #bbb;
+  margin-bottom: 30px;
+}
+
+/* BOTÕES */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.btn-primary {
+  background-color: #b22222;
+  color: #fff;
+  padding: 12px 24px;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secondary {
+  border: 1px solid #caa34d;
+  color: #caa34d;
+  padding: 12px 24px;
+  background: transparent;
+  cursor: pointer;
+}
+
+/* CARDS */
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 80px;
+  padding: 0 40px;
+}
+
+.card {
+  background-color: #13294b;
+  padding: 30px;
+  width: 300px;
+  border-radius: 10px;
+  border-top: 4px solid #caa34d;
+  text-align: center;
+}
+
+.card h3 {
+  margin: 15px 0;
+}
+
+.card p {
+  color: #bbb;
+  font-size: 14px;
+}
+
+.features {
+  margin-top: 15px;
+  text-align: left;
+  font-size: 13px;
+  color: #ccc;
+}
+
+.features li {
+  margin-bottom: 5px;
+}
+
+/* TABLET (até 1024px) */
+@media (max-width: 1024px) {
+  .header {
+    padding: 20px;
+  }
+
+  .hero h1 {
+    font-size: 32px;
+  }
+
+  .cards {
+    flex-wrap: wrap;
+    gap: 20px;
+  }
+
+  .card {
+    width: 45%;
+  }
+}
+
+/* MOBILE (até 768px) */
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  .nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .hero {
+    margin-top: 40px;
+    padding: 0 20px;
+  }
+
+  .hero h1 {
+    font-size: 26px;
+  }
+
+  .hero p {
+    font-size: 14px;
+  }
+
+  .buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    width: 100%;
+    max-width: 250px;
+  }
+
+  .cards {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 90%;
+  }
+}
+
+/* TELAS MUITO PEQUENAS (até 480px) */
+@media (max-width: 480px) {
+  .hero h1 {
+    font-size: 22px;
+  }
+
+  .logo img {
+    width: 40px;
+  }
+
+  .nav a {
+    font-size: 12px;
+  }
+}
