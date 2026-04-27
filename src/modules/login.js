@@ -1,4 +1,5 @@
 import { hashPassword } from "./auth";
+import { navigateTo } from "../router.js";
 
 export function createLoginScreen() {
     const section = document.createElement("section");
@@ -40,6 +41,8 @@ export function createLoginScreen() {
     
     // Futuramente, aqui entrará a lógica de verificar se o hash bate com o salvo no banco de dados
     alert("TESTE - Hash gerado com sucesso, veja o console.");
+// Redireciona para a rota após login bem-sucedido
+    navigateTo("/dashboard");
   });
 
   return section;
