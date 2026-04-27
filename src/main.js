@@ -1,5 +1,5 @@
 import "./style.css";
-import { CreateLoginScreen } from "./modules/login";
+import { createLoginScreen } from "./modules/login";
 
 const app = document.querySelector("#app");
 
@@ -101,7 +101,7 @@ function renderApp() {
 
   if (!isLogged) {
     // Tela de login isolada
-    app.appendChild(CreateLoginScreen());
+    app.appendChild(createLoginScreen());
   } else {
     // Layout interno 
     app.appendChild(createHeader());
