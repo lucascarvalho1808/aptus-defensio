@@ -95,3 +95,4 @@ function createCards() {
 app.appendChild(createHeader());
 app.appendChild(createHero());
 app.appendChild(createCards());
+
