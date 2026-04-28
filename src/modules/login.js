@@ -1,4 +1,4 @@
-import { hashPassword } from "./auth";
+import { hashPassword } from "./auth.js";
 import { navigateTo } from "../router.js";
 
 export function createLoginScreen() {
@@ -27,21 +27,46 @@ export function createLoginScreen() {
 
   // Escuta quando o usuário clica em entrar ou aperta enter
   form.addEventListener("submit", async (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
 
-    // Pega o valor que o usuário digitou no campo de senha
+    // Pega o valor que o usuário digitou nos campos de email e de senha
+    const emailDigitado = section.querySelector("#email").value.trim();
     const senhaDigitada = section.querySelector("#password").value;
+
+    // Verificar se nenhum campo está vazio
+    if (!emailDigitado || !senhaDigitada) {
+      alert("Preencha todos os campos.");
+      return;
+    }
 
     // Chama a função para criptografar a senha
     const senhaCriptografada = await hashPassword(senhaDigitada);
 
-    // Mostra o resultado no console para testes
-    console.log("TESTE - Senha Original:", senhaDigitada);
-    console.log("TESTE -  Senha com Hash:", senhaCriptografada);
-    
-    // Futuramente, aqui entrará a lógica de verificar se o hash bate com o salvo no banco de dados
-    alert("TESTE - Hash gerado com sucesso, veja o console.");
-// Redireciona para a rota após login bem-sucedido
+    // Pegar Array de objetos com usuários
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    // Busca usuário a partir da condição (email e senha) retornando o primeiro elemento encontrado no Array
+    const usuarioEncontrado = usuarios.find(user =>
+      user.email === emailDigitado && user.senha === senhaCriptografada
+    );
+
+    // Se não encontrar apresenta erro
+    if (!usuarioEncontrado) {
+      alert("E-mail ou senha inválidos.");
+      return;
+    }
+
+    // Se encontrar apresenta mensagem de sucesso no console
+    console.log("Login realizado:", usuarioEncontrado);
+
+    // isso é da task 1.6
+    sessionStorage.setItem("usuarioAtivo", JSON.stringify({
+      id: usuarioEncontrado.id,
+      nome: usuarioEncontrado.nome,
+      role: usuarioEncontrado.role
+    }));
+
+    // Redireciona para a rota após login bem-sucedido
     navigateTo("/dashboard");
   });
 
