@@ -7,22 +7,34 @@ export function createLoginScreen() {
 
     section.innerHTML = `
     <div class="login-card">
-      <h2>Login - Aptus Defensio</h2>
-      <form id="login-form">
-        <div class="input-group">
-          <label for="email">E-mail</label>
-          <input type="text" id="email" required placeholder="Insira seus dados">
+        <div class="login-brand">
+            <img src="/img/logo_capacete.png" alt="Logo" class="login-logo">
+            <h2>Aptus Defensio</h2>
         </div>
-        <div class="input-group">
-          <label for="password">Senha</label>
-          <input type="password" id="password" required placeholder="Insira sua senha">
-        </div>
-        <button type="submit" class="btn-primary">Entrar</button>
-      </form>
+
+        <form id="login-form">
+            <div class="input-group">
+                <label for="email">E-mail :</label>
+                <div class="input-wrapper">
+                    <input type="email" id="email" placeholder="Insira seu e-mail institucional" required>
+                </div>
+            </div>
+
+            <div class="input-group">
+                <label for="password">Senha :</label>
+                <div class="input-wrapper">
+                    <input type="password" id="password" placeholder="Insira sua senha" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">Entrar</button>
+            
+            <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+        </form>
     </div>
   `;
 
-  // Captura o formuçario criado
+  // Captura o formulario criado
   const form = section.querySelector("#login-form");
 
   // Escuta quando o usuário clica em entrar ou aperta enter
