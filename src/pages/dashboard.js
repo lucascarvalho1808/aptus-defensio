@@ -1,4 +1,5 @@
 import { verificarAutenticacao } from "../modules/auth.js";
+import { navigateTo } from "../router.js";
 
 function createHeader() {
   const header = document.createElement("header");
@@ -12,8 +13,22 @@ function createHeader() {
       <a href="#">Coordenação</a>
       <a href="#">Professores</a>
       <a href="#">Alunos</a>
+      <a href="#" id="btn-logout" class="logout-link">Sair</a>
     </nav>
   `;
+
+  // Captura o botão e cria o evento de Logout
+  const btnLogout = header.querySelector("#btn-logout");
+  btnLogout.addEventListener("click", (event) => {
+    event.preventDefault(); 
+    
+    // Limpa a sessão atual do usuário
+    sessionStorage.removeItem("usuarioAtivo"); 
+    
+    // Redireciona para a tela inicial (login)
+    navigateTo("/"); 
+  });
+
   return header;
 }
 
