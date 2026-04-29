@@ -8,7 +8,7 @@ export function createLoginScreen() {
     section.innerHTML = `
     <div class="login-card">
         <div class="login-brand">
-            <img src="/img/logo_capacete.png" alt="Logo" class="login-logo">
+            <img src="public/img/logo_capacete.png" alt="Logo" class="login-logo">
             <h2>Aptus Defensio</h2>
         </div>
 
