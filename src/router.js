@@ -16,22 +16,35 @@ const routes = {
 
 // Renderiza a página baseado na URL atual e limpa o container e insere o componente correto
 export function handleLocation() {
-  const path = window.location.pathname;
-  // Busca a rota correspondente ou utiliza a rota 404
-  const routeFunction = routes[path] || routes['404'];
+  // Captura o caminho que o usuário tentou acessar
+  let path = window.location.pathname;
   
-  // Seleciona o elemento raiz da aplicação
+  // Verifica se existe um usuário logado no sessionStorage
+  const usuarioLogado = sessionStorage.getItem("usuarioAtivo");
+
+  // Se o usuário não estiver logado e tentar acessar qualquer página que não seja o Login ('/')
+  if (path !== '/' && !usuarioLogado) {
+    path = '/'; 
+  // Atualiza a URL sem criar um novo histórico
+    window.history.replaceState({}, "", path); 
+  } 
+  
+  else if (path === '/' && usuarioLogado) {
+    path = '/dashboard'; 
+    window.history.replaceState({}, "", path);
+  }
+
+  // Busca a função da rota 
+  const routeFunction = routes[path] || routes['404'];
+ 
   const app = document.querySelector('#app');
   app.innerHTML = ""; 
   app.appendChild(routeFunction());
 }
 
 export function navigateTo(path) {
-  // Atualiza o histórico do navegador
   window.history.pushState({}, "", path);
-  // Renderiza a página correspondente
   handleLocation();
 }
-
 // Escuta o botão Voltar do navegador
 window.addEventListener("popstate", handleLocation);
