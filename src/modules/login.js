@@ -83,7 +83,7 @@ export function createLoginScreen() {
     // Se encontrar apresenta mensagem de sucesso no console
     console.log("Login realizado:", usuarioEncontrado);
 
-    // isso é da task 1.6
+    // Salva o usuário ativo na session storage
     sessionStorage.setItem("usuarioAtivo", JSON.stringify({
       id: usuarioEncontrado.id,
       nome: usuarioEncontrado.nome,

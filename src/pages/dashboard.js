@@ -1,3 +1,5 @@
+import { verificarAutenticacao } from "../modules/auth.js";
+
 function createHeader() {
   const header = document.createElement("header");
   header.classList.add("header");
@@ -64,6 +66,13 @@ function createCards() {
 
 // Função principal que o router.js vai chamar
 export function createDashboardPage() {
+  // Se retornar nulo (não logado) interrompe a criação da página
+  const usuario = verificarAutenticacao();
+  if (!usuario) {
+      return document.createElement("div"); 
+  }
+
+  // O resto continua igual
   const fragment = document.createDocumentFragment();
   
   fragment.appendChild(createHeader());

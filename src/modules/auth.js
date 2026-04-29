@@ -1,3 +1,5 @@
+import { navigateTo } from "../router.js";
+
 export async function hashPassword(senha) {
     // Transforma o texto em um array de bytes 
     const encoder = new TextEncoder();
@@ -14,4 +16,17 @@ export async function hashPassword(senha) {
 
     // Retorno da senha com hash
     return hashHex
+}
+
+export function verificarAutenticacao() {
+    const usuarioLogado = sessionStorage.getItem("usuarioAtivo");
+    
+    // Se o sessionStorage estiver vazio redireciona de volta para o login
+    if (!usuarioLogado) {
+        navigateTo("/");
+        return null;
+    }
+    
+    // Se estiver logado devolve o objeto do usuário pronto para ser usado na tela
+    return JSON.parse(usuarioLogado);
 }
