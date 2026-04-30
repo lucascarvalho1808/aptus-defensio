@@ -1,3 +1,5 @@
+import { addProfessor } from "../services/professorService.js";
+
 export function createProfessoresPage() {
   const container = document.createElement("div");
   container.classList.add("dashboard-container");
@@ -63,5 +65,40 @@ export function createProfessoresPage() {
     </div>
   `;
 
+    const form = container.querySelector("#form-professor");
+
+    form.addEventListener("submit", (e) => {
+    e.preventDefault();
+
+    // Pegar os valores que o usuárui digitou em cada campo
+    const nome = container.querySelector("#nome").value.trim();
+    const email = container.querySelector("#email").value.trim();
+    const area = container.querySelector("#area").value.trim();
+
+    // Verificar se campos nome e email estão vazios
+    if (!nome || !email) {
+        alert("Nome e e-mail são obrigatórios.");
+        return;
+    }
+
+    // Cria o objeto professor
+    const professor = {
+        nome,
+        email,
+        area
+    };
+
+    // Salva no LocalStorage
+    addProfessor(professor);
+
+    console.log("Professor salvo:", professor);
+
+    // Limpar formulário
+    form.reset();
+
+    alert("Professor cadastrado com sucesso!");
+    });
+
   return container;
 }
+
