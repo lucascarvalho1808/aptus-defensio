@@ -1,10 +1,13 @@
 import { createLoginScreen } from './modules/login.js';
 import { createDashboardPage } from './pages/dashboard.js';
+import { createProfessoresPage } from "./pages/professores.js";
 
 // Mapa de rotas disponíveis na aplicação
 const routes = {
   '/': createLoginScreen,
   '/dashboard': createDashboardPage,
+  '/professores': createProfessoresPage, 
+  
   // Rota padrão para páginas não encontradas
   '404': () => {
     const el = document.createElement('h1');

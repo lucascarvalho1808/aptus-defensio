@@ -376,3 +376,103 @@ body {
     font-size: 20px;
   }
 }
+
+/* TELA DE PROFESSORES / DASHBOARD */
+
+.dashboard-container {
+  padding: 60px 20px;
+  min-height: 100vh;
+  background-color: #0b121e;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 1200px;
+}
+
+.page-title {
+  color: #c9a063;
+  font-family: 'Cinzel', serif;
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.dashboard-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.admin-card {
+  background-color: #1a2c41;
+  flex: 1 1 450px;
+  padding: 50px 40px;
+  border-radius: 35px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  border-top: 3px solid #c9a063;
+}
+
+.admin-card h2 {
+  color: #fff;
+  margin-bottom: 30px;
+  text-align: center;
+  font-size: 24px;
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  margin-top: 10px;
+}
+
+.admin-table th {
+  background-color: #0b121e;
+  color: #c9a063;
+  font-weight: 600;
+  padding: 16px;
+  border-bottom: 2px solid #c9a063;
+  text-transform: uppercase;
+  font-size: 14px;
+  text-align: left;
+}
+
+.admin-table td {
+  padding: 16px;
+  border-bottom: 1px solid rgba(201, 160, 99, 0.2);
+  font-size: 15px;
+  color: #e0e0e0;
+}
+
+.admin-table tbody tr {
+  transition: 0.3s;
+}
+
+.admin-table tbody tr:hover {
+  background-color: rgba(201, 160, 99, 0.08);
+}
+
+@media (max-width: 768px) {
+  .admin-card {
+    padding: 30px 20px;
+    border-radius: 20px;
+  }
+
+  .page-title {
+    font-size: 28px;
+    margin-bottom: 30px;
+  }
+}
