@@ -1,4 +1,4 @@
-import { addProfessor } from "../services/professorService.js";
+import { addProfessor, getProfessores } from "../services/professorService.js";
 
 export function createProfessoresPage() {
   const container = document.createElement("div");
@@ -65,6 +65,24 @@ export function createProfessoresPage() {
     </div>
   `;
 
+    // função de renderização
+    function renderTabela() {
+    const lista = container.querySelector("#lista-professores");
+
+    const professores = getProfessores();
+
+    lista.innerHTML = professores.map(prof => `
+        <tr>
+        <td>${prof.nome}</td>
+        <td>${prof.email}</td>
+        <td>${prof.area || "-"}</td>
+        </tr>
+    `).join("");
+    }
+
+    // render inicial
+    renderTabela();
+
     const form = container.querySelector("#form-professor");
 
     form.addEventListener("submit", (e) => {
@@ -91,6 +109,9 @@ export function createProfessoresPage() {
     // Salva no LocalStorage
     addProfessor(professor);
 
+    // Atualizar tabela
+    renderTabela();
+
     console.log("Professor salvo:", professor);
 
     // Limpar formulário
@@ -99,6 +120,6 @@ export function createProfessoresPage() {
     alert("Professor cadastrado com sucesso!");
     });
 
-  return container;
+    return container;
 }
 
