@@ -265,6 +265,96 @@ select {
   border-bottom: 1px solid #c9a063;
 }
 
+/* Página de administração */
+
+.admin-container {
+  padding: 60px 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  border-bottom: 2px solid rgba(201, 160, 99, 0.3);
+  padding-bottom: 20px;
+}
+
+.admin-header h2 {
+  color: #c9a063;
+  font-family: 'Cinzel', serif;
+  font-size: 32px;
+}
+
+/* Filtros */
+.admin-filtros label {
+  margin-right: 10px;
+  font-weight: bold;
+  color: #fff;
+}
+
+.admin-filtros select {
+  padding: 10px 20px;
+  border-radius: 50px;
+  border: 2px solid #c9a063;
+  background-color: #1a2c41;
+  color: #fff;
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+}
+
+/* Separação Visual das Seções */
+.secao-usuarios {
+  background-color: #1a2c41;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+.secao-usuarios h3 {
+  margin-bottom: 25px;
+  font-size: 22px;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Destaque em cores para diferenciar as listas */
+.secao-usuarios.pendentes {
+  border-left: 6px solid #c9a063; 
+}
+
+.secao-usuarios.ativos {
+  border-left: 6px solid #28a745; 
+}
+
+.divisor {
+  border: none;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.05);
+  margin: 40px 0;
+}
+
+.grid-usuarios {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+/* Estilo base para os cards de usuário */
+.user-card {
+  background-color: #0b121e;
+  padding: 20px;
+  border-radius: 15px;
+  border: 1px solid rgba(201, 160, 99, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
 @media (max-width: 500px) {
   .login-card {
     width: 85%;
