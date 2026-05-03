@@ -41,10 +41,7 @@ export function createRegisterPage() {
         </div>
 
         <div class="input-group">
-          <label>Matrícula</label>
-          <div class="input-wrapper">
-            <input type="text" id="matricula" required />
-          </div>
+          <div id="campos-dinamicos"></div>
         </div>
 
         <div class="input-group">
@@ -62,6 +59,48 @@ export function createRegisterPage() {
       <a href="/" class="forgot-password">Voltar para login</a>
     </div>
   `;
+
+  // Captura elementos
+  const selectTipo = container.querySelector("#tipo");
+  const camposDinamicos = container.querySelector("#campos-dinamicos");
+
+  // Função que renderiza os campos
+  function renderCampos(tipo) {
+    if (tipo === "aluno") {
+      camposDinamicos.innerHTML = `
+        <div class="input-group">
+          <label>Matrícula do Aluno</label>
+          <div class="input-wrapper">
+            <input type="text" id="matricula" required />
+          </div>
+        </div>
+      `;
+    } else {
+      camposDinamicos.innerHTML = `
+        <div class="input-group">
+          <label>Matrícula do Professor</label>
+          <div class="input-wrapper">
+            <input type="text" id="matricula" required />
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>Área</label>
+          <div class="input-wrapper">
+            <input type="text" id="area" />
+          </div>
+        </div>
+      `;
+    }
+  }
+
+  // Render inicial (tipo = aluno)
+  renderCampos(selectTipo.value);
+
+  // Evento de mudança
+  selectTipo.addEventListener("change", () => {
+    renderCampos(selectTipo.value);
+  });
 
   return container;
 }
