@@ -13,6 +13,8 @@ export function createRegisterPage() {
         <h2>Cadastro</h2>
       </div>
 
+      <div id="register-error" class="error-message" style="display: none;"></div>
+
       <!-- Seleção de perfil -->
       <div class="input-group">
         <label>Tipo de usuário</label>
@@ -110,7 +112,19 @@ export function createRegisterPage() {
     renderCampos(selectTipo.value);
   });
 
+  // Captura o formulario criado
   const form = container.querySelector("#register-form");
+
+  // Captura a caixa de erro e cria a função de exibir a mensagem
+  const errorBox = container.querySelector("#register-error");
+  const mostrarErro = (mensagem) => {
+    errorBox.textContent = mensagem;
+    errorBox.style.display = "block";
+
+    setTimeout(() => {
+      errorBox.style.display = "none";
+    }, 3000);
+  };
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
@@ -125,33 +139,15 @@ export function createRegisterPage() {
 
     // Verificar se os campos estão vazios
     if (!nome || !email || !matricula || !senha) {
-      alert("Preencha todos os campos.");
+      mostrarErro("Preencha todos os campos.");
       return;
     }
-
 
     // Verificar se as senhas são iguais
     if (senha !== confirmarSenha) {
-      alert("As senhas não coincidem.");
+      mostrarErro("As senhas não coincidem.");
       return;
     }
-
-    // gerar hash da senha
-    const senhaHash = await hashPassword(senha);
-
-    console.log("Senha original:", senha);
-    console.log("Senha hash:", senhaHash);
-
-    // montar objeto usuário
-    const novoUsuario = {
-      id: Date.now(),
-      nome,
-      email,
-      matricula,
-      senha: senhaHash,
-      role: tipo,
-      status: "pendente"
-    };
 
     // pegar usuários existentes
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
@@ -167,7 +163,21 @@ export function createRegisterPage() {
       mostrarErro("Já existe um usuário com essa matrícula.");
       return;
     }
-    
+
+    // gerar hash da senha
+    const senhaHash = await hashPassword(senha);
+
+    // montar objeto usuário
+    const novoUsuario = {
+      id: Date.now(),
+      nome,
+      email,
+      matricula,
+      senha: senhaHash,
+      role: tipo,
+      status: "pendente"
+    };
+
     // adicionar novo usuário
     usuarios.push(novoUsuario);
 
