@@ -1,58 +1,35 @@
-import { addProfessor, getProfessores } from "../services/professorService.js";
+import { navigateTo } from "../router.js";
+import { verificarAutenticacao } from "../modules/auth.js";
 
 export function createProfessoresPage() {
+  // Apenas coordenadores devem gerenciar esta lista
+  const usuarioLogado = verificarAutenticacao();
+  if (!usuarioLogado || usuarioLogado.role.toLowerCase() !== 'coordenador') {
+    navigateTo('/pagina-nao-encontrada-404');
+    return document.createElement("div");
+  }
+
   const container = document.createElement("div");
   container.classList.add("dashboard-container");
 
   container.innerHTML = `
     <div class="content">
-      
-      <h1 class="page-title">Gestão de Professores</h1>
+      <h1 class="page-title">Consultar Professores Ativos</h1>
 
       <div class="dashboard-grid">
-        <!-- FORMULÁRIO -->
-        <div class="admin-card">
-          <h2>Cadastrar Professor</h2>
-          
-          <form id="form-professor">
-            <div class="input-group">
-              <label>Nome</label>
-              <div class="input-wrapper">
-                <input type="text" id="nome" required placeholder="Digite o nome completo" />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label>E-mail</label>
-              <div class="input-wrapper">
-                <input type="email" id="email" required placeholder="exemplo@instituicao.com" />
-              </div>
-            </div>
-
-            <div class="input-group">
-              <label>Área</label>
-              <div class="input-wrapper">
-                <input type="text" id="area" placeholder="Ex: Matemática, História..." />
-              </div>
-            </div>
-
-            <button type="submit" class="btn-submit">
-              Cadastrar
-            </button>
-          </form>
-        </div>
-
-        <!-- TABELA -->
-        <div class="admin-card">
-          <h2>Professores Cadastrados</h2>
+        <!-- TABELA (Foco da T2.4) -->
+        <div class="admin-card" style="grid-column: 1 / -1;">
+          <h2>Professores Ativos no Sistema</h2>
+          <p style="color: #888; margin-bottom: 20px;">Esta lista exibe apenas professores que já foram aprovados pela coordenação.</p>
 
           <div class="table-responsive">
             <table class="admin-table">
               <thead>
                 <tr>
+                  <th>Matrícula</th>
                   <th>Nome</th>
                   <th>E-mail</th>
-                  <th>Área</th>
+                  <th>Status</th>
                 </tr>
               </thead>
               <tbody id="lista-professores">
@@ -61,65 +38,39 @@ export function createProfessoresPage() {
           </div>
         </div>
       </div>
-
     </div>
   `;
 
-    // função de renderização
-    function renderTabela() {
-    const lista = container.querySelector("#lista-professores");
+  // Função de renderização integrada com o LocalStorage global
+  function renderTabela() {
+    const listaCorpo = container.querySelector("#lista-professores");
+    
+    // Puxa todos os usuários do sistema
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-    const professores = getProfessores();
+    // Apenas professores que estão ativos
+    const professoresAtivos = usuarios.filter(u => 
+      u.role.toLowerCase() === 'professor' && 
+      u.status.toLowerCase() === 'ativo'
+    );
 
-    lista.innerHTML = professores.map(prof => `
+    if (professoresAtivos.length === 0) {
+      listaCorpo.innerHTML = `<tr><td colspan="4" style="text-align:center;">Nenhum professor ativo encontrado.</td></tr>`;
+      return;
+    }
+
+    listaCorpo.innerHTML = professoresAtivos.map(prof => `
         <tr>
-        <td>${prof.nome}</td>
-        <td>${prof.email}</td>
-        <td>${prof.area || "-"}</td>
+          <td><strong>${prof.matricula || "-"}</strong></td>
+          <td>${prof.nome}</td>
+          <td>${prof.email}</td>
+          <td><span style="color: #28a745; font-weight: bold;">Ativo</span></td>
         </tr>
     `).join("");
-    }
+  }
 
-    // render inicial
-    renderTabela();
+  // Renderização inicial
+  renderTabela();
 
-    const form = container.querySelector("#form-professor");
-
-    form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    // Pegar os valores que o usuárui digitou em cada campo
-    const nome = container.querySelector("#nome").value.trim();
-    const email = container.querySelector("#email").value.trim();
-    const area = container.querySelector("#area").value.trim();
-
-    // Verificar se campos nome e email estão vazios
-    if (!nome || !email) {
-        alert("Nome e e-mail são obrigatórios.");
-        return;
-    }
-
-    // Cria o objeto professor
-    const professor = {
-        nome,
-        email,
-        area
-    };
-
-    // Salva no LocalStorage
-    addProfessor(professor);
-
-    // Atualizar tabela
-    renderTabela();
-
-    console.log("Professor salvo:", professor);
-
-    // Limpar formulário
-    form.reset();
-
-    alert("Professor cadastrado com sucesso!");
-    });
-
-    return container;
+  return container;
 }
-
