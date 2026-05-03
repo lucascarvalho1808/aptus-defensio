@@ -52,6 +52,13 @@ export function createRegisterPage() {
           </div>
         </div>
 
+        <div class="input-group">
+          <label>Confirmar Senha</label>
+          <div class="input-wrapper">
+            <input type="password" id="confirmarSenha" required />
+          </div>
+        </div>
+
         <button type="submit" class="btn-submit">
           Cadastrar
         </button>
@@ -114,10 +121,18 @@ export function createRegisterPage() {
     const email = container.querySelector("#email").value.trim();
     const matricula = container.querySelector("#matricula").value.trim();
     const senha = container.querySelector("#senha").value;
+    const confirmarSenha = container.querySelector("#confirmarSenha").value;
 
-    // // Verificar se os campos estão vazios
+    // Verificar se os campos estão vazios
     if (!nome || !email || !matricula || !senha) {
       alert("Preencha todos os campos.");
+      return;
+    }
+
+
+    // Verificar se as senhas são iguais
+    if (senha !== confirmarSenha) {
+      alert("As senhas não coincidem.");
       return;
     }
 
@@ -141,6 +156,18 @@ export function createRegisterPage() {
     // pegar usuários existentes
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
+    // email duplicado
+    if (usuarios.find(user => user.email === email)) {
+      mostrarErro("Já existe um usuário com esse e-mail.");
+      return;
+    }
+
+    // matrícula duplicada
+    if (usuarios.find(user => user.matricula === matricula)) {
+      mostrarErro("Já existe um usuário com essa matrícula.");
+      return;
+    }
+    
     // adicionar novo usuário
     usuarios.push(novoUsuario);
 
