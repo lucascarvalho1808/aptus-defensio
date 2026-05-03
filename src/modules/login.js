@@ -79,6 +79,17 @@ export function createLoginScreen() {
       return;
     }
 
+    // Bloqueia usuários pendentes
+    const papelDoUsuario = usuarioEncontrado.role ? usuarioEncontrado.role.toLowerCase() : '';
+    const statusDoUsuario = usuarioEncontrado.status ? usuarioEncontrado.status.toLowerCase() : 'pendente';
+    
+    // Se o usuário NÃO for coordenador E estiver pendente, a gente barra
+    if (papelDoUsuario !== 'coordenador' && statusDoUsuario === 'pendente') {
+      showMessage(section, "Seu cadastro ainda está pendente de aprovação pela coordenação.");
+      return; 
+    }
+    
+
     // Se encontrar apresenta mensagem de sucesso no console
     console.log("Login realizado:", usuarioEncontrado);
 
