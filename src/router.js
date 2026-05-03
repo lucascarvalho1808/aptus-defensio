@@ -2,6 +2,7 @@ import { createLoginScreen } from './modules/login.js';
 import { createDashboardPage } from './pages/dashboard.js';
 import { createProfessoresPage } from "./pages/professores.js";
 import { createRegisterPage } from "./pages/register.js";
+import { createAdminPage } from './pages/admin.js';
 
 // Mapa de rotas disponíveis na aplicação
 const routes = {
@@ -9,7 +10,7 @@ const routes = {
   '/dashboard': createDashboardPage,
   '/professores': createProfessoresPage, 
   '/register': createRegisterPage,
-  
+  '/admin': createAdminPage,
   // Rota padrão para páginas não encontradas
   '404': () => {
     const el = document.createElement('h1');
