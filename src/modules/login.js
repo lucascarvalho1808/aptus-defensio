@@ -8,7 +8,7 @@ export function createLoginScreen() {
     section.innerHTML = `
     <div class="login-card">
         <div class="login-brand">
-            <img src="public/img/logo_capacete.png" alt="Logo" class="login-logo">
+            <img src="/img/logo_capacete.png" alt="Logo" class="login-logo">
             <h2>Aptus Defensio</h2>
         </div>
 
@@ -32,9 +32,17 @@ export function createLoginScreen() {
             <button type="submit" class="btn-submit">Entrar</button>
             
             <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+            <a href="/register" id="go-register" class="forgot-password">
+              Criar conta
+            </a>
         </form>
     </div>
   `;
+
+  section.querySelector("#go-register").addEventListener("click", (e) => {
+    e.preventDefault();
+    navigateTo("/register");
+  });
 
   // Captura o formulario criado
   const form = section.querySelector("#login-form");
