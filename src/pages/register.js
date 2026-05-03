@@ -1,5 +1,6 @@
 import { navigateTo } from "../router.js";
 import { hashPassword } from "../modules/auth.js";
+import { showMessage } from "../modules/feedback.js";
 
 export function createRegisterPage() {
   const container = document.createElement("div");
@@ -13,7 +14,7 @@ export function createRegisterPage() {
         <h2>Cadastro</h2>
       </div>
 
-      <div id="register-error" class="error-message" style="display: none;"></div>
+      <div class="feedback-message" style="display: none;"></div>
 
       <!-- Seleção de perfil -->
       <div class="input-group">
@@ -93,13 +94,6 @@ export function createRegisterPage() {
             <input type="text" id="matricula" required />
           </div>
         </div>
-
-        <div class="input-group">
-          <label>Área</label>
-          <div class="input-wrapper">
-            <input type="text" id="area" />
-          </div>
-        </div>
       `;
     }
   }
@@ -115,17 +109,6 @@ export function createRegisterPage() {
   // Captura o formulario criado
   const form = container.querySelector("#register-form");
 
-  // Captura a caixa de erro e cria a função de exibir a mensagem
-  const errorBox = container.querySelector("#register-error");
-  const mostrarErro = (mensagem) => {
-    errorBox.textContent = mensagem;
-    errorBox.style.display = "block";
-
-    setTimeout(() => {
-      errorBox.style.display = "none";
-    }, 3000);
-  };
-
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -139,13 +122,13 @@ export function createRegisterPage() {
 
     // Verificar se os campos estão vazios
     if (!nome || !email || !matricula || !senha) {
-      mostrarErro("Preencha todos os campos.");
+      showMessage(container, "Preencha todos os campos.");
       return;
     }
 
     // Verificar se as senhas são iguais
     if (senha !== confirmarSenha) {
-      mostrarErro("As senhas não coincidem.");
+      showMessage(container, "As senhas não coincidem.");
       return;
     }
 
@@ -154,13 +137,13 @@ export function createRegisterPage() {
 
     // email duplicado
     if (usuarios.find(user => user.email === email)) {
-      mostrarErro("Já existe um usuário com esse e-mail.");
+      showMessage(container, "Já existe um usuário com esse e-mail.");
       return;
     }
 
     // matrícula duplicada
     if (usuarios.find(user => user.matricula === matricula)) {
-      mostrarErro("Já existe um usuário com essa matrícula.");
+      showMessage(container, "Já existe um usuário com essa matrícula.");
       return;
     }
 
@@ -186,10 +169,15 @@ export function createRegisterPage() {
 
     console.log("Usuário cadastrado:", novoUsuario);
 
-    alert("Cadastro realizado com sucesso! Aguarde aprovação.");
+    showMessage(container, "Cadastro realizado com sucesso! Aguarde aprovação.", "success");
 
-    // redirecionar para login
-    navigateTo("/");
+    // limpa formulário
+    form.reset();
+
+    // redireciona após 2 segundos
+    setTimeout(() => {
+      navigateTo("/");
+    }, 2000);
   });
 
   return container;

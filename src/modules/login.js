@@ -1,5 +1,6 @@
 import { hashPassword } from "./auth.js";
 import { navigateTo } from "../router.js";
+import { showMessage } from "./feedback.js";
 
 export function createLoginScreen() {
     const section = document.createElement("section");
@@ -12,7 +13,7 @@ export function createLoginScreen() {
             <h2>Aptus Defensio</h2>
         </div>
 
-        <div id="login-error" class="error-message" style="display: none;"></div>
+        <div class="feedback-message" style="display: none;"></div>
 
         <form id="login-form">
             <div class="input-group">
@@ -47,16 +48,6 @@ export function createLoginScreen() {
   // Captura o formulario criado
   const form = section.querySelector("#login-form");
 
-  // Captura a caixa de erro e cria a função de exibir a mensagem
-  const errorBox = section.querySelector("#login-error");
-  const mostrarErro = (mensagem) => {
-    errorBox.textContent = mensagem;
-    errorBox.style.display = "block";
-    setTimeout(() => {
-        errorBox.style.display = "none";
-    }, 3000);
-  };
-
   // Escuta quando o usuário clica em entrar ou aperta enter
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
@@ -67,7 +58,7 @@ export function createLoginScreen() {
 
     // Verificar se nenhum campo está vazio
     if (!emailDigitado || !senhaDigitada) {
-      mostrarErro("Preencha todos os campos.");
+      showMessage(section, "Preencha todos os campos.");
       return;
     }
 
@@ -84,7 +75,7 @@ export function createLoginScreen() {
 
     // Se não encontrar apresenta erro
     if (!usuarioEncontrado) {
-      mostrarErro("E-mail ou senha inválidos.");
+      showMessage(section, "E-mail ou senha inválidos.");
       return;
     }
 
