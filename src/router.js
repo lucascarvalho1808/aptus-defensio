@@ -1,12 +1,14 @@
 import { createLoginScreen } from './modules/login.js';
 import { createDashboardPage } from './pages/dashboard.js';
 import { createProfessoresPage } from "./pages/professores.js";
+import { createRegisterPage } from "./pages/register.js";
 
 // Mapa de rotas disponíveis na aplicação
 const routes = {
   '/': createLoginScreen,
   '/dashboard': createDashboardPage,
   '/professores': createProfessoresPage, 
+  '/register': createRegisterPage,
   
   // Rota padrão para páginas não encontradas
   '404': () => {
@@ -25,8 +27,11 @@ export function handleLocation() {
   // Verifica se existe um usuário logado no sessionStorage
   const usuarioLogado = sessionStorage.getItem("usuarioAtivo");
 
-  // Se o usuário não estiver logado e tentar acessar qualquer página que não seja o Login ('/')
-  if (path !== '/' && !usuarioLogado) {
+  // rotas públicas
+  const rotasPublicas = ['/', '/register'];
+
+  // Se o usuário não estiver logado e tentar acessar rotas privadas página que não seja o Login ('/')
+  if (!rotasPublicas.includes(path) && !usuarioLogado) {
     path = '/'; 
   // Atualiza a URL sem criar um novo histórico
     window.history.replaceState({}, "", path); 
