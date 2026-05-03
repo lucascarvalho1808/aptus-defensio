@@ -1,4 +1,5 @@
 import { navigateTo } from "../router.js";
+import { hashPassword } from "../modules/auth.js";
 
 export function createRegisterPage() {
   const container = document.createElement("div");
@@ -100,6 +101,58 @@ export function createRegisterPage() {
   // Evento de mudança
   selectTipo.addEventListener("change", () => {
     renderCampos(selectTipo.value);
+  });
+
+  const form = container.querySelector("#register-form");
+
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Captura valores
+    const tipo = container.querySelector("#tipo").value;
+    const nome = container.querySelector("#nome").value.trim();
+    const email = container.querySelector("#email").value.trim();
+    const matricula = container.querySelector("#matricula").value.trim();
+    const senha = container.querySelector("#senha").value;
+
+    // // Verificar se os campos estão vazios
+    if (!nome || !email || !matricula || !senha) {
+      alert("Preencha todos os campos.");
+      return;
+    }
+
+    // gerar hash da senha
+    const senhaHash = await hashPassword(senha);
+
+    console.log("Senha original:", senha);
+    console.log("Senha hash:", senhaHash);
+
+    // montar objeto usuário
+    const novoUsuario = {
+      id: Date.now(),
+      nome,
+      email,
+      matricula,
+      senha: senhaHash,
+      role: tipo,
+      status: "pendente"
+    };
+
+    // pegar usuários existentes
+    const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
+
+    // adicionar novo usuário
+    usuarios.push(novoUsuario);
+
+    // salvar no localStorage
+    localStorage.setItem("usuarios", JSON.stringify(usuarios));
+
+    console.log("Usuário cadastrado:", novoUsuario);
+
+    alert("Cadastro realizado com sucesso! Aguarde aprovação.");
+
+    // redirecionar para login
+    navigateTo("/");
   });
 
   return container;

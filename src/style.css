@@ -234,6 +234,10 @@ select {
   background-color: #fff;
 }
 
+#matricula {
+  font-family: 'Cinzel', serif;
+}
+
 /* Alerta de erro no login */
 .error-message {
   background-color: rgba(139, 37, 33, 0.2); 
