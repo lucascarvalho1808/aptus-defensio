@@ -51,6 +51,54 @@ export function createAdminPage() {
       </section>
     </div>
   `;
+  // Captura as grids e o select no DOM recém-criado
+  const selectFiltro = container.querySelector('#filtro-papel');
+  const gridPendentes = container.querySelector('#grid-pendentes');
+  const gridAtivos = container.querySelector('#grid-ativos');
 
+  // Evento de escuta para quando o Coordenador mudar o select
+  selectFiltro.addEventListener('change', (event) => {
+    const papelSelecionado = event.target.value;
+    atualizarListas(papelSelecionado);
+  });
+
+  // Função central que busca, filtra e manda renderizar
+  function atualizarListas(filtro) {
+    // Puxa os dados do localStorage 
+    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+    
+    // Remove o próprio coordenador da lista de aprovações
+    let usuariosFiltrados = usuarios.filter(u => u.role !== 'coordenador');
+
+    // Aplica o filtro selecionado no DOM (aluno, professor ou todos)
+    if (filtro !== 'todos') {
+      usuariosFiltrados = usuariosFiltrados.filter(u => u.role === filtro);
+    }
+
+    // Separa os resultados em Pendentes e Ativos
+    const pendentes = usuariosFiltrados.filter(u => u.status === 'pendente');
+    const ativos = usuariosFiltrados.filter(u => u.status === 'ativo');
+
+    // Envia para a função de renderização 
+    renderizarGrid(pendentes, gridPendentes);
+    renderizarGrid(ativos, gridAtivos);
+  }
+
+  
+  function renderizarGrid(lista, elementoDom) {
+    // Limpa a grid atual
+    elementoDom.innerHTML = "";
+    
+    if (lista.length === 0) {
+      elementoDom.innerHTML = "<p style='color: #888;'>Nenhum usuário encontrado para este filtro.</p>";
+      return;
+    }
+
+    
+    elementoDom.innerHTML = `<p style="color: #c9a063;">Exibindo ${lista.length} registro(s) ocultos. (Os cards visuais virão na T12.4!)</p>`;
+  }
+
+  // Chama a função pela primeira vez para carregar a tela inicial como "Todos"
+  atualizarListas('todos');
   return container;
 }
