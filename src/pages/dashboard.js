@@ -1,98 +1,139 @@
 import { verificarAutenticacao } from "../modules/auth.js";
 import { navigateTo } from "../router.js";
 
-function createHeader() {
-  const header = document.createElement("header");
-  header.classList.add("header");
-  header.innerHTML = `
-    <div class="logo">
-      <strong>Aptus Defensio</strong>
-    </div>
-    <nav class="nav">
-      <a href="#">Sobre</a>
-      <a href="#">Coordenação</a>
-      <a href="#">Professores</a>
-      <a href="#">Alunos</a>
-      <a href="#" id="btn-logout" class="logout-link">Sair</a>
-    </nav>
-  `;
-
-  // Captura o botão e cria o evento de Logout
-  const btnLogout = header.querySelector("#btn-logout");
-  btnLogout.addEventListener("click", (event) => {
-    event.preventDefault(); 
-    
-    // Limpa a sessão atual do usuário
-    sessionStorage.removeItem("usuarioAtivo"); 
-    
-    // Redireciona para a tela inicial (login)
-    navigateTo("/"); 
-  });
-
-  return header;
-}
-
-function createHero() {
-  const section = document.createElement("section");
-  section.classList.add("hero");
-  section.innerHTML = `
-    <h1>CONTROLE DE<br>DEFESA E PRAZOS</h1>
-    <p>Gestão inteligente e automatizada para programas de pós-graduação. O caminho seguro até a sua aprovação final.</p>
-    <div class="buttons">
-      <button class="btn-primary">Acessar o Sistema</button>
-      <button class="btn-secondary">Agendar Demonstração</button>
-    </div>
-  `;
-  return section;
-}
-
-function createCards() {
-  const container = document.createElement("section");
-  container.classList.add("cards");
-
-  const data = [
-    {
-      title: "Proposta de TCC",
-      features: ["Sistema de autenticação", "Cadastro de professores e alunos", "Cadastro de temas", "Envio de proposta", "Convite de orientador"]
-    },
-    {
-      title: "Desenvolvimento",
-      features: ["Acompanhamento do progresso", "Registro de reuniões", "Visualização de orientandos", "Envio de documentos"]
-    },
-    {
-      title: "Defesa",
-      features: ["Inscrição para defesa", "Agendamento de banca", "Convite de avaliadores"]
-    }
-  ];
-
-  data.forEach(item => {
-    const card = document.createElement("div");
-    card.classList.add("card");
-    const list = item.features.map(f => `<li>${f}</li>`).join("");
-    card.innerHTML = `
-      <h3>${item.title}</h3>
-      <ul class="features">${list}</ul>
-    `;
-    container.appendChild(card);
-  });
-
-  return container;
-}
-
-// Função principal que o router.js vai chamar
 export function createDashboardPage() {
-  // Se retornar nulo (não logado) interrompe a criação da página
-  const usuario = verificarAutenticacao();
-  if (!usuario) {
-      return document.createElement("div"); 
-  }
+    // 1. Verificação de Segurança
+    const usuario = verificarAutenticacao();
+    if (!usuario) {
+        return document.createElement("div"); 
+    }
 
-  // O resto continua igual
-  const fragment = document.createDocumentFragment();
-  
-  fragment.appendChild(createHeader());
-  fragment.appendChild(createHero());
-  fragment.appendChild(createCards());
-  
-  return fragment;
+    const fragment = document.createDocumentFragment();
+
+    // 2. Criar a Sidebar
+    const aside = document.createElement("aside");
+    aside.classList.add("dash-sidebar"); 
+    aside.innerHTML = `
+        <div class="dash-sidebar-header">
+            <img src="/img/logo_capacete.png" alt="Logo" class="dash-sidebar-logo">
+            <h2 class="dash-sidebar-brand">Aptus Defensio</h2>
+        </div>
+        <ul class="dash-nav-menu">
+            <li class="dash-nav-item dash-active" data-page="dashboard">
+                <span>Dashboard</span>
+            </li>
+            <li class="dash-nav-item" data-page="prazos">
+                <span>Meus Prazos</span>
+            </li>
+            <li class="dash-nav-item" data-page="professores">
+                <span>Professores</span>
+            </li>
+            <li class="dash-nav-item" data-page="documentos">
+                <span>Documentos</span>
+            </li>
+        </ul>
+        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
+            <span>Sair</span>
+        </div>
+    `;
+
+    // 3. Criar o Conteúdo Principal
+    const main = document.createElement("main");
+    main.classList.add("dash-main-content");
+    main.innerHTML = `
+        <button class="dash-menu-toggle" id="menu-toggle">☰</button>
+
+        <header class="dash-header-top">
+            <h1>Visão Geral</h1>
+            <div class="dash-user-profile">Olá, ${usuario.nome}!</div>
+        </header>
+
+        <section class="dash-hero-integration">
+            <h2 class="dash-hero-title">CONTROLE DE<br>DEFESA E PRAZOS</h2>
+            <p class="dash-hero-subtitle">
+                Gestão inteligente e automatizada para programas de pós-graduação. 
+                O caminho seguro até a sua aprovação final.
+            </p>
+            <div class="dash-hero-buttons">
+                <button class="dash-btn-integrated-primary">Acessar o Sistema</button>
+                <button class="dash-btn-integrated-secondary">Agendar Demonstração</button>
+            </div>
+        </section>
+
+        <h2 style="font-family: 'Cinzel', serif; color: #c9a063; margin-bottom: 25px; font-size: 1.3rem;">
+            Módulos do Sistema
+        </h2>
+        
+        <div class="dash-grid">
+            <div class="dash-card">
+                <h3>Proposta de TCC</h3>
+                <ul class="dash-feature-list">
+                    <li>Sistema de autenticação</li>
+                    <li>Cadastro de temas</li>
+                    <li>Envio de proposta</li>
+                    <li>Cadastro de Professores e Alunos</li>
+                </ul>
+                <button class="dash-btn-action">Ver Detalhes</button>
+            </div>
+
+            <div class="dash-card">
+                <h3>Desenvolvimento</h3>
+                <ul class="dash-feature-list">
+                    <li>Acompanhamento de progresso</li>
+                    <li>Registro de reuniões</li>
+                    <li>Visualização de Orientados</li>
+                    <li>Envio de documentos</li>
+                </ul>
+                <button class="dash-btn-action">Acessar Módulo</button>
+            </div>
+
+            <div class="dash-card">
+                <h3>Defesa</h3>
+                <ul class="dash-feature-list">
+                    <li>Inscrição para defesa</li>
+                    <li>Agendamento de banca</li>
+                    <li>Convite de avaliadores</li>
+                </ul>
+                <button class="dash-btn-action">Iniciar Processo</button>
+            </div>
+        </div>
+
+        </div> <footer class="dash-footer">
+            <p>&copy; 2026 Aptus Defensio - Todos os direitos reservados.</p>
+        </footer>
+    `;
+
+    // --- LÓGICA DE INTERAÇÃO ---
+
+    // Alternar Sidebar (Mobile)
+    const btnMenu = main.querySelector("#menu-toggle");
+    btnMenu.addEventListener("click", () => {
+        aside.classList.toggle("dash-sidebar-open");
+    });
+
+    // Itens do Menu
+    const menuItems = aside.querySelectorAll(".dash-nav-item");
+    menuItems.forEach(item => {
+        item.addEventListener("click", () => {
+            menuItems.forEach(el => el.classList.remove("dash-active"));
+            item.classList.add("dash-active");
+            
+            // Fecha a sidebar ao clicar em um item no mobile
+            aside.classList.remove("dash-sidebar-open");
+        });
+    });
+
+    // Evento de Logout
+    const btnLogout = aside.querySelector("#btn-logout");
+    btnLogout.addEventListener("click", (event) => {
+        event.preventDefault(); 
+        sessionStorage.removeItem("usuarioAtivo"); 
+        navigateTo("/"); 
+    });
+
+    // 4. Montar a página
+    fragment.appendChild(aside);
+    fragment.appendChild(main);
+
+    return fragment;
 }
