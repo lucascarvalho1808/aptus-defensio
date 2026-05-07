@@ -2,7 +2,7 @@ import { verificarAutenticacao } from "../modules/auth.js";
 import { navigateTo } from "../router.js";
 
 export function createDashboardPage() {
-    // 1. Verificação de Segurança
+    // Verifica a segurança
     const usuario = verificarAutenticacao();
     if (!usuario) {
         return document.createElement("div"); 
@@ -10,7 +10,7 @@ export function createDashboardPage() {
 
     const fragment = document.createDocumentFragment();
 
-    // 2. Criar a Sidebar
+    // Cria a Sidebar
     const aside = document.createElement("aside");
     aside.classList.add("dash-sidebar"); 
     aside.innerHTML = `
@@ -37,7 +37,7 @@ export function createDashboardPage() {
         </div>
     `;
 
-    // 3. Criar o Conteúdo Principal
+    // Cria o conteúdo principal
     const main = document.createElement("main");
     main.classList.add("dash-main-content");
     main.innerHTML = `
@@ -103,15 +103,13 @@ export function createDashboardPage() {
         </footer>
     `;
 
-    // --- LÓGICA DE INTERAÇÃO ---
-
-    // Alternar Sidebar (Mobile)
+    // Alternar Sidebar mobile
     const btnMenu = main.querySelector("#menu-toggle");
     btnMenu.addEventListener("click", () => {
         aside.classList.toggle("dash-sidebar-open");
     });
 
-    // Itens do Menu
+    // Itens do menu
     const menuItems = aside.querySelectorAll(".dash-nav-item");
     menuItems.forEach(item => {
         item.addEventListener("click", () => {
@@ -131,7 +129,7 @@ export function createDashboardPage() {
         navigateTo("/"); 
     });
 
-    // 4. Montar a página
+    // Monta a página
     fragment.appendChild(aside);
     fragment.appendChild(main);
 
