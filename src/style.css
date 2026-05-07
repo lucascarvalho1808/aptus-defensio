@@ -15,7 +15,7 @@ body {
     min-height: 100vh;
 }
 
-/* 1. SIDEBAR */
+/* Sidebar */
 .dash-sidebar {
     width: var(--sidebar-width);
     background-color: var(--card-bg);
@@ -34,15 +34,15 @@ body {
     margin-bottom: 40px;
     border-bottom: 1px solid rgba(201, 160, 99, 0.1);
     padding-bottom: 20px;
-    width: 100%; /* Garante que respeite a largura da sidebar */
+    width: 100%; 
 }
 
 .dash-sidebar-logo {
-    width: 80px; /* Reduzi um pouco para garantir o respiro lateral */
+    width: 80px; 
     height: auto;
     margin: 0 auto 10px auto;
-    display: block; /* Remove comportamentos de linha que podem causar desalinhamento */
-    max-width: 100%; /* Impede que a imagem saia do container pai */
+    display: block; 
+    max-width: 100%; 
 }
 
 .dash-sidebar-brand {
@@ -72,7 +72,7 @@ body {
     font-weight: 500;
 }
 
-/* Ajustado para dash-active para bater com o JS */
+/* Dash-active para bater com o JS */
 .dash-nav-item.dash-active {
     background-color: var(--wine);
     color: white;
@@ -85,7 +85,7 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* 2. CONTEÚDO PRINCIPAL */
+/* Conteúdo principal */
 .dash-main-content {
     margin-left: var(--sidebar-width);
     padding: 25px 60px;
@@ -112,15 +112,15 @@ body {
     font-size: 18px;
 }
 
-/* 3. SEÇÃO HERO (Banner) */
+/* Seção hero */
 .dash-hero-integration {
     background: rgba(255, 255, 255, 0.03);
     padding: 40px;
     border-radius: 25px;
-    margin: 0 auto 50px auto; /* O 'auto' nas laterais centraliza o bloco */
+    margin: 0 auto 50px auto; 
     border: 1px solid rgba(255,255,255,0.05);
     text-align: center;
-    max-width: 1600px; /* Define um tamanho elegante para o card central */
+    max-width: 1600px; 
     box-sizing: border-box;
 }
 
@@ -148,7 +148,7 @@ body {
     gap: 20px;
 }
 
-/* Sincronizado nomes das classes com o JS */
+/* Sincroniza o nomes das classes com o JS */
 .dash-btn-integrated-primary {
     background-color: var(--wine);
     color: white;
@@ -182,7 +182,7 @@ body {
     color: white
 }
 
-/* 4. GRID DE MÓDULOS */
+/* Grid de módulos */
 .dash-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -249,7 +249,7 @@ body {
      background-color: #ac302c;
 }
 
-/* Estilo do botão Hamburguer (Escondido por padrão no Desktop) */
+/* Estilo do botão Hamburguer, escondido por padrão no desktop) */
 .dash-menu-toggle {
     display: none;
     background: var(--wine);
@@ -278,11 +278,11 @@ body {
 
 @media (max-width: 850px) {
     .dash-menu-toggle {
-        display: block; /* Mostra o botão no mobile */
+        display: block; 
     }
 
     .dash-sidebar {
-        left: calc(var(--sidebar-width) * -1); /* Esconde a barra totalmente à esquerda */
+        left: calc(var(--sidebar-width) * -1); 
         transition: 0.4s ease-in-out;
         z-index: 1000;
         box-shadow: 5px 0 15px rgba(0,0,0,0.5);
@@ -294,21 +294,21 @@ body {
     }
 
     .dash-main-content {
-        margin-left: 0; /* Remove a margem da sidebar no mobile */
-        padding: 70px 20px 30px 20px; /* Mais espaço no topo para o botão */
+        margin-left: 0; 
+        padding: 70px 20px 30px 20px; 
     }
 
     .dash-header-top {
         display: flex;
-        flex-direction: column; /* Empilha os itens */
-        align-items: center;    /* Centraliza os itens no eixo horizontal */
-        text-align: center;     /* Garante que o texto interno também centralize */
-        gap: 10px;      /* Dá um respiro em relação ao botão hambúrguer */
+        flex-direction: column; 
+        align-items: center;    
+        text-align: center;    
+        gap: 10px;      
         margin-bottom: 30px;
     }
 
     .dash-header-top h1 {
-        font-size: 28px;        /* Ajuste opcional para não ficar grande demais no mobile */
+        font-size: 28px;        
         width: 100%;
     }
 
@@ -325,13 +325,14 @@ body {
         font-size: 24px;
     }
 
+/* Botões um embaixo do outro no celular */
     .dash-hero-buttons {
-        flex-direction: column; /* Botões um embaixo do outro no celular */
+        flex-direction: column; 
         gap: 10px;
     }
-
+/* Força um card por linha */
     .dash-grid {
-        grid-template-columns: 1fr; /* Força um card por linha */
+        grid-template-columns: 1fr; 
     }
 }
 
@@ -591,7 +592,7 @@ select {
 }
 
 
-/* TABLET (até 1024px) */
+/* Tablet (até 1024px) */
 @media (max-width: 1024px) {
   .header {
     padding: 20px;
@@ -611,7 +612,7 @@ select {
   }
 }
 
-/* MOBILE (até 768px) */
+/* Mobile (até 768px) */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -660,7 +661,7 @@ select {
   }
 }
 
-/* TELAS MUITO PEQUENAS (até 480px) */
+/* Telas pequenas (até 480px) */
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 22px;
@@ -683,7 +684,7 @@ select {
   }
 }
 
-/* TELA DE PROFESSORES / DASHBOARD */
+/* Tela de professores / dashboard */
 
 .dashboard-container {
   padding: 60px 20px;
