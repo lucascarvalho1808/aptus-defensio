@@ -1,339 +1,340 @@
 :root {
-    --bg-dark: #0b121e;
-    --card-bg: #1a2c41;
-    --gold: #c9a063;
-    --wine: #8b2521;
-    --text-white: #ffffff;
-    --sidebar-width: 280px;
+  --bg-dark: #0b121e;
+  --card-bg: #1a2c41;
+  --gold: #c9a063;
+  --wine: #8b2521;
+  --text-white: #ffffff;
+  --sidebar-width: 280px;
 }
 
 body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-dark);
-    color: var(--text-white);
-    min-height: 100vh;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--bg-dark);
+  color: var(--text-white);
+  min-height: 100vh;
 }
 
 /* Sidebar */
 .dash-sidebar {
-    width: var(--sidebar-width);
-    background-color: var(--card-bg);
-    border-right: 1px solid rgba(201, 160, 99, 0.2);
-    display: flex;
-    flex-direction: column;
-    padding: 15px 20px;
-    position: fixed;
-    height: 100vh;
-    box-sizing: border-box;
+  width: var(--sidebar-width);
+  background-color: var(--card-bg);
+  border-right: 1px solid rgba(201, 160, 99, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
+  position: fixed;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 /* Garante que a logo fique contida e centralizada */
 .dash-sidebar-header {
-    text-align: center;
-    margin-bottom: 40px;
-    border-bottom: 1px solid rgba(201, 160, 99, 0.1);
-    padding-bottom: 20px;
-    width: 100%; 
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(201, 160, 99, 0.1);
+  padding-bottom: 20px;
+  width: 100%;
 }
 
 .dash-sidebar-logo {
-    width: 80px; 
-    height: auto;
-    margin: 0 auto 10px auto;
-    display: block; 
-    max-width: 100%; 
+  width: 80px;
+  height: auto;
+  margin: 0 auto 10px auto;
+  display: block;
+  max-width: 100%;
 }
 
 .dash-sidebar-brand {
-    font-family: 'Cinzel', serif;
-    color: var(--gold);
-    font-size: 22px;
-    margin: 0;
-    text-transform: uppercase;
-    letter-spacing: 1px;
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 22px;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .dash-nav-menu {
-    list-style: none;
-    padding: 0;
-    flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  flex-grow: 1;
 }
 
 .dash-nav-item {
-    padding: 15px 20px;
-    margin-bottom: 8px;
-    border-radius: 12px;
-    cursor: pointer;
-    transition: 0.3s;
-    display: flex;
-    align-items: center;
-    color: rgba(255,255,255,0.7);
-    font-weight: 500;
+  padding: 15px 20px;
+  margin-bottom: 8px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: 0.3s;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.7);
+  font-weight: 500;
 }
 
 /* Dash-active para bater com o JS */
 .dash-nav-item.dash-active {
-    background-color: var(--wine);
-    color: white;
-    box-shadow: 0 4px 10px rgba(139, 37, 33, 0.3);
+  background-color: var(--wine);
+  color: white;
+  box-shadow: 0 4px 10px rgba(139, 37, 33, 0.3);
 }
 
 .dash-nav-item:hover:not(.dash-active) {
-    background-color: #2c3e50;
-    color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  background-color: #2c3e50;
+  color: white;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
 /* Conteúdo principal */
 .dash-main-content {
-    margin-left: var(--sidebar-width);
-    padding: 25px 60px;
-    box-sizing: border-box;
+  margin-left: var(--sidebar-width);
+  padding: 25px 60px;
+  box-sizing: border-box;
 }
 
 .dash-header-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
 .dash-header-top h1 {
-    font-family: 'Cinzel', serif;
-    color: var(--gold);
-    margin: 0;
-    font-size: 32px;
-    letter-spacing: 1px;
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  margin: 0;
+  font-size: 32px;
+  letter-spacing: 1px;
 }
 
 .dash-user-profile {
-    opacity: 0.8;
-    font-size: 18px;
+  opacity: 0.8;
+  font-size: 18px;
 }
 
 /* Seção hero */
 .dash-hero-integration {
-    background: rgba(255, 255, 255, 0.03);
-    padding: 40px;
-    border-radius: 25px;
-    margin: 0 auto 50px auto; 
-    border: 1px solid rgba(255,255,255,0.05);
-    text-align: center;
-    max-width: 1600px; 
-    box-sizing: border-box;
+  background: rgba(255, 255, 255, 0.03);
+  padding: 40px;
+  border-radius: 25px;
+  margin: 0 auto 50px auto;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center;
+  max-width: 1600px;
+  box-sizing: border-box;
 }
 
 .dash-hero-title {
-    font-weight: 700;
-    color: var(--text-white);
-    font-size: 32px;
-    line-height: 1.2;
-    margin: 0 0 15px 0;
-    text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text-white);
+  font-size: 32px;
+  line-height: 1.2;
+  margin: 0 0 15px 0;
+  text-transform: uppercase;
 }
 
 .dash-hero-subtitle {
-    font-weight: 300;
-    opacity: 0.8;
-    font-size: 16px;
-    max-width: 700px;
-    margin: 0 auto 30px auto;
-    line-height: 1.6;
+  font-weight: 300;
+  opacity: 0.8;
+  font-size: 16px;
+  max-width: 700px;
+  margin: 0 auto 30px auto;
+  line-height: 1.6;
 }
 
 .dash-hero-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }
 
 /* Sincroniza o nomes das classes com o JS */
 .dash-btn-integrated-primary {
-    background-color: var(--wine);
-    color: white;
-    border: none;
-    padding: 15px 30px;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 15px;
+  background-color: var(--wine);
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
 .dash-btn-integrated-primary:hover {
-    background-color: #ac302c;
+  background-color: #ac302c;
 }
 
 .dash-btn-integrated-secondary {
-    background-color: transparent;
-    color: var(--gold);
-    border: 2px solid var(--gold);
-    padding: 13px 28px;
-    border-radius: 5px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: 0.3s;
-    font-size: 15px;
+  background-color: transparent;
+  color: var(--gold);
+  border: 2px solid var(--gold);
+  padding: 13px 28px;
+  border-radius: 5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+  font-size: 15px;
 }
 
 .dash-btn-integrated-secondary:hover {
-    background-color: var(--gold);
-    color: white
+  background-color: var(--gold);
+  color: white
 }
 
 /* Grid de módulos */
 .dash-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 30px;
 }
 
 .dash-card {
-    background-color: var(--card-bg);
-    padding: 35px;
-    border-radius: 20px;
-    border-top: 4px solid var(--gold);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-    transition: transform 0.3s;
-    display: flex;
-    flex-direction: column;
+  background-color: var(--card-bg);
+  padding: 35px;
+  border-radius: 20px;
+  border-top: 4px solid var(--gold);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s;
+  display: flex;
+  flex-direction: column;
 }
 
 .dash-card:hover {
-    transform: translateY(-8px);
+  transform: translateY(-8px);
 }
 
 .dash-card h3 {
-    color: var(--gold);
-    font-family: 'Cinzel', serif;
-    font-size: 22px;
-    margin: 0 0 20px 0;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 22px;
+  margin: 0 0 20px 0;
+  padding-bottom: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .dash-feature-list {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 25px 0;
-    flex-grow: 1;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 25px 0;
+  flex-grow: 1;
 }
 
 .dash-feature-list li {
-    padding: 10px 0;
-    font-size: 15px;
-    display: flex;
-    align-items: center;
-    color: rgba(255,255,255,0.8);
+  padding: 10px 0;
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.8);
 }
 
 .dash-feature-list li::before {
-    content: '⬥';
-    color: var(--gold);
-    margin-right: 12px;
+  content: '⬥';
+  color: var(--gold);
+  margin-right: 12px;
 }
 
 .dash-btn-action {
-    background-color: var(--wine);
-    color: white;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 50px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: 0.3s;
+  background-color: var(--wine);
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
 .dash-btn-action:hover {
-     background-color: #ac302c;
+  background-color: #ac302c;
 }
 
 /* Estilo do botão Hamburguer, escondido por padrão no desktop) */
 .dash-menu-toggle {
-    display: none;
-    background: var(--wine);
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 20px;
-    cursor: pointer;
-    position: fixed;
-    top: 15px;
-    left: 15px;
-    z-index: 1001;
+  display: none;
+  background: var(--wine);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
 }
 
 .dash-footer {
-    margin-top: 60px;
-    padding-top: 25px;
-    border-top: 1px solid rgba(201, 160, 99, 0.1);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: rgba(255, 255, 255, 0.5);
-    font-size: 14px;
+  margin-top: 60px;
+  padding-top: 25px;
+  border-top: 1px solid rgba(201, 160, 99, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 14px;
 }
 
 @media (max-width: 850px) {
-    .dash-menu-toggle {
-        display: block; 
-    }
+  .dash-menu-toggle {
+    display: block;
+  }
 
-    .dash-sidebar {
-        left: calc(var(--sidebar-width) * -1); 
-        transition: 0.4s ease-in-out;
-        z-index: 1000;
-        box-shadow: 5px 0 15px rgba(0,0,0,0.5);
-    }
+  .dash-sidebar {
+    left: calc(var(--sidebar-width) * -1);
+    transition: 0.4s ease-in-out;
+    z-index: 1000;
+    box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+  }
 
-    /* Classe que o JS vai ativar */
-    .dash-sidebar.dash-sidebar-open {
-        left: 0;
-    }
+  /* Classe que o JS vai ativar */
+  .dash-sidebar.dash-sidebar-open {
+    left: 0;
+  }
 
-    .dash-main-content {
-        margin-left: 0; 
-        padding: 70px 20px 30px 20px; 
-    }
+  .dash-main-content {
+    margin-left: 0;
+    padding: 70px 20px 30px 20px;
+  }
 
-    .dash-header-top {
-        display: flex;
-        flex-direction: column; 
-        align-items: center;    
-        text-align: center;    
-        gap: 10px;      
-        margin-bottom: 30px;
-    }
+  .dash-header-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+    margin-bottom: 30px;
+  }
 
-    .dash-header-top h1 {
-        font-size: 28px;        
-        width: 100%;
-    }
+  .dash-header-top h1 {
+    font-size: 28px;
+    width: 100%;
+  }
 
-    .dash-user-profile {
-        font-size: 16px;
-        width: 100%;
-    }
+  .dash-user-profile {
+    font-size: 16px;
+    width: 100%;
+  }
 
-    .dash-hero-integration {
-        padding: 25px;
-    }
+  .dash-hero-integration {
+    padding: 25px;
+  }
 
-    .dash-hero-title {
-        font-size: 24px;
-    }
+  .dash-hero-title {
+    font-size: 24px;
+  }
 
-/* Botões um embaixo do outro no celular */
-    .dash-hero-buttons {
-        flex-direction: column; 
-        gap: 10px;
-    }
-/* Força um card por linha */
-    .dash-grid {
-        grid-template-columns: 1fr; 
-    }
+  /* Botões um embaixo do outro no celular */
+  .dash-hero-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  /* Força um card por linha */
+  .dash-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Tela de login */
@@ -533,11 +534,11 @@ select {
 
 /* Destaque em cores para diferenciar as listas */
 .secao-usuarios.pendentes {
-  border-left: 6px solid #c9a063; 
+  border-left: 6px solid #c9a063;
 }
 
 .secao-usuarios.ativos {
-  border-left: 6px solid #28a745; 
+  border-left: 6px solid #28a745;
 }
 
 .divisor {
@@ -686,100 +687,142 @@ select {
 
 /* Tela de professores / dashboard */
 
-.dashboard-container {
-  padding: 60px 20px;
-  min-height: 100vh;
-  background-color: #0b121e;
+/* Sidebar */
+.prof-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--card-bg);
+  border-right: 1px solid rgba(201, 160, 99, 0.2);
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  padding: 15px 20px;
+  position: fixed;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
-.content {
+/* Garante que a logo fique contida e centralizada */
+.prof-sidebar-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(201, 160, 99, 0.1);
+  padding-bottom: 20px;
   width: 100%;
-  max-width: 1200px;
 }
 
-.page-title {
-  color: #c9a063;
+.prof-sidebar-logo {
+  width: 80px;
+  height: auto;
+  margin: 0 auto 10px auto;
+  display: block;
+  max-width: 100%;
+}
+
+.prof-sidebar-brand {
   font-family: 'Cinzel', serif;
-  text-align: center;
-  margin-bottom: 50px;
-  font-size: 36px;
-  font-weight: 700;
-  letter-spacing: 2px;
+  color: var(--gold);
+  font-size: 22px;
+  margin: 0;
   text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.dashboard-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 40px;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.admin-card {
-  background-color: #1a2c41;
-  flex: 1 1 450px;
-  padding: 50px 40px;
-  border-radius: 35px;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
-  border-top: 3px solid #c9a063;
-}
-
-.admin-card h2 {
-  color: #fff;
-  margin-bottom: 30px;
-  text-align: center;
-  font-size: 24px;
-}
-
-.table-responsive {
+.prof-table-responsive {
   width: 100%;
   overflow-x: auto;
 }
 
-.admin-table {
+.prof-table {
   width: 100%;
   border-collapse: collapse;
-  color: #fff;
-  margin-top: 10px;
+  color: var(--text-white);
 }
 
-.admin-table th {
-  background-color: #0b121e;
-  color: #c9a063;
-  font-weight: 600;
-  padding: 16px;
-  border-bottom: 2px solid #c9a063;
-  text-transform: uppercase;
-  font-size: 14px;
+.prof-table th {
   text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid rgba(201, 160, 99, 0.3);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  letter-spacing: 1px;
 }
 
-.admin-table td {
-  padding: 16px;
-  border-bottom: 1px solid rgba(201, 160, 99, 0.2);
-  font-size: 15px;
-  color: #e0e0e0;
+.prof-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 14px;
 }
 
-.admin-table tbody tr {
-  transition: 0.3s;
+.prof-table tr:hover {
+  background: rgba(255, 255, 255, 0.02);
+  transition: 0.2s;
 }
 
-.admin-table tbody tr:hover {
-  background-color: rgba(201, 160, 99, 0.08);
+.prof-menu-toggle {
+  display: none;
+  background: var(--wine);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
 }
 
-@media (max-width: 768px) {
-  .admin-card {
-    padding: 30px 20px;
-    border-radius: 20px;
+/* Localize onde você estilizou o span de status ou adicione ao final */
+.prof-table td span {
+    display: inline-flex !important; /* Alinha o ponto e o texto na mesma linha */
+    align-items: center;
+    white-space: nowrap !important; /* REGRA PRINCIPAL: Impede a quebra de linha */
+    gap: 6px; /* Espaço entre o ponto e o texto */
+    padding: 5px 12px !important;
+    min-width: fit-content; /* Garante que o fundo acompanhe o texto todo */
+}
+
+/* Garante que a última coluna tenha espaço suficiente para o selo */
+.prof-table th:last-child, 
+.prof-table td:last-child {
+    min-width: 100px; 
+    text-align: center;
+}
+
+/* Responsividade com prefixos */
+@media (max-width: 850px) {
+
+  .prof-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 250px;
+    /* Ou a largura que preferir */
+    height: 100vh;
+    background-color: var(--card-bg);
+    transform: translateX(-100%);
+    /* Esconde totalmente */
+    transition: transform 0.3s ease;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
   }
 
-  .page-title {
-    font-size: 28px;
-    margin-bottom: 30px;
+  /* Regra mestre para abrir a sidebar */
+  .prof-sidebar.active {
+    transform: translateX(0) !important;
+    visibility: visible !important;
   }
+
+  .prof-menu-toggle {
+    display: block !important;
+    position: fixed;
+    /* Fixado para o usuário sempre achar o botão */
+    top: 15px;
+    left: 15px;
+    z-index: 1100;
+  }
+
+
 }
