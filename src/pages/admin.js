@@ -2,146 +2,203 @@ import { verificarAutenticacao } from "../modules/auth.js";
 import { navigateTo } from "../router.js";
 
 export function createAdminPage() {
-  const usuario = verificarAutenticacao();
-  if (!usuario) return document.createElement("div");
-
-  const papelUsuario = usuario.role ? usuario.role.toLowerCase() : '';
-  if (papelUsuario !== 'coordenador') {
-      navigateTo('/pagina-nao-encontrada-404');
-      return document.createElement("div"); 
-  }
-
-  const container = document.createElement("div");
-  container.className = "admin-container";
-
-  container.innerHTML = `
-    <header class="admin-header">
-      <h2>Administração Central de Usuários</h2>
-      <div class="admin-filtros">
-        <label for="filtro-papel">Filtrar por Papel:</label>
-        <select id="filtro-papel">
-          <option value="todos">Todos</option>
-          <option value="aluno">Alunos</option>
-          <option value="professor">Professores</option>
-        </select>
-      </div>
-    </header>
-
-    <div class="admin-content">
-      <section class="secao-usuarios pendentes">
-        <h3>Aprovações Pendentes</h3>
-        <div id="grid-pendentes" class="grid-usuarios"></div> 
-      </section>
-
-      <hr class="divisor">
-
-      <section class="secao-usuarios ativos">
-        <h3>Usuários Ativos</h3>
-        <div id="grid-ativos" class="grid-usuarios"></div>
-      </section>
-    </div>
-  `;
-
-  const selectFiltro = container.querySelector('#filtro-papel');
-  const gridPendentes = container.querySelector('#grid-pendentes');
-  const gridAtivos = container.querySelector('#grid-ativos');
-
-  selectFiltro.addEventListener('change', (event) => {
-    atualizarListas(event.target.value);
-  });
-
-  // Função para mudar o status e salvar no banco 
-  function aprovarUsuario(idUsuario) {
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    usuarios = usuarios.map(u => {
-      if (String(u.id) === String(idUsuario)) {
-        return { ...u, status: 'ativo' };
-      }
-      return u;
-    });
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    atualizarListas(selectFiltro.value); 
-  }
-
-  // Função para excluir o cadastro 
-  function rejeitarUsuario(idUsuario) {
-    if(!confirm("Tem certeza que deseja rejeitar e excluir este cadastro?")) return;
-    
-    let usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    usuarios = usuarios.filter(u => String(u.id) !== String(idUsuario));
-    localStorage.setItem('usuarios', JSON.stringify(usuarios));
-    atualizarListas(selectFiltro.value); 
-  }
-
-  function atualizarListas(filtro) {
-    const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-    
-    let usuariosFiltrados = usuarios.filter(u => u.role && u.role.toLowerCase() !== 'coordenador');
-
-    if (filtro !== 'todos') {
-      usuariosFiltrados = usuariosFiltrados.filter(u => u.role && u.role.toLowerCase() === filtro);
+    const usuarioLogado = verificarAutenticacao();
+    if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
+        navigateTo('/pagina-nao-encontrada-404');
+        return document.createElement("div");
     }
 
-    //  Força o toLowerCase() na verificação
-    const pendentes = usuariosFiltrados.filter(u => u.status && u.status.toLowerCase() === 'pendente');
-    const ativos = usuariosFiltrados.filter(u => u.status && u.status.toLowerCase() === 'ativo');
+    const fragment = document.createDocumentFragment();
 
-    renderizarGrid(pendentes, gridPendentes);
-    renderizarGrid(ativos, gridAtivos);
-  }
-
-  function renderizarGrid(lista, elementoDom) {
-    elementoDom.innerHTML = "";
-    
-    if (lista.length === 0) {
-      elementoDom.innerHTML = "<p style='color: #888;'>Nenhum usuário encontrado para este filtro.</p>";
-      return;
-    }
-
-    const htmlCards = lista.map(user => {
-      const statusUser = user.status ? user.status.toLowerCase() : 'pendente';
-      const corStatus = statusUser === 'ativo' ? '#28a745' : '#c9a063';
-      
-      // Cria os botões se o usuário for pendente
-      let botoesHtml = '';
-      if (statusUser === 'pendente') {
-        botoesHtml = `
-          <div style="margin-top: 15px; display: flex; gap: 10px;">
-            <button class="btn-aprovar" data-id="${user.id}" style="background-color: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1;">Aprovar</button>
-            <button class="btn-rejeitar" data-id="${user.id}" style="background-color: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 5px; cursor: pointer; font-weight: bold; flex: 1;">Rejeitar</button>
-          </div>
-        `;
-      }
-      
-      // Adiciona a Matrícula no HTML
-      return `
-        <div class="user-card">
-          <h4 style="color: #c9a063; margin: 0 0 10px 0;">${user.nome || 'Usuário Sem Nome'}</h4>
-          <p style="margin: 5px 0;"><strong>Matrícula:</strong> ${user.matricula || 'N/A'}</p>
-          <p style="margin: 5px 0;"><strong>E-mail:</strong> ${user.email}</p>
-          <p style="margin: 5px 0; text-transform: capitalize;"><strong>Papel:</strong> ${user.role}</p>
-          <p style="margin: 5px 0; text-transform: capitalize;">
-            <strong>Status:</strong> 
-            <span style="color: ${corStatus}; font-weight: bold;">${statusUser}</span>
-          </p>
-          ${botoesHtml}
+    const aside = document.createElement("aside");
+    aside.classList.add("admin-sidebar");
+    aside.innerHTML = `
+        <div class="admin-sidebar-header">
+            <img src="/img/logo_capacete.png" alt="Logo" class="admin-sidebar-logo">
+            <h2 class="dash-sidebar-brand">Aptus Defensio</h2>
         </div>
-      `;
-    }).join('');
+        <ul class="dash-nav-menu">
+            <li class="dash-nav-item" data-page="dashboard"><span>Dashboard</span></li>
+            <li class="dash-nav-item admin-active" data-page="admin"><span>Administração</span></li>
+            <li class="dash-nav-item" data-page="professores"><span>Professores</span></li>
+            <li class="dash-nav-item" data-page="alunos"><span>Alunos</span></li>
+        </ul>
+        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
+            <span>Sair</span>
+        </div>
+    `;
 
-    elementoDom.innerHTML = htmlCards;
+    const main = document.createElement("main");
+    main.classList.add("admin-main-content");
 
-    // Conecta os botões de Aprovar e Rejeitar às funções criadas 
-    if (elementoDom.id === 'grid-pendentes') {
-      elementoDom.querySelectorAll('.btn-aprovar').forEach(btn => {
-        btn.addEventListener('click', (e) => aprovarUsuario(e.target.dataset.id));
-      });
-      elementoDom.querySelectorAll('.btn-rejeitar').forEach(btn => {
-        btn.addEventListener('click', (e) => rejeitarUsuario(e.target.dataset.id));
-      });
+    main.innerHTML = `
+    <div class="admin-content-wrapper">
+        <header class="admin-header-top">
+            <div class="admin-header-left">
+                <button class="dash-menu-toggle" id="menu-toggle">☰</button>
+                <h1>Administração de Usuários</h1>
+            </div>
+            <div class="admin-filter-wrapper">
+                <label>Filtrar por:</label>
+                <div class="admin-custom-select" id="custom-select">
+                    <div class="select-trigger">
+                        <span>Todos</span>
+                        <div class="arrow"></div>
+                    </div>
+                    <div class="select-options">
+                        <div class="option selected" data-value="todos">Todos</div>
+                        <div class="option" data-value="aluno">Alunos</div>
+                        <div class="option" data-value="professor">Professores</div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="admin-card-section">
+            <div class="admin-section-header">
+                <h3 class="admin-aprovacoes-title">Aprovações Pendentes</h3>
+                <span id="badge-pendentes" class="admin-badge-count">0</span>
+            </div>
+            <div id="grid-pendentes" class="admin-grid"></div>
+        </div>
+
+        <div class="admin-card-section">
+            <h3 class="admin-section-title">Usuários Ativos</h3>
+            <div id="grid-ativos" class="admin-grid"></div>
+        </div>
+    </div>
+
+    <footer class="admin-footer">
+        <p>&copy; 2026 Aptus Defensio - Todos os direitos reservados.</p>
+    </footer>
+    `;
+
+    // Seletores
+    const gridPendentes = main.querySelector('#grid-pendentes');
+    const gridAtivos = main.querySelector('#grid-ativos');
+    const badgePendentes = main.querySelector('#badge-pendentes');
+
+    // Seletores do Dropdown Customizado
+    const customSelect = main.querySelector('#custom-select');
+    const trigger = customSelect.querySelector('.select-trigger');
+    const options = customSelect.querySelectorAll('.option');
+    const triggerText = trigger.querySelector('span');
+
+    // Variável de controle de filtro atual
+    let filtroAtual = 'todos';
+
+    const atualizarListas = (filtro) => {
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        let filtrados = usuarios.filter(u => u.role?.toLowerCase() !== 'coordenador');
+
+        if (filtro !== 'todos') {
+            filtrados = filtrados.filter(u => u.role?.toLowerCase() === filtro);
+        }
+
+        const pendentes = filtrados.filter(u => u.status?.toLowerCase() === 'pendente');
+        const ativos = filtrados.filter(u => u.status?.toLowerCase() === 'ativo');
+
+        badgePendentes.textContent = pendentes.length;
+        renderizarCards(pendentes, gridPendentes, true);
+        renderizarCards(ativos, gridAtivos, false);
+    };
+
+    function renderizarCards(lista, elemento, isPendente) {
+        elemento.innerHTML = lista.length === 0
+            ? `<p class="admin-empty-msg">Nenhum usuário encontrado.</p>`
+            : "";
+
+        lista.forEach(user => {
+            const card = document.createElement("div");
+            card.classList.add("admin-user-card");
+
+            card.innerHTML = `
+                <div class="admin-user-info">
+                    <span class="admin-user-role">${user.role}</span>
+                    <h4 class="admin-user-name">${user.nome}</h4>
+                    <p><strong>Matrícula:</strong> #${user.matricula}</p>
+                    <p><strong>E-mail:</strong> ${user.email}</p>
+                </div>
+                ${isPendente ? `
+                    <div class="admin-actions">
+                        <button class="admin-btn approve" data-id="${user.id}">Aprovar</button>
+                        <button class="admin-btn reject" data-id="${user.id}">Rejeitar</button>
+                    </div>
+                ` : `
+                    <div class="admin-status-ok">● Ativo</div>
+                `}
+            `;
+
+            if (isPendente) {
+                card.querySelector('.approve').onclick = () => mudarStatus(user.id, 'ativo');
+                card.querySelector('.reject').onclick = () => excluirUsuario(user.id);
+            }
+            elemento.appendChild(card);
+        });
     }
-  }
 
-  atualizarListas('todos');
-  return container;
+    function mudarStatus(id, status) {
+        let usuarios = JSON.parse(localStorage.getItem('usuarios'));
+        usuarios = usuarios.map(u => String(u.id) === String(id) ? { ...u, status } : u);
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        atualizarListas(filtroAtual);
+    }
+
+    function excluirUsuario(id) {
+        if (!confirm("Excluir cadastro?")) return;
+        let usuarios = JSON.parse(localStorage.getItem('usuarios'));
+        usuarios = usuarios.filter(u => String(u.id) !== String(id));
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+        atualizarListas(filtroAtual);
+    }
+
+    // --- LÓGICA DO DROPDOWN CUSTOMIZADO ---
+    trigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        customSelect.classList.toggle('open');
+    });
+
+    options.forEach(opt => {
+        opt.addEventListener('click', () => {
+            const value = opt.getAttribute('data-value');
+            filtroAtual = value;
+
+            // UI: Atualiza texto e marcação
+            triggerText.textContent = opt.textContent;
+            options.forEach(o => o.classList.remove('selected'));
+            opt.classList.add('selected');
+
+            customSelect.classList.remove('open');
+            atualizarListas(value);
+        });
+    });
+
+    // Fecha ao clicar fora
+    document.addEventListener('click', () => {
+        customSelect.classList.remove('open');
+    });
+
+    // --- EVENTOS DE NAVEGAÇÃO ---
+    aside.querySelectorAll(".admin-nav-item").forEach(item => {
+        item.onclick = () => {
+            const page = item.getAttribute("data-page");
+            if (page) navigateTo(`/${page}`);
+        };
+    });
+
+    aside.querySelector("#btn-logout").onclick = () => {
+        sessionStorage.removeItem("usuarioAtivo");
+        navigateTo("/");
+    };
+
+    main.querySelector("#menu-toggle").onclick = (e) => {
+        e.stopPropagation();
+        aside.classList.toggle("active");
+    };
+
+    // Inicialização
+    atualizarListas('todos');
+    fragment.appendChild(aside);
+    fragment.appendChild(main);
+    return fragment;
 }
