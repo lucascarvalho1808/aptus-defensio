@@ -276,6 +276,24 @@ body {
   font-size: 14px;
 }
 
+textarea {
+  width: 100%;
+  min-height: 140px;
+  padding: 16px 25px;
+  border-radius: 20px;
+  border: 3px solid #c9a063;
+  background-color: #ffffff;
+  color: #1a2c41;
+  font-size: 16px;
+  resize: vertical;
+  outline: none;
+}
+
+textarea:focus {
+  box-shadow: 0 0 15px rgba(201, 160, 99, 0.4);
+  border-color: #e0bc85;
+}
+
 @media (max-width: 850px) {
   .dash-menu-toggle {
     display: block;
