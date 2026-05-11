@@ -9,7 +9,6 @@ Projeto desenvolvido para as disciplinas de Programação Web II e Engenharia de
 * Lucas Montenegro de Carvalho
 * José Carlos Abreu 
 * Gabriel Reis
-* Renan Lucena
 
 ---
 
