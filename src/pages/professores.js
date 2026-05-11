@@ -40,8 +40,10 @@ export function createProfessoresPage() {
 
     // 3. Criar o Conteúdo Principal (Com botão hambúrguer para mobile)
     const main = document.createElement("main");
-    main.classList.add("dash-main-content");
+    main.classList.add("prof-main-content");
+
     main.innerHTML = `
+    <div class="dash-content-wrapper">
         <header class="dash-header-top">
             <button class="prof-menu-toggle" id="menu-toggle">☰</button>
             <h1>Professores</h1>
@@ -68,11 +70,16 @@ export function createProfessoresPage() {
                         </tr>
                     </thead>
                     <tbody id="lista-professores">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
-    `;
+    </div>
+
+    <footer class="dash-footer">
+        <p>&copy; 2026 Aptus Defensio - Todos os direitos reservados.</p>
+    </footer>
+`;
 
     // 4. Lógica de Navegação, Logout e Menu Mobile
     const menuItems = aside.querySelectorAll(".dash-nav-item");
@@ -101,8 +108,8 @@ export function createProfessoresPage() {
         const listaCorpo = main.querySelector("#lista-professores");
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-        const professoresAtivos = usuarios.filter(u => 
-            u.role?.toLowerCase() === 'professor' && 
+        const professoresAtivos = usuarios.filter(u =>
+            u.role?.toLowerCase() === 'professor' &&
             u.status?.toLowerCase() === 'ativo'
         );
 

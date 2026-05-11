@@ -15,7 +15,6 @@ body {
   min-height: 100vh;
 }
 
-/* Sidebar */
 .dash-sidebar {
   width: var(--sidebar-width);
   background-color: var(--card-bg);
@@ -28,7 +27,6 @@ body {
   box-sizing: border-box;
 }
 
-/* Garante que a logo fique contida e centralizada */
 .dash-sidebar-header {
   text-align: center;
   margin-bottom: 40px;
@@ -72,7 +70,6 @@ body {
   font-weight: 500;
 }
 
-/* Dash-active para bater com o JS */
 .dash-nav-item.dash-active {
   background-color: var(--wine);
   color: white;
@@ -85,7 +82,6 @@ body {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
 
-/* Conteúdo principal */
 .dash-main-content {
   margin-left: var(--sidebar-width);
   padding: 25px 60px;
@@ -112,7 +108,6 @@ body {
   font-size: 18px;
 }
 
-/* Seção hero */
 .dash-hero-integration {
   background: rgba(255, 255, 255, 0.03);
   padding: 40px;
@@ -148,7 +143,6 @@ body {
   gap: 20px;
 }
 
-/* Sincroniza o nomes das classes com o JS */
 .dash-btn-integrated-primary {
   background-color: var(--wine);
   color: white;
@@ -182,7 +176,6 @@ body {
   color: white
 }
 
-/* Grid de módulos */
 .dash-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -249,7 +242,6 @@ body {
   background-color: #ac302c;
 }
 
-/* Estilo do botão Hamburguer, escondido por padrão no desktop) */
 .dash-menu-toggle {
   display: none;
   background: var(--wine);
@@ -288,7 +280,6 @@ body {
     box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
   }
 
-  /* Classe que o JS vai ativar */
   .dash-sidebar.dash-sidebar-open {
     left: 0;
   }
@@ -325,13 +316,11 @@ body {
     font-size: 24px;
   }
 
-  /* Botões um embaixo do outro no celular */
   .dash-hero-buttons {
     flex-direction: column;
     gap: 10px;
   }
 
-  /* Força um card por linha */
   .dash-grid {
     grid-template-columns: 1fr;
   }
@@ -498,7 +487,6 @@ select {
   font-size: 32px;
 }
 
-/* Filtros */
 .admin-filtros label {
   margin-right: 10px;
   font-weight: bold;
@@ -516,7 +504,6 @@ select {
   cursor: pointer;
 }
 
-/* Separação Visual das Seções */
 .secao-usuarios {
   background-color: #1a2c41;
   padding: 30px;
@@ -532,7 +519,6 @@ select {
   letter-spacing: 1px;
 }
 
-/* Destaque em cores para diferenciar as listas */
 .secao-usuarios.pendentes {
   border-left: 6px solid #c9a063;
 }
@@ -554,7 +540,6 @@ select {
   gap: 20px;
 }
 
-/* Estilo base para os cards de usuário */
 .user-card {
   background-color: #0b121e;
   padding: 20px;
@@ -592,8 +577,6 @@ select {
   }
 }
 
-
-/* Tablet (até 1024px) */
 @media (max-width: 1024px) {
   .header {
     padding: 20px;
@@ -613,7 +596,6 @@ select {
   }
 }
 
-/* Mobile (até 768px) */
 @media (max-width: 768px) {
   .header {
     flex-direction: column;
@@ -662,7 +644,6 @@ select {
   }
 }
 
-/* Telas pequenas (até 480px) */
 @media (max-width: 480px) {
   .hero h1 {
     font-size: 22px;
@@ -685,9 +666,8 @@ select {
   }
 }
 
-/* CSS de professores e Alunos */
+/* Página de professores e Alunos */
 
-/* Sidebar */
 .prof-sidebar {
   width: var(--sidebar-width);
   background-color: var(--card-bg);
@@ -772,64 +752,148 @@ select {
   z-index: 1001;
 }
 
-/* Localize onde você estilizou o span de status ou adicione ao final */
 .prof-table td span {
   display: inline-flex !important;
-  /* Alinha o ponto e o texto na mesma linha */
   align-items: center;
   white-space: nowrap !important;
-  /* REGRA PRINCIPAL: Impede a quebra de linha */
   gap: 6px;
-  /* Espaço entre o ponto e o texto */
   padding: 5px 12px !important;
   min-width: fit-content;
-  /* Garante que o fundo acompanhe o texto todo */
 }
 
-/* Garante que a última coluna tenha espaço suficiente para o selo */
 .prof-table th:last-child,
 .prof-table td:last-child {
   min-width: 100px;
   text-align: center;
 }
 
-/* Responsividade com prefixos */
-@media (max-width: 850px) {
 
+.prof-main-content {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: var(--sidebar-width);
+    padding: 25px 60px;
+    box-sizing: border-box;
+}
+
+.dash-content-wrapper {
+    flex: 1;
+}
+
+.dash-footer {
+    padding: 30px 0;
+    text-align: center;
+    border-top: 1px solid rgba(201, 160, 99, 0.1);
+    margin-top: 40px;
+}
+
+.dash-footer p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 14px;
+    margin: 0;
+}
+
+.prof-table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 20px;
+    border-radius: 8px;
+}
+
+.prof-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+}
+
+.prof-table td, .prof-table th {
+    white-space: nowrap;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+
+@media (max-width: 800px) {
+    .dash-card {
+        padding: 15px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    
+    .dash-hero-integration {
+        padding: 20px !important;*/
+    }
+}
+
+@media (max-width: 850px) {
   .prof-sidebar {
     position: fixed;
     left: 0;
     top: 0;
     width: 250px;
-    /* Ou a largura que preferir */
     height: 100vh;
     background-color: var(--card-bg);
     transform: translateX(-100%);
-    /* Esconde totalmente */
-    transition: transform 0.3s ease;
-    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1100;
     display: flex;
     flex-direction: column;
+    visibility: visible;/
   }
 
-  /* Regra mestre para abrir a sidebar */
   .prof-sidebar.active {
     transform: translateX(0) !important;
-    visibility: visible !important;
   }
 
   .prof-menu-toggle {
     display: block !important;
     position: fixed;
-    /* Fixado para o usuário sempre achar o botão */
     top: 15px;
     left: 15px;
-    z-index: 1100;
+    z-index: 1200;
+  }
+
+  .prof-main-content {
+    margin-left: 0 !important;
+    padding: 20px 15px 0 15px !important;
+  }
+
+  .dash-header-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    width: 100%;
+    position: relative;
+    min-height: 60px;
+  }
+
+  .dash-header-top h1 {
+    font-size: 20px;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+  }
+
+  .dash-user-profile {
+    font-size: 12px;
+    margin-top: 5px;
+    opacity: 0.8;
+  }
+
+  .dash-content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 }
 
 /* --- Página de Admin --- */
-
 .admin-sidebar {
   width: var(--sidebar-width);
   background-color: var(--card-bg);
@@ -898,7 +962,6 @@ select {
   min-height: 100vh;
 }
 
-/* --- HEADER & FILTRO --- */
 .admin-header-top {
   display: flex;
   justify-content: space-between;
@@ -1013,7 +1076,6 @@ select {
   outline: none;
 }
 
-/* --- CARDS & GRID --- */
 .admin-card-section {
   background: rgba(255, 255, 255, 0.02);
   border-radius: 15px;
@@ -1083,7 +1145,6 @@ select {
   color: rgba(255, 255, 255, 0.7);
 }
 
-/* --- BOTÕES --- */
 .admin-actions {
   display: flex;
   gap: 10px;
@@ -1119,7 +1180,6 @@ select {
   margin-top: 10px;
 }
 
-/* Estilização do Footer */
 .admin-footer {
     padding: 30px 0;
     text-align: center;
@@ -1133,22 +1193,19 @@ select {
     margin: 0;
 }
 
-/* Layout do Main para suportar Footer no final */
 .admin-main-content {
     margin-left: var(--sidebar-width);
     min-height: 100vh;
     display: flex;
     flex-direction: column;
-    padding: 40px 40px 0 40px; /* Remove padding bottom para o footer encostar */
+    padding: 40px 40px 0 40px;
     box-sizing: border-box;
 }
 
-/* Container do conteúdo (cards, header) */
 .admin-content-wrapper {
-    flex: 1; /* Ocupa todo o espaço disponível, empurrando o footer */
+    flex: 1;
 }
 
-/* Estilização do Footer */
 .admin-footer {
     padding: 30px 0;
     text-align: center;
@@ -1162,7 +1219,6 @@ select {
     margin: 0;
 }
 
-/* --- MOBILE --- */
 @media (max-width: 850px) {
   .admin-sidebar {
     transform: translateX(-100%);

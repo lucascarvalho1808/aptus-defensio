@@ -43,8 +43,10 @@ export function createAlunosPage() {
 
     // 3. Criar o Conteúdo Principal
     const main = document.createElement("main");
-    main.classList.add("dash-main-content");
+    main.classList.add("prof-main-content");
+
     main.innerHTML = `
+    <div class="dash-content-wrapper">
         <header class="dash-header-top">
             <button class="prof-menu-toggle" id="menu-toggle">☰</button>
             <h1>Alunos</h1>
@@ -71,11 +73,16 @@ export function createAlunosPage() {
                         </tr>
                     </thead>
                     <tbody id="lista-alunos">
-                        </tbody>
+                    </tbody>
                 </table>
             </div>
         </div>
-    `;
+    </div>
+
+    <footer class="dash-footer">
+        <p>&copy; 2026 Aptus Defensio - Todos os direitos reservados.</p>
+    </footer>
+`;
 
     // 4. Lógica de Interação (Navegação, Logout e Menu Mobile)
     const menuItems = aside.querySelectorAll(".dash-nav-item");
@@ -111,8 +118,8 @@ export function createAlunosPage() {
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
         // Filtro para ALUNO e ATIVO (Usando optional chaining para segurança)
-        const alunosAtivos = usuarios.filter(u => 
-            u.role?.toLowerCase() === 'aluno' && 
+        const alunosAtivos = usuarios.filter(u =>
+            u.role?.toLowerCase() === 'aluno' &&
             u.status?.toLowerCase() === 'ativo'
         );
 
@@ -141,7 +148,7 @@ export function createAlunosPage() {
     }
 
     renderTabelaAlunos();
-    
+
     fragment.appendChild(aside);
     fragment.appendChild(main);
 
