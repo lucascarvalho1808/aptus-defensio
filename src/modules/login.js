@@ -32,10 +32,15 @@ export function createLoginScreen() {
 
             <button type="submit" class="btn-submit">Entrar</button>
             
-            <a href="#" class="forgot-password">Esqueceu sua senha?</a>
-            <a href="/register" id="go-register" class="forgot-password">
-              Criar conta
-            </a>
+            <div class="login-links">
+              <a href="#" class="forgot-password">
+                Esqueceu sua senha?
+              </a>
+
+              <a href="/register" id="go-register" class="create-account-link">
+                Criar conta
+              </a>
+            </div>
         </form>
     </div>
   `;
