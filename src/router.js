@@ -5,6 +5,7 @@ import { createRegisterPage } from "./pages/register.js";
 import { createAdminPage } from './pages/admin.js';
 import { createAlunosPage } from "./pages/alunos.js";
 import { createTemasPage } from './pages/temas.js';
+import { createNotFoundPage } from './pages/not_found_page.js';
 
 // Mapa de rotas disponíveis na aplicação
 const routes = {
@@ -16,11 +17,7 @@ const routes = {
   '/alunos': createAlunosPage,
   '/temas': createTemasPage,
   // Rota padrão para páginas não encontradas
-  '404': () => {
-    const el = document.createElement('h1');
-    el.textContent = '404 - Página não encontrada';
-    return el;
-  }
+  '404': createNotFoundPage
 };
 
 
