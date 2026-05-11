@@ -456,7 +456,7 @@ select {
   font-family: 'Cinzel', serif;
 }
 
-/* Mensagem de feedback no login e cadastro */
+/* Mensagem de feedback */
 .feedback-message {
   padding: 12px;
   border-radius: 5px;
@@ -466,21 +466,28 @@ select {
   text-align: left;
 }
 
-.forgot-password {
-  display: inline-block;
-  margin-top: 30px;
-  color: #ffffff;
+/* Container dos links do login */
+.login-links {
+  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Links na pagina de login */
+.forgot-password, .create-account-link {
+  color: rgba(255, 255, 255, 0.75);
   text-decoration: none;
   font-size: 14px;
-  opacity: 0.8;
   transition: 0.3s;
   border-bottom: 1px solid transparent;
 }
 
-.forgot-password:hover {
-  opacity: 1;
-  color: #c9a063;
-  border-bottom: 1px solid #c9a063;
+.forgot-password:hover, .create-account-link:hover {
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold);
 }
 
 /* Página de administração */
@@ -683,6 +690,12 @@ select {
   .login-card h2 {
     font-size: 20px;
   }
+
+  .login-links {
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
 }
 
 /* Página de professores e Alunos */
@@ -785,7 +798,6 @@ select {
   min-width: 100px;
   text-align: center;
 }
-
 
 .prof-main-content {
     display: flex;
