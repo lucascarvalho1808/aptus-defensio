@@ -466,7 +466,7 @@ select {
   text-align: left;
 }
 
-/* Container dos links do login */
+/* Container dos links do login e registro */
 .login-links {
   margin-top: 28px;
   display: flex;
@@ -484,6 +484,12 @@ select {
   transition: 0.3s;
   border-bottom: 1px solid transparent;
 }
+
+.login-card .forgot-password {
+  display: inline-block;
+  margin-top: 24px;
+}
+
 
 .forgot-password:hover, .create-account-link:hover {
   color: var(--gold);

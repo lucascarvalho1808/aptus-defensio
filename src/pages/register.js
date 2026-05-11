@@ -67,7 +67,9 @@ export function createRegisterPage() {
         </button>
       </form>
 
-      <a href="/" class="forgot-password">Voltar para login</a>
+      <a href="/" id="back-login-link" class="forgot-password">
+        Voltar para login
+      </a>
     </div>
   `;
 
@@ -108,6 +110,14 @@ export function createRegisterPage() {
 
   // Captura o formulario criado
   const form = container.querySelector("#register-form");
+
+  // Link para voltar para a página de login
+  const backLoginLink = container.querySelector("#back-login-link");
+
+  backLoginLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    navigateTo("/");
+  });
 
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
