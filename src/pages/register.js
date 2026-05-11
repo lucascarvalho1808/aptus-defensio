@@ -12,7 +12,7 @@ export function createRegisterPage() {
       <div class="login-brand">
         <img src="/img/logo_capacete.png" class="login-logo"/>
         <h2>Cadastro</h2>
-      </div>
+      </div> 
 
       <div class="feedback-message" style="display: none;"></div>
 
