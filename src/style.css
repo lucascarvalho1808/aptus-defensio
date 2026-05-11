@@ -1355,3 +1355,169 @@ select {
     background-color: #7a1515;
     transform: scale(1.05);
 }
+
+/* Página de Temas */
+
+.temas-main-content .dash-hero-integration {
+    width: 100%;
+    max-width: 100%; /* Garante que não haja trava de largura */
+    box-sizing: border-box;
+    margin-bottom: 30px;
+    border-radius: 12px; /* Para seguir o padrão dos cards */
+    /* Se ela estiver sumindo nas bordas, verifique se o parent não tem padding excessivo */
+}
+
+/* Garante que o wrapper principal também use 100% */
+.dash-content-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Força os filhos a esticarem até a borda */
+}
+
+.temas-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--card-bg);
+  border-right: 1px solid rgba(201, 160, 99, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
+  position: fixed;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.temas-sidebar-header {
+  text-align: center;
+  margin-bottom: 40px;
+  border-bottom: 1px solid rgba(201, 160, 99, 0.1);
+  padding-bottom: 20px;
+}
+
+.temas-sidebar-logo {
+  width: 80px;
+  margin: 0 auto 10px auto;
+  display: block;
+}
+
+.temas-sidebar-brand {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 22px;
+  text-transform: uppercase;
+}
+
+.temas-main-content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  margin-left: var(--sidebar-width);
+  padding: 25px 60px;
+  box-sizing: border-box;
+}
+
+.temas-table-responsive {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin-top: 20px;
+  border-radius: 8px;
+}
+
+.temas-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 500px;
+}
+
+.temas-table th {
+  text-align: left;
+  padding: 15px;
+  border-bottom: 2px solid rgba(201, 160, 99, 0.3);
+  color: var(--gold);
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+}
+
+.temas-table td {
+  padding: 18px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 14px;
+  color: var(--text-white);
+}
+
+.temas-table td .btn-delete {
+    background: rgba(255, 77, 77, 0.1); /* Fundo vermelho bem sutil */
+    border: 1px solid rgba(255, 77, 77, 0.3); /* Borda discreta */
+    color: #ff4d4d; /* Vermelho vivo para o ícone */
+    padding: 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    transition: all 0.2s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.temas-table td .btn-delete:hover {
+    background: rgba(255, 77, 77, 0.2);
+    transform: scale(1.1); 
+}
+
+.temas-table td .btn-delete svg {
+    display: block;
+}
+
+.temas-menu-toggle {
+  display: none;
+  background: var(--wine);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  z-index: 1200;
+}
+
+@media (min-width: 851px) and (max-width: 936px) {
+    #botao-adicionar {
+        width: 100% !important;
+        height: 45px;
+    }
+
+
+
+}
+
+@media (max-width: 850px) {
+  .temas-sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: 1100;
+  }
+
+  .temas-sidebar.active {
+    transform: translateX(0);
+  }
+
+  .temas-menu-toggle {
+    display: block !important;
+    position: fixed;
+    top: 15px;
+    left: 15px;
+  }
+
+  .temas-main-content {
+    margin-left: 0 !important;
+    padding: 20px 15px !important;
+  }
+
+  #botao-adicionar {
+    width: 170px;
+    height: 40px;
+  }
+
+}
