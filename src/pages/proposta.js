@@ -18,8 +18,9 @@ export function createPropostaPage() {
 
         <div class="admin-card">
 
+          <!-- Caixa de feedback -->
           <div 
-            class="feedback-message" 
+            class="feedback-message"
             style="display: none;"
           ></div>
 
@@ -29,10 +30,10 @@ export function createPropostaPage() {
               <label>Título do TCC</label>
 
               <div class="input-wrapper">
-                <input 
+                <input
                   type="text"
                   id="titulo"
-                  placeholder="Digite o título do TCC"
+                  placeholder="Digite o título"
                 />
               </div>
             </div>
@@ -55,7 +56,7 @@ export function createPropostaPage() {
               <div class="input-wrapper">
                 <textarea
                   id="resumo"
-                  placeholder="Digite um resumo da proposta"
+                  placeholder="Digite o resumo da proposta"
                 ></textarea>
               </div>
             </div>
@@ -67,11 +68,58 @@ export function createPropostaPage() {
           </form>
 
         </div>
-
       </div>
-
     </div>
   `;
+
+  // Captura o formulario criado
+  const form = container.querySelector("#proposta-form");
+
+  form.addEventListener("submit", (event) => {
+    // Isso vai impedir que a página seja recarregada ao submeter o formulário.
+    event.preventDefault();
+
+    // Captura valores
+    const titulo = container.querySelector("#titulo").value.trim();
+    const linhaPesquisa = container.querySelector("#linhaPesquisa").value.trim();
+    const resumo = container.querySelector("#resumo").value.trim();
+
+    // Verificar se os campos estão vazios
+    if (!titulo || !linhaPesquisa || !resumo) {
+      showMessage(container, "Preencha todos os campos.", "error");
+      return;
+    }
+
+    const usuarioAtivo = JSON.parse(
+      sessionStorage.getItem("usuarioAtivo")
+    );
+
+    // Verificar se o usuário está logado
+    if (!usuarioAtivo) {
+      showMessage(container, "Usuário não autenticado.", "error");
+      return;
+    }
+
+    // montar objeto proposta
+    const proposta = {
+      id: Date.now(),
+      alunoId: usuarioAtivo.id,
+      alunoNome: usuarioAtivo.nome,
+      titulo,
+      linhaPesquisa,
+      resumo,
+      status: "Aguardando Orientador",
+      createdAt: new Date().toISOString()
+    };
+
+    // salvar no localStorage
+    saveProposta(proposta);
+
+    showMessage(container, "Proposta cadastrada com sucesso!", "success");
+
+    // Limpa formulário
+    form.reset();
+  });
 
   return container;
 }
