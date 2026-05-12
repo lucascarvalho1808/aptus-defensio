@@ -1,279 +1,245 @@
+import { navigateTo } from "../router.js";
+import { verificarAutenticacao } from "../modules/auth.js";
 import { showMessage } from "../modules/feedback.js";
 import { saveProposta } from "../services/propostaService.js";
 
 export function createPropostaPage() {
+    // 1. Verificação de Segurança (Alunos geralmente registram propostas)
+    const usuarioLogado = verificarAutenticacao();
+    if (!usuarioLogado) {
+        navigateTo('/');
+        return document.createElement("div");
+    }
 
-  // Container principal da página
-  const container = document.createElement("div");
-  container.classList.add("dashboard-container");
+    const fragment = document.createDocumentFragment();
 
-  container.innerHTML = `
-    <div class="content">
-
-      <h1 class="page-title">
-        Registro de Proposta de TCC
-      </h1>
-
-      <div class="dashboard-grid">
-
-        <div class="admin-card">
-
-          <!-- Caixa de feedback -->
-          <div 
-            class="feedback-message"
-            style="display: none;"
-          ></div>
-
-          <form id="proposta-form">
-
-            <!-- TÍTULO -->
-            <div class="input-group">
-                <label>Título da Proposta</label>
-
-                <div class="input-wrapper">
-                <input
-                    type="text"
-                    id="titulo"
-                    placeholder="Digite o título do TCC"
-                />
-                </div>
-            </div>
-
-            <!-- TIPO -->
-            <div class="input-group">
-                <label>Tipo de Projeto</label>
-
-                <div class="input-wrapper">
-                <select id="tipo">
-                    <option value="Pesquisa">
-                    Projeto de Pesquisa
-                    </option>
-
-                    <option value="Implementacao">
-                    Projeto de Implementação
-                    </option>
-                </select>
-                </div>
-            </div>
-
-            <!-- ORIENTADOR -->
-            <div class="input-group">
-                <label>Orientador</label>
-
-                <div class="input-wrapper">
-                <input
-                    type="text"
-                    id="orientador"
-                    placeholder="Nome do orientador"
-                />
-                </div>
-            </div>
-
-            <!-- LINHA -->
-            <div class="input-group">
-                <label>Linha de Pesquisa</label>
-
-                <div class="input-wrapper">
-                <input
-                    type="text"
-                    id="linhaPesquisa"
-                    placeholder="Ex: Redes, IA, Segurança..."
-                />
-                </div>
-            </div>
-
-            <!-- JUSTIFICATIVA -->
-            <div class="input-group">
-                <label>Problema e Justificativa</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="justificativa"
-                    placeholder="Contextualize o problema do trabalho"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- OBJETIVO GERAL -->
-            <div class="input-group">
-                <label>Objetivo Geral</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="objetivoGeral"
-                    placeholder="Descreva o objetivo geral"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- OBJETIVOS ESPECÍFICOS -->
-            <div class="input-group">
-                <label>Objetivos Específicos</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="objetivosEspecificos"
-                    placeholder="Liste os objetivos específicos"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- METODOLOGIA -->
-            <div class="input-group">
-                <label>Metodologia</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="metodologia"
-                    placeholder="Explique a metodologia utilizada"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- RESULTADOS -->
-            <div class="input-group">
-                <label>Resultados Esperados</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="resultados"
-                    placeholder="Descreva os resultados esperados"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- TRABALHOS FUTUROS -->
-            <div class="input-group">
-                <label>Trabalhos Futuros</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="trabalhosFuturos"
-                    placeholder="Descreva possíveis melhorias futuras"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- CUSTOS -->
-            <div class="input-group">
-                <label>Custos, Condições e Materiais</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="custos"
-                    placeholder="Materiais e recursos necessários"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- CRONOGRAMA -->
-            <div class="input-group">
-                <label>Cronograma</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="cronograma"
-                    placeholder="Descreva o cronograma do projeto"
-                ></textarea>
-                </div>
-            </div>
-
-            <!-- REFERÊNCIAS -->
-            <div class="input-group">
-                <label>Referências</label>
-
-                <div class="input-wrapper">
-                <textarea
-                    id="referencias"
-                    placeholder="Digite as referências utilizadas"
-                ></textarea>
-                </div>
-            </div>
-
-            <button type="submit" class="btn-submit">
-                Salvar Proposta
-            </button>
-
-            </form>
-
+    // 2. Criar a Sidebar
+    const aside = document.createElement("aside");
+    aside.classList.add("prop-sidebar");
+    aside.innerHTML = `
+        <div class="prop-sidebar-header">
+            <img src="/img/logo_capacete.png" alt="Logo" class="prop-sidebar-logo">
+            <h2 class="prop-sidebar-brand">Aptus Defensio</h2>
         </div>
-      </div>
+        <ul class="dash-nav-menu">
+            <li class="dash-nav-item" data-page="dashboard"><span>Dashboard</span></li>
+            <li class="dash-nav-item dash-active" data-page="propostas"><span>Minha Proposta</span></li>
+            <li class="dash-nav-item" data-page="documentos"><span>Documentos</span></li>
+        </ul>
+        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
+            <span>Sair</span>
+        </div>
+    `;
+
+    // 3. Criar o Conteúdo Principal
+    const main = document.createElement("main");
+    main.classList.add("prop-main-content");
+
+    main.innerHTML = `
+    <div class="dash-content-wrapper">
+        <header class="dash-header-top">
+            <button class="prop-menu-toggle" id="menu-toggle">☰</button>
+            <h1>Proposta de TCC</h1>
+            <div class="dash-user-profile">Olá, ${usuarioLogado.nome}!</div>
+        </header>
+
+        <section class="prop-hero-integration">
+            <h2 class="prop-hero-title">Registro de Proposta</h2>
+            <p class="prop-hero-subtitle">
+                Preencha os campos abaixo com os detalhes acadêmicos do seu projeto. 
+                Sua proposta será enviada para avaliação do orientador.
+            </p>
+        </section>
+
+        <div class="dash-card">
+            <div class="feedback-message" style="display: none;"></div>
+
+            <form id="proposta-form" class="prop-form-grid">
+                <div class="prop-input-group">
+                    <label>Título da Proposta *</label>
+                    <input type="text" id="titulo" placeholder="Digite o título do TCC">
+                </div>
+
+                <div class="prop-input-group">
+                    <label>Tipo de Projeto *</label>
+                    <div class="prop-custom-select" id="tipo-projeto-select">
+                        <div class="select-trigger">
+                            <span>Projeto de Pesquisa</span>
+                            <div class="arrow"></div>
+                         </div>
+                        <div class="select-options">
+                            <div class="option selected" data-value="Pesquisa">Projeto de Pesquisa</div>
+                            <div class="option" data-value="Implementacao">Projeto de Implementação</div>
+                        </div>
+                        <input type="hidden" id="tipo" value="Pesquisa">
+                    </div>
+                </div>
+
+                <div class="prop-input-group">
+                    <label>Orientador *</label>
+                    <input type="text" id="orientador" placeholder="Nome do orientador">
+                </div>
+
+                <div class="prop-input-group">
+                    <label>Linha de Pesquisa *</label>
+                    <input type="text" id="linhaPesquisa" placeholder="Ex: Redes, IA, Segurança...">
+                </div>
+
+                <div class="prop-input-group full-width">
+                    <label>Problema e Justificativa *</label>
+                    <textarea id="justificativa" rows="4" placeholder="Contextualize o problema do trabalho"></textarea>
+                </div>
+
+                <div class="prop-input-group full-width">
+                    <label>Objetivo Geral</label>
+                    <textarea id="objetivoGeral" rows="3" placeholder="Descreva o objetivo geral"></textarea>
+                </div>
+
+                <div class="prop-input-group full-width">
+                    <label>Objetivos Específicos</label>
+                    <textarea id="objetivosEspecificos" rows="3" placeholder="Liste os objetivos específicos"></textarea>
+                </div>
+
+                <div class="prop-input-group full-width">
+                    <label>Metodologia</label>
+                    <textarea id="metodologia" rows="4" placeholder="Explique a metodologia utilizada"></textarea>
+                </div>
+
+                <div class="prop-input-group half-width">
+                    <label>Resultados Esperados</label>
+                    <textarea id="resultados" rows="3" placeholder="O que se espera alcançar"></textarea>
+                </div>
+
+                <div class="prop-input-group half-width">
+                    <label>Trabalhos Futuros</label>
+                    <textarea id="trabalhosFuturos" rows="3" placeholder="Melhorias futuras"></textarea>
+                </div>
+
+                <div class="prop-input-group half-width">
+                    <label>Materiais e Recursos</label>
+                    <textarea id="custos" rows="3" placeholder="Recursos necessários"></textarea>
+                </div>
+
+                <div class="prop-input-group half-width">
+                    <label>Cronograma</label>
+                    <textarea id="cronograma" rows="3" placeholder="Etapas do projeto"></textarea>
+                </div>
+
+                <div class="prop-input-group full-width">
+                    <label>Referências</label>
+                    <textarea id="referencias" rows="3" placeholder="Cite as referências (ABNT)"></textarea>
+                </div>
+
+                <div class="prop-form-actions">
+                    <button type="submit" class="prop-btn-submit">
+                        Enviar Proposta para Análise
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
-  `;
 
-  // Captura o formulario criado
-  const form = container.querySelector("#proposta-form");
+    <footer class="dash-footer">
+        <p>&copy; 2026 Aptus Defensio - Todos os direitos reservados.</p>
+    </footer>
+    `;
 
-  form.addEventListener("submit", (event) => {
-    // Isso vai impedir que a página seja recarregada ao submeter o formulário.
-    event.preventDefault();
+    document.addEventListener('DOMContentLoaded', () => {
+        const customSelect = document.getElementById('tipo-projeto-select');
+        const trigger = customSelect.querySelector('.select-trigger');
+        const hiddenInput = document.getElementById('tipo');
+        const options = customSelect.querySelectorAll('.option');
 
-    // Captura os dados do formulário
-    const titulo = container.querySelector("#titulo").value.trim();
-    const tipo = container.querySelector("#tipo").value;
-    const orientador = container.querySelector("#orientador").value.trim();
-    const linhaPesquisa = container.querySelector("#linhaPesquisa").value.trim();
-    const justificativa = container.querySelector("#justificativa").value.trim();
-    const objetivoGeral = container.querySelector("#objetivoGeral").value.trim();
-    const objetivosEspecificos = container.querySelector("#objetivosEspecificos").value.trim();
-    const metodologia = container.querySelector("#metodologia").value.trim();
-    const resultados = container.querySelector("#resultados").value.trim();
-    const trabalhosFuturos = container.querySelector("#trabalhosFuturos").value.trim();
-    const custos = container.querySelector("#custos").value.trim();
-    const cronograma = container.querySelector("#cronograma").value.trim();
-    const referencias = container.querySelector("#referencias").value.trim();
+        // Abre/Fecha o menu
+        trigger.addEventListener('click', () => {
+            customSelect.classList.toggle('open');
+        });
 
-    // Verificar se os campos estão vazios
-    if (!titulo || !orientador || !linhaPesquisa || !justificativa) {
-        showMessage( container, "Preencha os campos obrigatórios.", "error" );
-        return;
-    }
+        // Seleciona a opção
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                const val = option.getAttribute('data-value');
+                const text = option.textContent;
 
-    const usuarioAtivo = JSON.parse(
-      sessionStorage.getItem("usuarioAtivo")
-    );
+                // Atualiza o visual
+                trigger.querySelector('span').textContent = text;
+                hiddenInput.value = val;
 
-    // Verificar se o usuário está logado
-    if (!usuarioAtivo) {
-      showMessage(container, "Usuário não autenticado.", "error");
-      return;
-    }
+                // Remove classe selected de todos e add na clicada
+                options.forEach(opt => opt.classList.remove('selected'));
+                option.classList.add('selected');
 
-    // montar objeto proposta
-    const proposta = {
-    id: Date.now(),
+                // Fecha o menu
+                customSelect.classList.remove('open');
+            });
+        });
 
-    alunoId: usuarioAtivo.id,
-    alunoNome: usuarioAtivo.nome,
+        // Fecha se clicar fora dele
+        document.addEventListener('click', (e) => {
+            if (!customSelect.contains(e.target)) {
+                customSelect.classList.remove('open');
+            }
+        });
+    });
 
-    titulo,
-    tipo,
-    orientador,
-    linhaPesquisa,
+    // 4. Event Listeners
+    aside.querySelectorAll(".dash-nav-item").forEach(item => {
+        item.addEventListener("click", () => {
+            const page = item.getAttribute("data-page");
+            if (page) navigateTo(`/${page}`);
+        });
+    });
 
-    justificativa,
-    objetivoGeral,
-    objetivosEspecificos,
-    metodologia,
-    resultados,
-    trabalhosFuturos,
-    custos,
-    cronograma,
-    referencias,
+    aside.querySelector("#btn-logout").addEventListener("click", () => {
+        sessionStorage.removeItem("usuarioAtivo");
+        navigateTo("/");
+    });
 
-    status: "Aguardando Orientador",
+    main.querySelector("#menu-toggle").addEventListener("click", () => {
+        aside.classList.toggle("active");
+    });
 
-    createdAt: new Date().toISOString()
-    };
+    // 5. Lógica do Formulário
+    const form = main.querySelector("#proposta-form");
+    form.addEventListener("submit", (event) => {
+        event.preventDefault();
 
-    // salvar no localStorage
-    saveProposta(proposta);
+        const dados = {
+            titulo: main.querySelector("#titulo").value.trim(),
+            tipo: main.querySelector("#tipo").value,
+            orientador: main.querySelector("#orientador").value.trim(),
+            linhaPesquisa: main.querySelector("#linhaPesquisa").value.trim(),
+            justificativa: main.querySelector("#justificativa").value.trim(),
+            objetivoGeral: main.querySelector("#objetivoGeral").value.trim(),
+            objetivosEspecificos: main.querySelector("#objetivosEspecificos").value.trim(),
+            metodologia: main.querySelector("#metodologia").value.trim(),
+            resultados: main.querySelector("#resultados").value.trim(),
+            trabalhosFuturos: main.querySelector("#trabalhosFuturos").value.trim(),
+            custos: main.querySelector("#custos").value.trim(),
+            cronograma: main.querySelector("#cronograma").value.trim(),
+            referencias: main.querySelector("#referencias").value.trim(),
+        };
 
-    showMessage(container, "Proposta cadastrada com sucesso!", "success");
+        if (!dados.titulo || !dados.orientador || !dados.linhaPesquisa || !dados.justificativa) {
+            showMessage(main, "Por favor, preencha todos os campos obrigatórios (*).", "error");
+            return;
+        }
 
-    // Limpa formulário
-    form.reset();
-  });
+        const proposta = {
+            id: Date.now(),
+            alunoId: usuarioLogado.id,
+            alunoNome: usuarioLogado.nome,
+            ...dados,
+            status: "Aguardando Orientador",
+            createdAt: new Date().toISOString()
+        };
 
-  return container;
+        saveProposta(proposta);
+        showMessage(main, "Sua proposta foi registrada com sucesso!", "success");
+        form.reset();
+    });
+
+    fragment.appendChild(aside);
+    fragment.appendChild(main);
+    return fragment;
 }
