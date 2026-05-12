@@ -961,7 +961,7 @@ select {
   }
 }
 
-/* --- Página de Admin --- */
+/* Página de Admin */
 .admin-sidebar {
   width: var(--sidebar-width);
   background-color: var(--card-bg);
@@ -975,7 +975,6 @@ select {
   z-index: 1000;
   left: 0;
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  /* Curva de animação suave */
 }
 
 .admin-sidebar-header {
@@ -1348,7 +1347,7 @@ select {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: #0b0f13; /* Tom escuro de fundo */
+    background-color: #0b0f13; 
     padding: 20px;
 }
 
@@ -1356,7 +1355,7 @@ select {
     text-align: center;
     max-width: 450px;
     padding: 40px;
-    background: var(--card-bg); /* Use a variável que você já tem */
+    background: var(--card-bg); 
     border: 1px solid rgba(201, 160, 99, 0.2);
     border-radius: 15px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
@@ -1406,22 +1405,19 @@ select {
 }
 
 /* Página de Temas */
-
 .temas-main-content .dash-hero-integration {
     width: 100%;
-    max-width: 100%; /* Garante que não haja trava de largura */
+    max-width: 100%; 
     box-sizing: border-box;
     margin-bottom: 30px;
-    border-radius: 12px; /* Para seguir o padrão dos cards */
-    /* Se ela estiver sumindo nas bordas, verifique se o parent não tem padding excessivo */
+    border-radius: 12px; 
 }
 
-/* Garante que o wrapper principal também use 100% */
 .dash-content-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Força os filhos a esticarem até a borda */
+    align-items: stretch; 
 }
 
 .temas-sidebar {
@@ -1496,9 +1492,9 @@ select {
 }
 
 .temas-table td .btn-delete {
-    background: rgba(255, 77, 77, 0.1); /* Fundo vermelho bem sutil */
-    border: 1px solid rgba(255, 77, 77, 0.3); /* Borda discreta */
-    color: #ff4d4d; /* Vermelho vivo para o ícone */
+    background: rgba(255, 77, 77, 0.1); 
+    border: 1px solid rgba(255, 77, 77, 0.3); 
+    color: #ff4d4d;
     padding: 8px;
     border-radius: 6px;
     cursor: pointer;
@@ -1536,9 +1532,6 @@ select {
         width: 100% !important;
         height: 45px;
     }
-
-
-
 }
 
 @media (max-width: 850px) {
@@ -1572,7 +1565,6 @@ select {
 
 
 /* Página de Propostas */
-
 .prop-sidebar {
   width: var(--sidebar-width);
   background-color: var(--card-bg);
@@ -1615,7 +1607,7 @@ select {
   border-radius: 25px;
   margin-bottom: 40px;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  text-align: center; /* Centralizado conforme solicitado */
+  text-align: center; 
   width: 100%;
   box-sizing: border-box;
 }
@@ -1640,16 +1632,16 @@ select {
 .prop-form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 25px 20px; /* Aumentei o gap vertical para 25px para evitar sobreposição */
+  gap: 25px 20px; 
   margin-top: 20px;
-  width: 100%; /* Garante que o grid use todo o espaço */
+  width: 100%; 
 }
 
 .prop-input-group {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  width: 100%; /* Força o grupo a respeitar a coluna */
+  width: 100%; 
 }
 
 .prop-input-group label {
@@ -1667,19 +1659,19 @@ select {
   padding: 12px;
   color: white;
   font-family: inherit;
-  width: 100%; /* CRÍTICO: Garante que nenhum campo "vaze" para fora ou fique menor */
-  box-sizing: border-box; /* Garante que o padding não aumente o tamanho real do campo */
+  width: 100%; 
+  box-sizing: border-box; 
 }
 
-/* Custom Select - Estilo Proposta */
+/* Estilo Proposta */
 .prop-custom-select {
     position: relative;
-    width: 100%; /* Ocupa a largura total da coluna do formulário */
+    width: 100%; 
     user-select: none;
 }
 
 .prop-custom-select .select-trigger {
-    background: rgba(0, 0, 0, 0.2); /* Mantendo a transparência do seu formulário */
+    background: rgba(0, 0, 0, 0.2); 
     color: white;
     border: 1px solid rgba(201, 160, 99, 0.2);
     padding: 12px;
@@ -1713,7 +1705,7 @@ select {
     top: calc(100% + 5px);
     left: 0;
     right: 0;
-    background: #1a1f26; /* Cor sólida para sobrepor outros campos */
+    background: #1a1f26; 
     border: 1px solid rgba(201, 160, 99, 0.2);
     border-radius: 8px;
     overflow: hidden;
@@ -1744,10 +1736,9 @@ select {
     color: var(--gold);
 }
 
-/* Ajuste específico para Textareas não ficarem grudadas se forem muito altas */
 .prop-input-group textarea {
   min-height: 120px; 
-  resize: vertical; /* Permite ao usuário ajustar apenas a altura */
+  resize: vertical; 
 }
 
 .prop-input-group.full-width { grid-column: span 2; }
@@ -1801,18 +1792,15 @@ select {
   
   .prop-main-content { 
     margin-left: 0; 
-    padding: 60px 15px 20px 15px; /* Adicionado padding superior para não sumir atrás do botão menu */
+    padding: 60px 15px 20px 15px; 
   }
   
   .prop-menu-toggle { display: block; }
-
-  /* Ajuste do Grid para uma coluna única e uniforme */
   .prop-form-grid { 
-    grid-template-columns: 1fr; /* Força tudo a ser uma coluna */
+    grid-template-columns: 1fr; 
     gap: 20px; 
   }
 
-  /* Força todos os campos a ocuparem a largura total da tela pequena */
   .prop-input-group.full-width, 
   .prop-input-group { 
     grid-column: span 1 !important; 
@@ -1825,6 +1813,6 @@ select {
   }
 
   .prop-btn-submit {
-    width: 100%; /* Botão largo no mobile fica melhor para o polegar */
+    width: 100%; 
   }
 }

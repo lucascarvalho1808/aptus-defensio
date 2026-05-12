@@ -1,8 +1,8 @@
 import { navigateTo } from "../router.js";
 import { verificarAutenticacao } from "../modules/auth.js";
+import { createSidebar } from "../components/sidebar.js";
 
 export function createAlunosPage() {
-    // 1. Verificação de Segurança (Apenas Coordenadores acessam)
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
         navigateTo('/pagina-nao-encontrada-404');
@@ -10,38 +10,8 @@ export function createAlunosPage() {
     }
 
     const fragment = document.createDocumentFragment();
+    const aside = createSidebar("alunos", usuarioLogado);
 
-    // 2. Criar a Sidebar (Reutilizando as classes prof- para aproveitar o CSS)
-    const aside = document.createElement("aside");
-    aside.classList.add("prof-sidebar");
-    aside.innerHTML = `
-        <div class="prof-sidebar-header">
-            <img src="/img/logo_capacete.png" alt="Logo" class="prof-sidebar-logo">
-            <h2 class="prof-sidebar-brand">Aptus Defensio</h2>
-        </div>
-        <ul class="dash-nav-menu">
-            <li class="dash-nav-item" data-page="dashboard">
-                <span>Dashboard</span>
-            </li>
-            <li class="dash-nav-item" data-page="prazos">
-                <span>Meus Prazos</span>
-            </li>
-            <li class="dash-nav-item" data-page="professores">
-                <span>Professores</span>
-            </li>
-            <li class="dash-nav-item dash-active" data-page="alunos">
-                <span>Alunos</span>
-            </li>
-            <li class="dash-nav-item" data-page="documentos">
-                <span>Documentos</span>
-            </li>
-        </ul>
-        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
-            <span>Sair</span>
-        </div>
-    `;
-
-    // 3. Criar o Conteúdo Principal
     const main = document.createElement("main");
     main.classList.add("prof-main-content");
 
@@ -84,27 +54,11 @@ export function createAlunosPage() {
     </footer>
 `;
 
-    // 4. Lógica de Interação (Navegação, Logout e Menu Mobile)
-    const menuItems = aside.querySelectorAll(".dash-nav-item");
-    menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const page = item.getAttribute("data-page");
-            if (page) navigateTo(`/${page}`);
-        });
-    });
-
-    aside.querySelector("#btn-logout").addEventListener("click", (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem("usuarioAtivo");
-        navigateTo("/");
-    });
-
-    // Lógica do Hambúrguer (Mesma da professores.js)
     const btnMenu = main.querySelector("#menu-toggle");
     if (btnMenu) {
         btnMenu.addEventListener("click", (e) => {
             e.stopPropagation();
-            aside.classList.toggle("active");
+            aside.classList.toggle("dash-sidebar-open");
         });
     }
 
@@ -112,12 +66,10 @@ export function createAlunosPage() {
         if (aside.classList.contains("active")) aside.classList.remove("active");
     });
 
-    // 5. Função de Renderização da Tabela de Alunos
     function renderTabelaAlunos() {
         const listaCorpo = main.querySelector("#lista-alunos");
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-        // Filtro para ALUNO e ATIVO (Usando optional chaining para segurança)
         const alunosAtivos = usuarios.filter(u =>
             u.role?.toLowerCase() === 'aluno' &&
             u.status?.toLowerCase() === 'ativo'

@@ -1,8 +1,8 @@
 import { navigateTo } from "../router.js";
 import { verificarAutenticacao } from "../modules/auth.js";
+import { createSidebar } from "../components/sidebar.js";
 
 export function createProfessoresPage() {
-    // 1. Verificação de Segurança
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
         navigateTo('/pagina-nao-encontrada-404');
@@ -10,36 +10,9 @@ export function createProfessoresPage() {
     }
 
     const fragment = document.createDocumentFragment();
-
-    // 2. Criar a Sidebar (Oficial)
-    const aside = document.createElement("aside");
-    aside.classList.add("prof-sidebar");
-    aside.innerHTML = `
-        <div class="prof-sidebar-header">
-            <img src="/img/logo_capacete.png" alt="Logo" class="prof-sidebar-logo">
-            <h2 class="prof-sidebar-brand">Aptus Defensio</h2>
-        </div>
-        <ul class="dash-nav-menu">
-            <li class="dash-nav-item" data-page="dashboard">
-                <span>Dashboard</span>
-            </li>
-            <li class="dash-nav-item" data-page="prazos">
-                <span>Meus Prazos</span>
-            </li>
-            <li class="dash-nav-item dash-active" data-page="professores">
-                <span>Professores</span>
-            </li>
-            <li class="dash-nav-item" data-page="documentos">
-                <span>Documentos</span>
-            </li>
-        </ul>
-        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
-            <span>Sair</span>
-        </div>
-    `;
-
-    // 3. Criar o Conteúdo Principal (Com botão hambúrguer para mobile)
+    const aside = createSidebar("professores", usuarioLogado);
     const main = document.createElement("main");
+
     main.classList.add("prof-main-content");
 
     main.innerHTML = `
@@ -81,29 +54,12 @@ export function createProfessoresPage() {
     </footer>
 `;
 
-    // 4. Lógica de Navegação, Logout e Menu Mobile
-    const menuItems = aside.querySelectorAll(".dash-nav-item");
-    menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            const page = item.getAttribute("data-page");
-            if (page) navigateTo(`/${page}`);
-        });
-    });
-
-    const btnLogout = aside.querySelector("#btn-logout");
-    btnLogout.addEventListener("click", (e) => {
-        e.preventDefault();
-        sessionStorage.removeItem("usuarioAtivo");
-        navigateTo("/");
-    });
-
     // Lógica do Botão Hambúrguer
     const btnMenu = main.querySelector(".prof-menu-toggle");
     btnMenu.addEventListener("click", () => {
-        aside.classList.toggle("active");
+        aside.classList.toggle("dash-sidebar-open");
     });
 
-    // 5. Função de Renderização da Tabela (Com data-labels para mobile)
     function renderTabela() {
         const listaCorpo = main.querySelector("#lista-professores");
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
