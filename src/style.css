@@ -909,7 +909,7 @@ select {
     z-index: 1100;
     display: flex;
     flex-direction: column;
-    visibility: visible;/
+    visibility: visible;
   }
 
   .prof-sidebar.active {
@@ -1568,5 +1568,263 @@ select {
     width: 170px;
     height: 40px;
   }
+}
 
+
+/* Página de Propostas */
+
+.prop-sidebar {
+  width: var(--sidebar-width);
+  background-color: var(--card-bg);
+  border-right: 1px solid rgba(201, 160, 99, 0.2);
+  display: flex;
+  flex-direction: column;
+  padding: 15px 20px;
+  position: fixed;
+  height: 100vh;
+  box-sizing: border-box;
+}
+
+.prop-sidebar-logo {
+  width: 80px;
+  height: auto;
+  margin: 0 auto 10px auto;
+  display: block;
+}
+
+.prop-sidebar-brand {
+  font-family: 'Cinzel', serif;
+  color: var(--gold);
+  font-size: 20px;
+  text-align: center;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+}
+
+.prop-main-content {
+  margin-left: var(--sidebar-width);
+  padding: 25px 60px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.prop-hero-integration {
+  background: rgba(255, 255, 255, 0.03);
+  padding: 40px;
+  border-radius: 25px;
+  margin-bottom: 40px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  text-align: center; /* Centralizado conforme solicitado */
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.prop-hero-title {
+  color: var(--text-white);
+  font-size: 28px;
+  font-weight: 700;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.prop-hero-subtitle {
+  color: var(--text-white);
+  opacity: 0.7;
+  max-width: 800px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grid do Formulário */
+.prop-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px 20px; /* Aumentei o gap vertical para 25px para evitar sobreposição */
+  margin-top: 20px;
+  width: 100%; /* Garante que o grid use todo o espaço */
+}
+
+.prop-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%; /* Força o grupo a respeitar a coluna */
+}
+
+.prop-input-group label {
+  color: var(--gold);
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.prop-input-group input, 
+.prop-input-group select, 
+.prop-input-group textarea {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(201, 160, 99, 0.2);
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+  font-family: inherit;
+  width: 100%; /* CRÍTICO: Garante que nenhum campo "vaze" para fora ou fique menor */
+  box-sizing: border-box; /* Garante que o padding não aumente o tamanho real do campo */
+}
+
+/* Custom Select - Estilo Proposta */
+.prop-custom-select {
+    position: relative;
+    width: 100%; /* Ocupa a largura total da coluna do formulário */
+    user-select: none;
+}
+
+.prop-custom-select .select-trigger {
+    background: rgba(0, 0, 0, 0.2); /* Mantendo a transparência do seu formulário */
+    color: white;
+    border: 1px solid rgba(201, 160, 99, 0.2);
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.3s;
+}
+
+.prop-custom-select .select-trigger:hover {
+    border-color: var(--gold);
+}
+
+.prop-custom-select .arrow {
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid var(--gold);
+    transition: transform 0.3s;
+}
+
+.prop-custom-select.open .arrow {
+    transform: rotate(180deg);
+}
+
+.prop-custom-select .select-options {
+    position: absolute;
+    top: calc(100% + 5px);
+    left: 0;
+    right: 0;
+    background: #1a1f26; /* Cor sólida para sobrepor outros campos */
+    border: 1px solid rgba(201, 160, 99, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+}
+
+.prop-custom-select.open .select-options {
+    display: block;
+}
+
+.prop-custom-select .option {
+    padding: 12px;
+    color: #fff;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.prop-custom-select .option:hover {
+    background-color: var(--wine) !important;
+    color: white;
+}
+
+.prop-custom-select .option.selected {
+    background-color: rgba(201, 160, 99, 0.1);
+    color: var(--gold);
+}
+
+/* Ajuste específico para Textareas não ficarem grudadas se forem muito altas */
+.prop-input-group textarea {
+  min-height: 120px; 
+  resize: vertical; /* Permite ao usuário ajustar apenas a altura */
+}
+
+.prop-input-group.full-width { grid-column: span 2; }
+
+.prop-form-actions {
+  grid-column: span 2;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.prop-btn-submit {
+  background: var(--wine);
+  color: white;
+  border: none;
+  padding: 15px 40px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.prop-btn-submit:hover {
+  background: #7a1515;
+  transform: translateY(-2px);
+}
+
+.prop-menu-toggle {
+  display: none;
+  background: var(--wine);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-size: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+}
+
+/* Responsividade Mobile */
+@media (max-width: 850px) {
+  .prop-sidebar { 
+    transform: translateX(-100%); 
+    transition: 0.4s; 
+    z-index: 1000; 
+  }
+  .prop-sidebar.active { transform: translateX(0); }
+  
+  .prop-main-content { 
+    margin-left: 0; 
+    padding: 60px 15px 20px 15px; /* Adicionado padding superior para não sumir atrás do botão menu */
+  }
+  
+  .prop-menu-toggle { display: block; }
+
+  /* Ajuste do Grid para uma coluna única e uniforme */
+  .prop-form-grid { 
+    grid-template-columns: 1fr; /* Força tudo a ser uma coluna */
+    gap: 20px; 
+  }
+
+  /* Força todos os campos a ocuparem a largura total da tela pequena */
+  .prop-input-group.full-width, 
+  .prop-input-group { 
+    grid-column: span 1 !important; 
+    width: 100%;
+  }
+
+  .prop-form-actions {
+    grid-column: span 1;
+    width: 100%;
+  }
+
+  .prop-btn-submit {
+    width: 100%; /* Botão largo no mobile fica melhor para o polegar */
+  }
 }

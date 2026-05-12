@@ -52,7 +52,7 @@ export function createTemasPage() {
                     <thead>
                         <tr>
                             <th>IDENTIFICADOR</th>
-                            <th>DESCRIÇÃO DO TEMA</th>
+                            <th>NOME DOS TEMAS</th>
                             <th style="text-align: center;">AÇÕES</th>
                         </tr>
                     </thead>
