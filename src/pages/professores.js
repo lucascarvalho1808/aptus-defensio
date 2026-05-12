@@ -50,9 +50,9 @@ export function createProfessoresPage() {
             <div class="dash-user-profile">Olá, ${usuarioLogado.nome}!</div>
         </header>
 
-        <section class="dash-hero-integration" style="text-align: left; padding: 30px;">
-            <h2 class="dash-hero-title" style="font-size: 24px;">Gestão de Corpo Docente</h2>
-            <p class="dash-hero-subtitle" style="margin: 0;">
+        <section class="prof-hero-integration">
+            <h2 class="prof-hero-title" style="font-size: 24px;">Gestão de Corpo Docente</h2>
+            <p class="prof-hero-subtitle" style="margin: 0;">
                 Visualize e gerencie os professores ativos autorizados a orientar projetos e participar de bancas.
             </p>
         </section>
