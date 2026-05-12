@@ -1,5 +1,6 @@
 import { verificarAutenticacao } from "../modules/auth.js";
 import { navigateTo } from "../router.js";
+import { createSidebar } from "../components/sidebar.js";
 
 export function createAdminPage() {
     const usuarioLogado = verificarAutenticacao();
@@ -10,24 +11,9 @@ export function createAdminPage() {
 
     const fragment = document.createDocumentFragment();
 
-    const aside = document.createElement("aside");
-    aside.classList.add("admin-sidebar");
-    aside.innerHTML = `
-        <div class="admin-sidebar-header">
-            <img src="/img/logo_capacete.png" alt="Logo" class="admin-sidebar-logo">
-            <h2 class="dash-sidebar-brand">Aptus Defensio</h2>
-        </div>
-        <ul class="dash-nav-menu">
-            <li class="dash-nav-item" data-page="dashboard"><span>Dashboard</span></li>
-            <li class="dash-nav-item admin-active" data-page="admin"><span>Administração</span></li>
-            <li class="dash-nav-item" data-page="professores"><span>Professores</span></li>
-            <li class="dash-nav-item" data-page="alunos"><span>Alunos</span></li>
-        </ul>
-        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
-            <span>Sair</span>
-        </div>
-    `;
-
+    // Sidebar reutilizável
+    const aside = createSidebar("admin", usuarioLogado);
+    
     const main = document.createElement("main");
     main.classList.add("admin-main-content");
 
@@ -178,22 +164,9 @@ export function createAdminPage() {
         customSelect.classList.remove('open');
     });
 
-    // --- EVENTOS DE NAVEGAÇÃO ---
-    aside.querySelectorAll(".admin-nav-item").forEach(item => {
-        item.onclick = () => {
-            const page = item.getAttribute("data-page");
-            if (page) navigateTo(`/${page}`);
-        };
-    });
-
-    aside.querySelector("#btn-logout").onclick = () => {
-        sessionStorage.removeItem("usuarioAtivo");
-        navigateTo("/");
-    };
-
     main.querySelector("#menu-toggle").onclick = (e) => {
         e.stopPropagation();
-        aside.classList.toggle("active");
+        aside.classList.toggle("dash-sidebar-open");
     };
 
     // Inicialização
