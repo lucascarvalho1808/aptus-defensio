@@ -1,5 +1,6 @@
 import { navigateTo } from "../router.js";
 import { verificarAutenticacao } from "../modules/auth.js";
+import { createSidebar } from "../components/sidebar.js";
 
 export function createTemasPage() {
     // 1. Verificação de Segurança
@@ -11,24 +12,8 @@ export function createTemasPage() {
 
     const fragment = document.createDocumentFragment();
 
-    // 2. Sidebar
-    const aside = document.createElement("aside");
-    aside.classList.add("temas-sidebar");
-    aside.innerHTML = `
-        <div class="temas-sidebar-header">
-            <img src="/img/logo_capacete.png" alt="Logo" class="temas-sidebar-logo">
-            <h2 class="temas-sidebar-brand">Aptus Defensio</h2>
-        </div>
-        <ul class="dash-nav-menu">
-            <li class="dash-nav-item" data-page="dashboard"><span>Dashboard</span></li>
-            <li class="dash-nav-item" data-page="professores"><span>Professores</span></li>
-            <li class="dash-nav-item" data-page="alunos"><span>Alunos</span></li>
-            <li class="dash-nav-item dash-active" data-page="temas"><span>Temas</span></li>
-        </ul>
-        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
-            <span>Sair</span>
-        </div>
-    `;
+    // Sidebar reutilizável
+    const aside = createSidebar("temas", usuarioLogado);
 
     // 3. Conteúdo Principal
     const main = document.createElement("main");
@@ -83,21 +68,9 @@ export function createTemasPage() {
     </footer>
     `;
 
-    // 4. Lógica de Navegação e Menu
-    aside.querySelectorAll(".dash-nav-item").forEach(item => {
-        item.addEventListener("click", () => {
-            const page = item.getAttribute("data-page");
-            if (page) navigateTo(`/${page}`);
-        });
-    });
-
-    aside.querySelector("#btn-logout").addEventListener("click", () => {
-        sessionStorage.removeItem("usuarioAtivo");
-        navigateTo("/");
-    });
 
     main.querySelector(".temas-menu-toggle").addEventListener("click", () => {
-        aside.classList.toggle("active");
+        aside.classList.toggle("dash-sidebar-open");
     });
 
     // 5. Lógica de Temas (LocalStorage)

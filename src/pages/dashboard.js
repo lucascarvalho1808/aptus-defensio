@@ -1,5 +1,6 @@
 import { verificarAutenticacao } from "../modules/auth.js";
 import { navigateTo } from "../router.js";
+import { createSidebar } from "../components/sidebar.js";
 
 export function createDashboardPage() {
     // Verifica a segurança
@@ -10,32 +11,8 @@ export function createDashboardPage() {
 
     const fragment = document.createDocumentFragment();
 
-    // Cria a Sidebar
-    const aside = document.createElement("aside");
-    aside.classList.add("dash-sidebar"); 
-    aside.innerHTML = `
-        <div class="dash-sidebar-header">
-            <img src="/img/logo_capacete.png" alt="Logo" class="dash-sidebar-logo">
-            <h2 class="dash-sidebar-brand">Aptus Defensio</h2>
-        </div>
-        <ul class="dash-nav-menu">
-            <li class="dash-nav-item dash-active" data-page="dashboard">
-                <span>Dashboard</span>
-            </li>
-            <li class="dash-nav-item" data-page="prazos">
-                <span>Meus Prazos</span>
-            </li>
-            <li class="dash-nav-item" data-page="professores">
-                <span>Professores</span>
-            </li>
-            <li class="dash-nav-item" data-page="documentos">
-                <span>Documentos</span>
-            </li>
-        </ul>
-        <div class="dash-nav-item dash-logout-item" id="btn-logout" style="margin-top: auto;">
-            <span>Sair</span>
-        </div>
-    `;
+    // Sidebar reutilizável
+    const aside = createSidebar("dashboard", usuario);
 
     // Cria o conteúdo principal
     const main = document.createElement("main");
@@ -107,26 +84,6 @@ export function createDashboardPage() {
     const btnMenu = main.querySelector("#menu-toggle");
     btnMenu.addEventListener("click", () => {
         aside.classList.toggle("dash-sidebar-open");
-    });
-
-    // Itens do menu
-    const menuItems = aside.querySelectorAll(".dash-nav-item");
-    menuItems.forEach(item => {
-        item.addEventListener("click", () => {
-            menuItems.forEach(el => el.classList.remove("dash-active"));
-            item.classList.add("dash-active");
-            
-            // Fecha a sidebar ao clicar em um item no mobile
-            aside.classList.remove("dash-sidebar-open");
-        });
-    });
-
-    // Evento de Logout
-    const btnLogout = aside.querySelector("#btn-logout");
-    btnLogout.addEventListener("click", (event) => {
-        event.preventDefault(); 
-        sessionStorage.removeItem("usuarioAtivo"); 
-        navigateTo("/"); 
     });
 
     // Monta a página
