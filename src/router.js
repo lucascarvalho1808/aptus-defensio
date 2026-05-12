@@ -1,0 +1,62 @@
+import { createLoginScreen } from './modules/login.js';
+import { createDashboardPage } from './pages/dashboard.js';
+import { createProfessoresPage } from "./pages/professores.js";
+import { createRegisterPage } from "./pages/register.js";
+import { createAdminPage } from './pages/admin.js';
+import { createAlunosPage } from "./pages/alunos.js";
+import { createTemasPage } from './pages/temas.js';
+import { createPropostaPage } from "./pages/proposta.js";
+import { createNotFoundPage } from './pages/not_found_page.js';
+
+// Mapa de rotas disponíveis na aplicação
+const routes = {
+  '/': createLoginScreen,
+  '/dashboard': createDashboardPage,
+  '/professores': createProfessoresPage, 
+  '/register': createRegisterPage,
+  '/admin': createAdminPage,
+  '/alunos': createAlunosPage,
+  '/temas': createTemasPage,
+  '/proposta': createPropostaPage,
+  // Rota padrão para páginas não encontradas
+  '404': createNotFoundPage
+};
+
+
+// Renderiza a página baseado na URL atual e limpa o container e insere o componente correto
+export function handleLocation() {
+  // Captura o caminho que o usuário tentou acessar
+  let path = window.location.pathname;
+  
+  // Verifica se existe um usuário logado no sessionStorage
+  const usuarioLogado = sessionStorage.getItem("usuarioAtivo");
+
+  // rotas públicas
+  const rotasPublicas = ['/', '/register'];
+
+  // Se o usuário não estiver logado e tentar acessar rotas privadas página que não seja o Login ('/')
+  if (!rotasPublicas.includes(path) && !usuarioLogado) {
+    path = '/'; 
+  // Atualiza a URL sem criar um novo histórico
+    window.history.replaceState({}, "", path); 
+  } 
+  
+  else if (path === '/' && usuarioLogado) {
+    path = '/dashboard'; 
+    window.history.replaceState({}, "", path);
+  }
+
+  // Busca a função da rota 
+  const routeFunction = routes[path] || routes['404'];
+ 
+  const app = document.querySelector('#app');
+  app.innerHTML = ""; 
+  app.appendChild(routeFunction());
+}
+
+export function navigateTo(path) {
+  window.history.pushState({}, "", path);
+  handleLocation();
+}
+// Escuta o botão Voltar do navegador
+window.addEventListener("popstate", handleLocation);
