@@ -3,7 +3,7 @@ import { verificarAutenticacao } from "../modules/auth.js";
 import { createSidebar } from "../components/sidebar.js";
 
 export function createTemasPage() {
-    // 1. Verificação de Segurança
+    // Verifica autenticação
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
         navigateTo('/404');
@@ -11,11 +11,8 @@ export function createTemasPage() {
     }
 
     const fragment = document.createDocumentFragment();
-
-    // Sidebar reutilizável
     const aside = createSidebar("temas", usuarioLogado);
 
-    // 3. Conteúdo Principal
     const main = document.createElement("main");
     main.classList.add("temas-main-content");
 
@@ -73,7 +70,6 @@ export function createTemasPage() {
         aside.classList.toggle("dash-sidebar-open");
     });
 
-    // 5. Lógica de Temas (LocalStorage)
     const inputTema = main.querySelector("#input-tema");
     const btnAdd = main.querySelector("#botao-adicionar");
     const container = main.querySelector("#container-temas");

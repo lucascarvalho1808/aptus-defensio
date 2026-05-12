@@ -4,7 +4,6 @@ import { showMessage } from "../modules/feedback.js";
 import { saveProposta } from "../services/propostaService.js";
 
 export function createPropostaPage() {
-    // 1. Verificação de Segurança (Alunos geralmente registram propostas)
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado) {
         navigateTo('/');
@@ -13,7 +12,6 @@ export function createPropostaPage() {
 
     const fragment = document.createDocumentFragment();
 
-    // 2. Criar a Sidebar
     const aside = document.createElement("aside");
     aside.classList.add("prop-sidebar");
     aside.innerHTML = `
@@ -31,7 +29,6 @@ export function createPropostaPage() {
         </div>
     `;
 
-    // 3. Criar o Conteúdo Principal
     const main = document.createElement("main");
     main.classList.add("prop-main-content");
 
@@ -165,7 +162,6 @@ export function createPropostaPage() {
                 trigger.querySelector('span').textContent = text;
                 hiddenInput.value = val;
 
-                // Remove classe selected de todos e add na clicada
                 options.forEach(opt => opt.classList.remove('selected'));
                 option.classList.add('selected');
 
@@ -182,7 +178,6 @@ export function createPropostaPage() {
         });
     });
 
-    // 4. Event Listeners
     aside.querySelectorAll(".dash-nav-item").forEach(item => {
         item.addEventListener("click", () => {
             const page = item.getAttribute("data-page");
@@ -199,7 +194,6 @@ export function createPropostaPage() {
         aside.classList.toggle("active");
     });
 
-    // 5. Lógica do Formulário
     const form = main.querySelector("#proposta-form");
     form.addEventListener("submit", (event) => {
         event.preventDefault();

@@ -130,19 +130,19 @@ export function createRegisterPage() {
     const senha = container.querySelector("#senha").value;
     const confirmarSenha = container.querySelector("#confirmarSenha").value;
 
-    // Verificar se os campos estão vazios
+    // Verifica se os campos estão vazios
     if (!nome || !email || !matricula || !senha) {
       showMessage(container, "Preencha todos os campos.");
       return;
     }
 
-    // Verificar se as senhas são iguais
+    // Verifica se as senhas são iguais
     if (senha !== confirmarSenha) {
       showMessage(container, "As senhas não coincidem.");
       return;
     }
 
-    // pegar usuários existentes
+    // pega usuários existentes
     const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
     // email duplicado
@@ -157,10 +157,10 @@ export function createRegisterPage() {
       return;
     }
 
-    // gerar hash da senha
+    // gera hash da senha
     const senhaHash = await hashPassword(senha);
 
-    // montar objeto usuário
+    // monta objeto usuário
     const novoUsuario = {
       id: Date.now(),
       nome,
@@ -171,10 +171,10 @@ export function createRegisterPage() {
       status: "pendente"
     };
 
-    // adicionar novo usuário
+    // adiciona novo usuário
     usuarios.push(novoUsuario);
 
-    // salvar no localStorage
+    // salva no localStorage
     localStorage.setItem("usuarios", JSON.stringify(usuarios));
 
     console.log("Usuário cadastrado:", novoUsuario);

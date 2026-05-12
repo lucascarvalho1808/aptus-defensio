@@ -3,7 +3,6 @@ import { verificarAutenticacao } from "../modules/auth.js";
 import { createSidebar } from "../components/sidebar.js";
 
 export function createProfessoresPage() {
-    // 1. Verificação de Segurança
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
         navigateTo('/pagina-nao-encontrada-404');
@@ -11,12 +10,9 @@ export function createProfessoresPage() {
     }
 
     const fragment = document.createDocumentFragment();
-
-    // Sidebar reutilizável
     const aside = createSidebar("professores", usuarioLogado);
-
-    // 3. Criar o Conteúdo Principal (Com botão hambúrguer para mobile)
     const main = document.createElement("main");
+
     main.classList.add("prof-main-content");
 
     main.innerHTML = `
@@ -64,7 +60,6 @@ export function createProfessoresPage() {
         aside.classList.toggle("dash-sidebar-open");
     });
 
-    // 5. Função de Renderização da Tabela (Com data-labels para mobile)
     function renderTabela() {
         const listaCorpo = main.querySelector("#lista-professores");
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];

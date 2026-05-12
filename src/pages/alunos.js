@@ -3,7 +3,6 @@ import { verificarAutenticacao } from "../modules/auth.js";
 import { createSidebar } from "../components/sidebar.js";
 
 export function createAlunosPage() {
-    // 1. Verificação de Segurança (Apenas Coordenadores acessam)
     const usuarioLogado = verificarAutenticacao();
     if (!usuarioLogado || usuarioLogado.role?.toLowerCase() !== 'coordenador') {
         navigateTo('/pagina-nao-encontrada-404');
@@ -11,11 +10,8 @@ export function createAlunosPage() {
     }
 
     const fragment = document.createDocumentFragment();
-
-    // Sidebar reutilizável
     const aside = createSidebar("alunos", usuarioLogado);
 
-    // 3. Criar o Conteúdo Principal
     const main = document.createElement("main");
     main.classList.add("prof-main-content");
 
@@ -58,7 +54,6 @@ export function createAlunosPage() {
     </footer>
 `;
 
-    // Lógica do Hambúrguer (Mesma da professores.js)
     const btnMenu = main.querySelector("#menu-toggle");
     if (btnMenu) {
         btnMenu.addEventListener("click", (e) => {
@@ -71,12 +66,10 @@ export function createAlunosPage() {
         if (aside.classList.contains("active")) aside.classList.remove("active");
     });
 
-    // 5. Função de Renderização da Tabela de Alunos
     function renderTabelaAlunos() {
         const listaCorpo = main.querySelector("#lista-alunos");
         const usuarios = JSON.parse(localStorage.getItem("usuarios")) || [];
 
-        // Filtro para ALUNO e ATIVO (Usando optional chaining para segurança)
         const alunosAtivos = usuarios.filter(u =>
             u.role?.toLowerCase() === 'aluno' &&
             u.status?.toLowerCase() === 'ativo'

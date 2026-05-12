@@ -59,7 +59,6 @@ export function createAdminPage() {
     </footer>
     `;
 
-    // Seletores
     const gridPendentes = main.querySelector('#grid-pendentes');
     const gridAtivos = main.querySelector('#grid-ativos');
     const badgePendentes = main.querySelector('#badge-pendentes');
@@ -138,7 +137,6 @@ export function createAdminPage() {
         atualizarListas(filtroAtual);
     }
 
-    // --- LÓGICA DO DROPDOWN CUSTOMIZADO ---
     trigger.addEventListener('click', (e) => {
         e.stopPropagation();
         customSelect.classList.toggle('open');
@@ -149,7 +147,6 @@ export function createAdminPage() {
             const value = opt.getAttribute('data-value');
             filtroAtual = value;
 
-            // UI: Atualiza texto e marcação
             triggerText.textContent = opt.textContent;
             options.forEach(o => o.classList.remove('selected'));
             opt.classList.add('selected');
@@ -169,7 +166,6 @@ export function createAdminPage() {
         aside.classList.toggle("dash-sidebar-open");
     };
 
-    // Inicialização
     atualizarListas('todos');
     fragment.appendChild(aside);
     fragment.appendChild(main);
