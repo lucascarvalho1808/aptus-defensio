@@ -20,7 +20,7 @@ interface NavItem {
 const navItems: NavItem[] = [
   {
     label: 'Dashboard',
-    href: '/dashboard',
+    href: '/',
   },
   {
     label: 'Administração',
@@ -83,10 +83,10 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
           width={80}
           height={80}
           className="mx-auto mb-2.5 h-auto w-20 max-w-full"
-          priority
+          preload
         />
 
-        <h2 className="m-0 font-serif text-[22px] font-bold uppercase tracking-[1px] text-[#c9a063]">
+        <h2 className="font-heading m-0 text-[22px] font-bold uppercase tracking-[1px] text-[#c9a063]">
           Aptus Defensio
         </h2>
       </div>

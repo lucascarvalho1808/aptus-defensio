@@ -1,65 +1,70 @@
-import Image from "next/image";
+import { BookOpenCheck, GraduationCap, LayoutDashboard } from 'lucide-react';
+
+const summaryCards = [
+  {
+    title: 'Propostas',
+    value: '12',
+    description: 'Projetos em acompanhamento',
+    icon: BookOpenCheck,
+  },
+  {
+    title: 'Bancas',
+    value: '4',
+    description: 'Defesas previstas',
+    icon: GraduationCap,
+  },
+  {
+    title: 'Pendências',
+    value: '3',
+    description: 'Itens aguardando revisão',
+    icon: LayoutDashboard,
+  },
+];
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <section className="flex flex-1 flex-col gap-8">
+      <div className="rounded-2xl border border-white/5 bg-white/[0.03] p-6 shadow-[0_16px_40px_rgba(0,0,0,0.18)] md:p-8">
+        <p className="text-sm font-semibold uppercase tracking-[1px] text-[#c9a063]">
+          Visão geral
+        </p>
+        <h2 className="font-heading mt-3 max-w-3xl text-3xl font-bold tracking-[1px] text-white md:text-4xl">
+          Acompanhe o fluxo de trabalhos acadêmicos em um só painel.
+        </h2>
+        <p className="mt-4 max-w-2xl text-base leading-7 text-white/65">
+          Este dashboard inicial prepara o espaço central da aplicação para os
+          próximos módulos de autenticação, propostas, temas e gestão de
+          usuários.
+        </p>
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-3">
+        {summaryCards.map((card) => {
+          const Icon = card.icon;
+
+          return (
+            <article
+              key={card.title}
+              className="rounded-2xl border border-[#c9a063]/15 bg-[#1a2c41] p-5 shadow-[0_12px_30px_rgba(0,0,0,0.2)]"
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm text-white/55">{card.title}</p>
+                  <strong className="mt-2 block text-3xl font-bold text-white">
+                    {card.value}
+                  </strong>
+                </div>
+                <span className="flex size-11 items-center justify-center rounded-xl bg-[#8b2521] text-white shadow-[0_4px_10px_rgba(139,37,33,0.3)]">
+                  <Icon className="size-5" aria-hidden="true" />
+                </span>
+              </div>
+              <p className="mt-5 text-sm leading-6 text-white/60">
+                {card.description}
+              </p>
+            </article>
+          );
+        })}
+      </div>
+    </section>
   );
 }

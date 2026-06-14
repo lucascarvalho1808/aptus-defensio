@@ -58,7 +58,7 @@ export default function Header({
           <span className="block text-xs font-semibold uppercase tracking-[1px] text-[#c9a063]/80">
             Aptus Defensio
           </span>
-          <h1 className="truncate font-serif text-2xl font-bold tracking-[1px] text-[#c9a063] md:text-[32px]">
+          <h1 className="font-heading truncate text-2xl font-bold tracking-[1px] text-[#c9a063] md:text-[32px]">
             {title}
           </h1>
         </div>
