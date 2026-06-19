@@ -29,16 +29,14 @@ export default function LoginForm() {
 
   // Realiza login
   async function onSubmit(dataForm: LoginSchema) {
-    const { data, error } = await authService.signIn(dataForm);
+    const { error } = await authService.signIn(dataForm);
 
     if (error) {
       alert("E-mail ou senha inválidos.");
-
       return;
     }
 
-    setUser(data.user);
-
+    // O hook useSession atualiza a store automaticamente
     router.push("/");
   }
 

@@ -10,7 +10,12 @@ export function useSession() {
 
   useEffect(() => {
     async function loadSession() {
-      const { data } = await authService.getSession();
+      const { data, error } =
+        await authService.getSession();
+
+      if (error) {
+        return;
+      }
 
       setUser(data.session?.user ?? null);
     }

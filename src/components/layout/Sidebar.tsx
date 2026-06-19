@@ -53,7 +53,7 @@ const navItems: NavItem[] = [
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
-  const setUser = useAuthStore((state) => state.setUser);
+  const logout = useAuthStore((state) => state.logout);
   // Perfil do usuário logado
   const normalizedRole =
     (user?.user_metadata?.role as string)?.toLowerCase() ?? null;
@@ -69,7 +69,7 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   async function handleLogout() {
     await authService.signOut();
 
-    setUser(null);
+    logout();
 
     onNavigate?.();
   }
