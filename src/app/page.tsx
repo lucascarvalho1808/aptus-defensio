@@ -1,4 +1,5 @@
 import { BookOpenCheck, GraduationCap, LayoutDashboard } from 'lucide-react';
+import { supabase } from "@/lib/supabase";
 
 const summaryCards = [
   {
