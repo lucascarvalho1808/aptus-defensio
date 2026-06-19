@@ -3,8 +3,9 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
+import { authService } from "@/services/auth.service";
 import { useAuthStore } from '@/store/useAuthStore';
+
 
 interface SidebarProps {
   isOpen?: boolean;
@@ -51,9 +52,11 @@ const navItems: NavItem[] = [
 
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
-  const role = useAuthStore((state) => state.role);
-  const setRole = useAuthStore((state) => state.setRole);
-  const normalizedRole = role?.toLowerCase() ?? null;
+  const user = useAuthStore((state) => state.user);
+  const setUser = useAuthStore((state) => state.setUser);
+  // Perfil do usuário logado
+  const normalizedRole =
+    (user?.user_metadata?.role as string)?.toLowerCase() ?? null;
 
   const visibleNavItems = navItems.filter((item) => {
     if (!item.roles) {
@@ -63,9 +66,11 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
     return normalizedRole !== null && item.roles.includes(normalizedRole);
   });
 
-  function handleLogout() {
-    sessionStorage.removeItem('usuarioAtivo');
-    setRole(null);
+  async function handleLogout() {
+    await authService.signOut();
+
+    setUser(null);
+
     onNavigate?.();
   }
 

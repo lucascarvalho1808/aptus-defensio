@@ -27,8 +27,10 @@ export default function Header({
   onMenuClick,
 }: HeaderProps) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const role = useAuthStore((state) => state.role);
-  const normalizedRole = role?.toLowerCase() ?? '';
+  const user = useAuthStore((state) => state.user);
+
+  const normalizedRole =
+    (user?.user_metadata?.role as string)?.toLowerCase() ?? "";
   const roleLabel = roleLabels[normalizedRole] ?? 'Sem perfil';
 
   return (
@@ -79,7 +81,7 @@ export default function Header({
 
           <span className="min-w-0 text-left">
             <span className="block max-w-40 truncate text-sm font-semibold">
-              Olá, {userName}!
+              Olá, {user?.user_metadata?.nome ?? userName}!
             </span>
             <span className="block text-xs text-white/55">{roleLabel}</span>
           </span>
@@ -98,7 +100,9 @@ export default function Header({
             role="menu"
             className="absolute right-0 z-40 mt-2 w-56 rounded-xl border border-[#c9a063]/20 bg-[#1a2c41] p-3 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
           >
-            <p className="font-semibold text-[#c9a063]">{userName}</p>
+            <p className="font-semibold text-[#c9a063]">
+              {user?.user_metadata?.nome ?? userName}
+            </p>
             <p className="mt-1 text-white/60">Perfil: {roleLabel}</p>
           </div>
         ) : null}

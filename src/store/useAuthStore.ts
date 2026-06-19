@@ -1,11 +1,20 @@
-import { create } from 'zustand';
+import { create } from "zustand";
+import type { User } from "@supabase/supabase-js";
 
-interface AuthStore {
-  role: string | null;
-  setRole: (role: string | null) => void;
+interface AuthState {
+  user: User | null;
+
+  // Atualiza usuário autenticado
+  setUser: (user: User | null) => void;
+
+  // Limpa sessão
+  logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
-  role: 'aluno',
-  setRole: (role) => set({ role }),
+export const useAuthStore = create<AuthState>((set) => ({
+  user: null,
+
+  setUser: (user) => set({ user }),
+
+  logout: () => set({ user: null }),
 }));
