@@ -1,41 +1,38 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
+import { useForm } from "react-hook-form";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { loginSchema, type LoginSchema } from "@/schemas/login.schema";
+
 import { authService } from "@/services/auth.service";
+
 import { useAuthStore } from "@/store/useAuthStore";
+
+import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
   const router = useRouter();
 
   const setUser = useAuthStore((state) => state.setUser);
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginSchema>({
+    resolver: zodResolver(loginSchema),
+  });
 
-  const [loading, setLoading] = useState(false);
-
-  const [errorMessage, setErrorMessage] = useState("");
-
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
-    event.preventDefault();
-
-    setErrorMessage("");
-
-    setLoading(true);
-
-    const { data, error } = await authService.signIn({
-      email,
-      password,
-    });
+  // Realiza login
+  async function onSubmit(dataForm: LoginSchema) {
+    const { data, error } = await authService.signIn(dataForm);
 
     if (error) {
-      setErrorMessage("E-mail ou senha inválidos.");
-
-      setLoading(false);
+      alert("E-mail ou senha inválidos.");
 
       return;
     }
@@ -52,8 +49,8 @@ export default function LoginForm() {
       </h1>
 
       <form
-        onSubmit={handleSubmit}
         className="space-y-5"
+        onSubmit={handleSubmit(onSubmit)}
       >
         <div>
           <label className="mb-2 block text-sm text-white">
@@ -62,11 +59,15 @@ export default function LoginForm() {
 
           <input
             type="email"
-            required
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            {...register("email")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
+
+          {errors.email && (
+            <p className="mt-1 text-sm text-red-400">
+              {errors.email.message}
+            </p>
+          )}
         </div>
 
         <div>
@@ -76,26 +77,24 @@ export default function LoginForm() {
 
           <input
             type="password"
-            required
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            {...register("password")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
+
+          {errors.password && (
+            <p className="mt-1 text-sm text-red-400">
+              {errors.password.message}
+            </p>
+          )}
         </div>
 
-        {errorMessage && (
-          <p className="text-sm text-red-400">
-            {errorMessage}
-          </p>
-        )}
-
-        <button
+        <Button
           type="submit"
-          disabled={loading}
-          className="w-full rounded-lg bg-[#8b2521] p-3 font-semibold text-white"
+          className="w-full bg-[#8b2521]"
+          disabled={isSubmitting}
         >
-          {loading ? "Entrando..." : "Entrar"}
-        </button>
+          {isSubmitting ? "Entrando..." : "Entrar"}
+        </Button>
       </form>
     </div>
   );
