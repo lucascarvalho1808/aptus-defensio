@@ -4,12 +4,15 @@ import { useState, type ReactNode } from 'react';
 
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
+import { useSession } from "@/hooks/useSession";
 
 interface AppShellProps {
   children: ReactNode;
 }
 
 export default function AppShell({ children }: AppShellProps) {
+  useSession();
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function closeSidebar() {
