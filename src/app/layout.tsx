@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import AppShell from "@/components/layout/AppShell";
 import "./globals.css";
+import { QueryProvider } from "@/providers/QueryProvider";
 
 export const metadata: Metadata = {
   title: "Aptus Defensio",
@@ -18,7 +19,9 @@ export default function RootLayout({
       className="h-full antialiased"
     >
       <body className="min-h-full">
-        <AppShell>{children}</AppShell>
+        <QueryProvider>
+          <AppShell>{children}</AppShell>
+        </QueryProvider>
       </body>
     </html>
   );
