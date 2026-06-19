@@ -53,7 +53,15 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const role = useAuthStore((state) => state.role);
   const setRole = useAuthStore((state) => state.setRole);
-  const normalizedRole = role?.toLowerCase() ?? null;
+  const roleLabel =
+    typeof role === 'string'
+      ? role
+      : role && typeof (role as { role?: string }).role === 'string'
+      ? (role as { role: string }).role
+      : null;
+
+  const normalizedRole =
+    typeof roleLabel === 'string' ? roleLabel.toLowerCase() : null;
 
   const visibleNavItems = navItems.filter((item) => {
     if (!item.roles) {
