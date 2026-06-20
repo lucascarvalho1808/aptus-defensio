@@ -17,16 +17,37 @@ export const authService = {
 
   // Faz cadastro
   async signUp(data: RegisterData) {
-    return await supabase.auth.signUp({
+    // Cria usuário no Auth
+    const authResponse = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
-      options: {
-        data: {
-          nome: data.nome,
-        },
-      },
     });
-  },
+
+    // Se ocorrer erro interrompe
+    if (authResponse.error || !authResponse.data.user) {
+      return {
+        data: null,
+        error: authResponse.error,
+      };
+    }
+
+    // Salva dados adicionais na tabela users
+    const { error } = await supabase
+      .from("users")
+      .insert({
+        id: authResponse.data.user.id,
+        nome: data.nome,
+        email: data.email,
+        matricula: data.matricula,
+        role: data.role,
+        status: "pendente",
+      });
+
+    return {
+      data: authResponse.data,
+      error,
+    };
+  }
 
   // Encerra sessão
   async signOut() {

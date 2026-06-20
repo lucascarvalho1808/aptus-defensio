@@ -11,6 +11,9 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { useRouter } from "next/navigation";
+import { authService } from "@/services/auth.service";
+
 export default function RegisterForm() {
   const {
     register,
@@ -23,10 +26,31 @@ export default function RegisterForm() {
     },
   });
 
-  // Cadastro será implementado na próxima task
-  async function onSubmit(data: RegisterSchema) {
-    console.log(data);
+  const router = useRouter();
+  
+  // Realiza cadastro
+  async function onSubmit(dataForm: RegisterSchema) {
+    const { error } = await authService.signUp({
+      nome: dataForm.nome,
+      email: dataForm.email,
+      matricula: dataForm.matricula,
+      password: dataForm.password,
+      role: dataForm.role,
+    });
+
+    if (error) {
+      alert("Não foi possível realizar o cadastro.");
+
+      return;
+    }
+
+    alert(
+      "Cadastro realizado com sucesso! Aguarde aprovação da coordenação."
+    );
+
+    router.push("/login");
   }
+
 
   return (
     <div className="w-full max-w-md rounded-2xl bg-[#1a2c41] p-8 shadow-lg">

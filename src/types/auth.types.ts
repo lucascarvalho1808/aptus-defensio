@@ -9,6 +9,7 @@ export interface RegisterData {
   matricula: string;
   password: string;
   role: "aluno" | "professor";
+  status?: string;
 }
 
 export interface AuthUser {
