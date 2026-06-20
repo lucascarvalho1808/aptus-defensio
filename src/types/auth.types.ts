@@ -6,8 +6,10 @@ export interface LoginData {
 export interface RegisterData {
   nome: string;
   email: string;
+  matricula: string;
   password: string;
-  role?: string;
+  role: "aluno" | "professor";
+  status?: string;
 }
 
 export interface AuthUser {
