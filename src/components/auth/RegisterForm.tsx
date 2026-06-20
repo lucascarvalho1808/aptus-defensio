@@ -64,6 +64,7 @@ export default function RegisterForm() {
 
           <input
             type="text"
+            autoComplete="off"
             {...register("nome")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
@@ -82,6 +83,7 @@ export default function RegisterForm() {
 
           <input
             type="email"
+            autoComplete="off"
             {...register("email")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
@@ -100,6 +102,7 @@ export default function RegisterForm() {
 
           <input
             type="text"
+            autoComplete="off"
             {...register("matricula")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
@@ -118,6 +121,7 @@ export default function RegisterForm() {
 
           <input
             type="password"
+            autoComplete="off"
             {...register("password")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />
@@ -136,6 +140,7 @@ export default function RegisterForm() {
 
           <input
             type="password"
+            autoComplete="off"
             {...register("confirmPassword")}
             className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
           />

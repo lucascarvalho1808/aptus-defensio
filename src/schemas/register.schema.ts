@@ -1,5 +1,13 @@
 import { z } from "zod";
 
+// Regex para e-mail institucional do IFPB
+const emailRegex =
+  /^[a-zA-Z0-9._%+-]+@academico\.ifpb\.edu\.br$/;
+
+// Regex para senha forte
+const passwordRegex =
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.#_-])[A-Za-z\d@$!%*?&.#_-]{8,}$/;
+
 // Schema do formulário de cadastro
 export const registerSchema = z
   .object({
@@ -9,26 +17,37 @@ export const registerSchema = z
 
     email: z
       .string()
-      .email("Digite um e-mail válido"),
+      .regex(
+        emailRegex,
+        "Utilize um e-mail institucional do IFPB"
+      ),
 
     matricula: z
       .string()
       .min(1, "Informe a matrícula"),
 
-    role: z.enum(["aluno", "professor"]),
+    role: z.enum(
+      ["aluno", "professor"],
+      {
+        message: "Selecione um perfil válido",
+      }
+    ),
 
     password: z
       .string()
-      .min(6, "A senha deve possuir pelo menos 6 caracteres"),
+      .regex(
+        passwordRegex,
+        "A senha deve possuir no mínimo 8 caracteres, incluindo letra maiúscula, minúscula, número e caractere especial"
+      ),
 
-    confirmPassword: z
-      .string(),
+    confirmPassword: z.string(),
   })
+  // Confirmação das senhas
   .refine(
     (data) => data.password === data.confirmPassword,
     {
-      message: "As senhas não coincidem",
       path: ["confirmPassword"],
+      message: "As senhas não coincidem",
     }
   );
 
