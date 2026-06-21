@@ -3,7 +3,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { authService } from "@/services/auth.service";
+
+import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/useAuthStore';
 
 interface SidebarProps {
@@ -30,10 +31,11 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const user = useAuthStore((state) => state.user);
   const logout = useAuthStore((state) => state.logout);
-  
-  const normalizedRole = (user?.user_metadata?.role as string | undefined)?.toLowerCase();
 
-  // BUG CORRIGIDO: Lógica de filtro simplificada e correta
+  const normalizedRole = (
+    user?.user_metadata?.role as string | undefined
+  )?.toLowerCase();
+
   const visibleNavItems = navItems.filter((item) => {
     if (!item.roles) return true;
     return normalizedRole && item.roles.includes(normalizedRole);
@@ -47,18 +49,18 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
 
   return (
     <aside
-      className={`fixed top-0 z-50 flex h-screen w-[280px] flex-col border-r border-sidebar-border bg-sidebar px-5 py-4 shadow-xl transition-all duration-300 ease-in-out md:left-0 md:shadow-none ${
+      className={`fixed top-0 z-50 flex h-screen w-[280px] flex-col border-r border-sidebar-border bg-sidebar px-5 py-4 text-sidebar-foreground shadow-xl transition-all duration-300 ease-in-out md:left-0 md:shadow-none ${
         isOpen ? 'left-0' : '-left-[280px]'
       }`}
     >
-      <div className="mb-8 w-full border-b border-white/10 pb-6 text-center">
+      <div className="mb-8 w-full border-b border-sidebar-border pb-6 text-center">
         <Image
           src="/img/logo_capacete.png"
           alt="Logo"
           width={80}
           height={80}
           className="mx-auto mb-3 h-auto w-20 max-w-full drop-shadow-md"
-          priority
+          preload
         />
         <h2 className="font-heading m-0 text-xl font-bold uppercase tracking-wider text-primary">
           Aptus Defensio
@@ -79,7 +81,7 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
                   className={`flex items-center rounded-xl px-4 py-3 font-medium transition-all duration-200 focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none ${
                     isActive
                       ? 'bg-accent text-accent-foreground shadow-md shadow-accent/20'
-                      : 'text-white/70 hover:bg-white/5 hover:text-white hover:shadow-sm'
+                      : 'text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground hover:shadow-sm'
                   }`}
                 >
                   <span>{item.label}</span>
@@ -91,7 +93,7 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
 
         <button
           onClick={handleLogout}
-          className="mb-4 mt-auto flex w-full items-center rounded-xl px-4 py-3 font-medium text-white/70 transition-all duration-200 hover:bg-white/5 hover:text-white focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
+          className="mb-4 mt-auto flex w-full items-center rounded-xl px-4 py-3 font-medium text-sidebar-foreground/70 transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
         >
           <span>Sair</span>
         </button>

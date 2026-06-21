@@ -34,7 +34,11 @@ export default function TemasTable() {
   }
 
   useEffect(() => {
-    carregarTemas();
+    const timeoutId = window.setTimeout(() => {
+      void carregarTemas();
+    }, 0);
+
+    return () => window.clearTimeout(timeoutId);
   }, []);
 
   return (
