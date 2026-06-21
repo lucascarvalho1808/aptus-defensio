@@ -17,8 +17,6 @@ import { Button } from "@/components/ui/button";
 export default function LoginForm() {
   const router = useRouter();
 
-  const setUser = useAuthStore((state) => state.setUser);
-
   const {
     register,
     handleSubmit,
