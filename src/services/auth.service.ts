@@ -21,6 +21,13 @@ export const authService = {
     const authResponse = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+
+      options: {
+        data: {
+          nome: data.nome,
+          role: data.role,
+        },
+      },
     });
 
     // Se ocorrer erro interrompe
@@ -47,7 +54,7 @@ export const authService = {
       data: authResponse.data,
       error,
     };
-  }
+  },
 
   // Encerra sessão
   async signOut() {

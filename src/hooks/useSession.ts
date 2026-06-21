@@ -10,15 +10,15 @@ export function useSession() {
 
   useEffect(() => {
     async function loadSession() {
-      const { data, error } =
-        await authService.getSession();
+    const { data, error } =
+      await authService.getSession();
 
-      if (error) {
-        return;
-      }
-
-      setUser(data.session?.user ?? null);
+    if (error) {
+      return;
     }
+
+    setUser(data.session?.user ?? null);
+  }
 
     loadSession();
 
