@@ -1,3 +1,13 @@
-import { Tables } from "@/database.types";
+import {
+  Tables,
+  TablesInsert,
+  TablesUpdate,
+} from "@/database.types";
 
-export type User = Tables<"users">;
+export type Tema = Tables<"temas">;
+
+export type TemaInsert =
+  TablesInsert<"temas">;
+
+export type TemaUpdate =
+  TablesUpdate<"temas">;
