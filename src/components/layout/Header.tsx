@@ -1,7 +1,6 @@
 'use client';
 
 import { ChevronDown, Menu, Moon, Sun, UserRound } from 'lucide-react';
-import Image from 'next/image';
 import { useTheme } from 'next-themes';
 import { useState, useSyncExternalStore } from 'react';
 
@@ -9,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/store/useAuthStore';
 
 interface HeaderProps {
-  title?: string;
   userName?: string;
   showMenuButton?: boolean;
   onMenuClick?: () => void;
@@ -26,7 +24,6 @@ function subscribeToClientMount() {
 }
 
 export default function Header({
-  title = 'Dashboard',
   userName = 'Usuário',
   showMenuButton = true,
   onMenuClick,
@@ -50,8 +47,8 @@ export default function Header({
   }
 
   return (
-    <header className="mb-8 flex flex-col gap-5 border-b border-border pb-5 md:flex-row md:items-center md:justify-between">
-      <div className="flex min-w-0 items-center gap-4">
+    <header className="mb-8 flex items-center justify-between border-b border-border pb-5">
+      <div className="flex min-w-0 items-center">
         {showMenuButton && (
           <Button
             type="button"
@@ -63,26 +60,9 @@ export default function Header({
             <Menu className="size-5" aria-hidden="true" />
           </Button>
         )}
-
-        <Image
-          src="/img/logo_capacete.png"
-          alt="Logo Aptus Defensio"
-          width={44}
-          height={44}
-          className="h-11 w-11 shrink-0 object-contain drop-shadow-sm"
-        />
-
-        <div className="min-w-0">
-          <span className="block text-xs font-semibold uppercase tracking-wider text-primary/80">
-            Aptus Defensio
-          </span>
-          <h1 className="font-heading truncate text-2xl font-bold tracking-wide text-primary md:text-3xl">
-            {title}
-          </h1>
-        </div>
       </div>
 
-      <div className="flex items-center gap-3 self-start md:self-auto">
+      <div className="ml-auto flex items-center gap-3">
         <Button
           type="button"
           variant="ghost"
