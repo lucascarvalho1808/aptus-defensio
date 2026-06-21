@@ -36,11 +36,11 @@ export default function Header({
   );
   const { resolvedTheme, setTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
+  const role = useAuthStore((state) => state.role);
 
-  const normalizedRole =
-    (user?.user_metadata?.role as string | undefined)?.toLowerCase() ?? '';
-  const roleLabel = roleLabels[normalizedRole] ?? 'Sem perfil';
+  const roleLabel = role ? roleLabels[role] : 'Sem perfil';
   const isDarkTheme = resolvedTheme === 'dark';
+  const displayName = user?.user_metadata?.nome ?? user?.email ?? userName;
 
   function toggleTheme() {
     setTheme(isDarkTheme ? 'light' : 'dark');
@@ -98,7 +98,7 @@ export default function Header({
 
             <span className="min-w-0 text-left">
               <span className="block max-w-40 truncate text-sm font-semibold text-foreground">
-                Olá, {user?.user_metadata?.nome ?? userName}!
+                Olá, {displayName}!
               </span>
               <span className="block text-xs text-muted-foreground">
                 {roleLabel}
@@ -119,7 +119,7 @@ export default function Header({
               className="absolute right-0 z-40 mt-2 w-56 animate-in fade-in zoom-in-95 rounded-xl border border-border bg-popover p-4 shadow-xl"
             >
               <p className="font-semibold text-primary truncate">
-                {user?.user_metadata?.nome ?? userName}
+                {displayName}
               </p>
               <p className="mt-1 text-sm text-muted-foreground">
                 Perfil: {roleLabel}

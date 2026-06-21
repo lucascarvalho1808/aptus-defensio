@@ -1,35 +1,69 @@
 "use client";
 
 import { useEffect } from "react";
+import type { Session } from "@supabase/supabase-js";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/useAuthStore";
 
-// Atualiza a sessão do usuário
 export function useSession() {
-  const setUser = useAuthStore((state) => state.setUser);
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   useEffect(() => {
-    async function loadSession() {
-    const { data, error } =
-      await authService.getSession();
+    let isMounted = true;
 
-    if (error) {
-      return;
+    async function syncSession(session: Session | null) {
+      if (!session?.user) {
+        clearAuth();
+        return;
+      }
+
+      const { data: profile, error } = await authService.getUserProfile(
+        session.user.id
+      );
+
+      if (!isMounted) return;
+
+      if (error || !profile) {
+        clearAuth();
+        return;
+      }
+
+      const accessError = authService.getProfileAccessError(profile);
+
+      if (accessError) {
+        await authService.signOut();
+        clearAuth();
+        return;
+      }
+
+      setAuth(session.user, profile.role);
     }
 
-    setUser(data.session?.user ?? null);
-  }
+    async function loadSession() {
+      const { data, error } = await authService.getSession();
 
-    loadSession();
+      if (!isMounted) return;
+
+      if (error) {
+        clearAuth();
+        return;
+      }
+
+      await syncSession(data.session);
+    }
+
+    void loadSession();
 
     const {
       data: { subscription },
     } = authService.onAuthStateChange((session) => {
-      setUser(session?.user ?? null);
+      void syncSession(session);
     });
 
     return () => {
+      isMounted = false;
       subscription.unsubscribe();
     };
-  }, [setUser]);
+  }, [setAuth, clearAuth]);
 }

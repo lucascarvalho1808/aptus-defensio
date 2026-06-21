@@ -19,7 +19,7 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { label: 'Dashboard', href: '/' },
+  { label: 'Dashboard', href: '/dashboard' },
   { label: 'Administração', href: '/admin', roles: ['coordenador'] },
   { label: 'Professores', href: '/professores', roles: ['coordenador'] },
   { label: 'Alunos', href: '/alunos', roles: ['coordenador'] },
@@ -29,21 +29,18 @@ const navItems: NavItem[] = [
 
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
-  const user = useAuthStore((state) => state.user);
-  const logout = useAuthStore((state) => state.logout);
-
-  const normalizedRole = (
-    user?.user_metadata?.role as string | undefined
-  )?.toLowerCase();
+  const role = useAuthStore((state) => state.role);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   const visibleNavItems = navItems.filter((item) => {
     if (!item.roles) return true;
-    return normalizedRole && item.roles.includes(normalizedRole);
+    return role && item.roles.includes(role);
   });
 
   async function handleLogout() {
     await authService.signOut();
-    logout();
+    sessionStorage.removeItem('usuarioAtivo');
+    clearAuth();
     onNavigate?.();
   }
 
@@ -92,6 +89,7 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
         </ul>
 
         <button
+          type="button"
           onClick={handleLogout}
           className="mb-4 mt-auto flex w-full items-center rounded-xl px-4 py-3 font-medium text-sidebar-foreground/70 transition-all duration-200 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none"
         >

@@ -1,27 +1,131 @@
 import { supabase } from "@/lib/supabase";
 import type { Session } from "@supabase/supabase-js";
 import type {
+  AuthProfile,
+  AuthRole,
   LoginData,
   RegisterData,
 } from "@/types/auth.types";
 
-// Serviço responsável pelas operações de autenticação
+const authRoles: AuthRole[] = ["coordenador", "professor", "aluno"];
+
+function createAuthError(message: string) {
+  return new Error(message);
+}
+
+function normalizeRole(role: string | null): AuthRole | null {
+  const normalizedRole = role?.toLowerCase();
+
+  if (authRoles.includes(normalizedRole as AuthRole)) {
+    return normalizedRole as AuthRole;
+  }
+
+  return null;
+}
+
+function normalizeStatus(status: string | null) {
+  return status?.toLowerCase() ?? "pendente";
+}
+
+function getProfileAccessError(profile: AuthProfile) {
+  const status = normalizeStatus(profile.status);
+
+  if (profile.role !== "coordenador" && status === "pendente") {
+    return createAuthError(
+      "Seu cadastro ainda está pendente de aprovação pela coordenação."
+    );
+  }
+
+  return null;
+}
+
+async function getUserProfile(userId: string) {
+  const { data, error } = await supabase
+    .from("users")
+    .select("id, nome, email, role, status")
+    .eq("id", userId)
+    .single();
+
+  if (error || !data) {
+    return {
+      data: null,
+      error: error ?? createAuthError("Perfil de usuário não encontrado."),
+    };
+  }
+
+  const role = normalizeRole(data.role);
+
+  if (!role) {
+    return {
+      data: null,
+      error: createAuthError("Perfil de usuário inválido."),
+    };
+  }
+
+  return {
+    data: {
+      ...data,
+      role,
+      status: normalizeStatus(data.status),
+    } satisfies AuthProfile,
+    error: null,
+  };
+}
+
 export const authService = {
-  // Faz login
   async signIn(data: LoginData) {
-    return await supabase.auth.signInWithPassword({
+    const authResponse = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
+
+    if (authResponse.error || !authResponse.data.user) {
+      return {
+        data: null,
+        error:
+          authResponse.error ??
+          createAuthError("Não foi possível autenticar este usuário."),
+      };
+    }
+
+    const profileResponse = await getUserProfile(authResponse.data.user.id);
+
+    if (profileResponse.error || !profileResponse.data) {
+      await supabase.auth.signOut();
+
+      return {
+        data: null,
+        error:
+          profileResponse.error ??
+          createAuthError("Não foi possível carregar o perfil do usuário."),
+      };
+    }
+
+    const accessError = getProfileAccessError(profileResponse.data);
+
+    if (accessError) {
+      await supabase.auth.signOut();
+
+      return {
+        data: null,
+        error: accessError,
+      };
+    }
+
+    return {
+      data: {
+        ...authResponse.data,
+        profile: profileResponse.data,
+        role: profileResponse.data.role,
+      },
+      error: null,
+    };
   },
 
-  // Faz cadastro
   async signUp(data: RegisterData) {
-    // Cria usuário no Auth
     const authResponse = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
-
       options: {
         data: {
           nome: data.nome,
@@ -30,7 +134,6 @@ export const authService = {
       },
     });
 
-    // Se ocorrer erro interrompe
     if (authResponse.error || !authResponse.data.user) {
       return {
         data: null,
@@ -38,17 +141,14 @@ export const authService = {
       };
     }
 
-    // Salva dados adicionais na tabela users
-    const { error } = await supabase
-      .from("users")
-      .insert({
-        id: authResponse.data.user.id,
-        nome: data.nome,
-        email: data.email,
-        matricula: data.matricula,
-        role: data.role,
-        status: "pendente",
-      });
+    const { error } = await supabase.from("users").insert({
+      id: authResponse.data.user.id,
+      nome: data.nome,
+      email: data.email,
+      matricula: data.matricula,
+      role: data.role,
+      status: "pendente",
+    });
 
     return {
       data: authResponse.data,
@@ -56,21 +156,21 @@ export const authService = {
     };
   },
 
-  // Encerra sessão
   async signOut() {
     return await supabase.auth.signOut();
   },
 
-  // Obtém sessão atual
   async getSession() {
     return await supabase.auth.getSession();
   },
-  // Observa alterações na sessão
+
+  getUserProfile,
+
+  getProfileAccessError,
+
   onAuthStateChange(callback: (session: Session | null) => void) {
-    return supabase.auth.onAuthStateChange(
-      (_event, session) => {
-        callback(session);
-      }
-    );
+    return supabase.auth.onAuthStateChange((_event, session) => {
+      callback(session);
+    });
   },
 };
