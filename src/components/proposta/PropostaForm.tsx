@@ -1,13 +1,10 @@
 "use client";
 
+import { useState } from "react";
 import { propostaService } from "@/services/proposta.service";
 import { useAuthStore } from "@/store/useAuthStore";
-
-import { useState } from "react";
-
-const user = useAuthStore((state) => state.user);
-
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -16,6 +13,12 @@ import {
 } from "@/components/ui/card";
 
 export default function PropostaForm() {
+
+  const user = useAuthStore((state) => state.user);
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Estados do Formulário
   const [titulo, setTitulo] = useState("");
   const [tipo, setTipo] = useState("Pesquisa");
   const [orientador, setOrientador] = useState("");
@@ -30,21 +33,11 @@ export default function PropostaForm() {
   const [cronograma, setCronograma] = useState("");
   const [referencias, setReferencias] = useState("");
 
-  async function handleSubmit(
-    event: React.FormEvent<HTMLFormElement>
-  ) {
+  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    if (
-      !titulo ||
-      !orientador ||
-      !linhaPesquisa ||
-      !justificativa
-    ) {
-      alert(
-        "Preencha todos os campos obrigatórios."
-      );
-
+    if (!titulo || !orientador || !linhaPesquisa || !justificativa) {
+      alert("Preencha todos os campos obrigatórios marcados com *.");
       return;
     }
 
@@ -53,8 +46,10 @@ export default function PropostaForm() {
       return;
     }
 
-    const { error } =
-      await propostaService.create({
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await propostaService.create({
         aluno_id: user.id,
         titulo,
         tipo,
@@ -72,272 +67,227 @@ export default function PropostaForm() {
         status: "Aguardando Orientador",
       });
 
-    if (error) {
+      if (error) throw error;
+
+      alert("Proposta enviada com sucesso!");
+
+      // Limpar formulário
+      setTitulo("");
+      setTipo("Pesquisa");
+      setOrientador("");
+      setLinhaPesquisa("");
+      setJustificativa("");
+      setObjetivoGeral("");
+      setObjetivosEspecificos("");
+      setMetodologia("");
+      setResultados("");
+      setTrabalhosFuturos("");
+      setCustos("");
+      setCronograma("");
+      setReferencias("");
+    } catch (error) {
       console.error(error);
-
-      alert(
-        "Erro ao salvar proposta."
-      );
-
-      return;
+      alert("Erro ao salvar proposta. Tente novamente mais tarde.");
+    } finally {
+      setIsSubmitting(false);
     }
-
-    alert(
-      "Proposta enviada com sucesso!"
-    );
-
-    setTitulo("");
-    setTipo("Pesquisa");
-    setOrientador("");
-    setLinhaPesquisa("");
-    setJustificativa("");
-    setObjetivoGeral("");
-    setObjetivosEspecificos("");
-    setMetodologia("");
-    setResultados("");
-    setTrabalhosFuturos("");
-    setCustos("");
-    setCronograma("");
-    setReferencias("");
   }
 
+  const inputClassName = "w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
+  const labelClassName = "mb-2 block text-sm font-medium text-foreground/90";
+
   return (
-    <Card>
-      <CardHeader>
-        <CardTitle>
-          Dados da Proposta
+    <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
+      <CardHeader className="border-b border-white/5 pb-5">
+        <CardTitle className="font-heading text-xl text-primary">
+          Formulário de Submissão
         </CardTitle>
       </CardHeader>
 
-      <CardContent>
-        <form
-          onSubmit={handleSubmit}
-          className="space-y-6"
-        >
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Título da Proposta *
-            </label>
+      <CardContent className="pt-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-primary uppercase tracking-wider">1. Informações Básicas</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div className="md:col-span-2">
+                <label className={labelClassName}>Título da Proposta *</label>
+                <input
+                  type="text"
+                  value={titulo}
+                  onChange={(e) => setTitulo(e.target.value)}
+                  placeholder="Digite o título provisório do TCC"
+                  className={inputClassName}
+                />
+              </div>
 
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) =>
-                setTitulo(e.target.value)
-              }
-              placeholder="Digite o título do TCC"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
+              <div>
+                <label className={labelClassName}>Tipo de Projeto *</label>
+                <select
+                  value={tipo}
+                  onChange={(e) => setTipo(e.target.value)}
+                  className={`${inputClassName} appearance-none cursor-pointer`}
+                >
+                  <option value="Pesquisa" className="bg-sidebar">Projeto de Pesquisa</option>
+                  <option value="Implementacao" className="bg-sidebar">Projeto de Implementação</option>
+                </select>
+              </div>
+
+              <div>
+                <label className={labelClassName}>Orientador *</label>
+                <input
+                  type="text"
+                  value={orientador}
+                  onChange={(e) => setOrientador(e.target.value)}
+                  placeholder="Nome do orientador desejado"
+                  className={inputClassName}
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className={labelClassName}>Linha de Pesquisa *</label>
+                <input
+                  type="text"
+                  value={linhaPesquisa}
+                  onChange={(e) => setLinhaPesquisa(e.target.value)}
+                  placeholder="Ex: Inteligência Artificial, Engenharia de Software..."
+                  className={inputClassName}
+                />
+              </div>
+            </div>
           </div>
 
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Tipo de Projeto *
-            </label>
+          <hr className="border-white/5" />
 
-            <select
-              value={tipo}
-              onChange={(e) =>
-                setTipo(e.target.value)
-              }
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-primary uppercase tracking-wider">2. Fundamentação e Metodologia</h3>
+            <div className="space-y-5">
+              <div>
+                <label className={labelClassName}>Problema e Justificativa *</label>
+                <textarea
+                  rows={4}
+                  value={justificativa}
+                  onChange={(e) => setJustificativa(e.target.value)}
+                  placeholder="Qual o problema abordado e qual a relevância de resolvê-lo?"
+                  className={inputClassName}
+                />
+              </div>
+
+              <div className="grid gap-6 md:grid-cols-2">
+                <div>
+                  <label className={labelClassName}>Objetivo Geral</label>
+                  <textarea
+                    rows={4}
+                    value={objetivoGeral}
+                    onChange={(e) => setObjetivoGeral(e.target.value)}
+                    placeholder="O que se pretende alcançar ao final da pesquisa?"
+                    className={inputClassName}
+                  />
+                </div>
+
+                <div>
+                  <label className={labelClassName}>Objetivos Específicos</label>
+                  <textarea
+                    rows={4}
+                    value={objetivosEspecificos}
+                    onChange={(e) => setObjetivosEspecificos(e.target.value)}
+                    placeholder="Passos intermediários para atingir o objetivo geral"
+                    className={inputClassName}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className={labelClassName}>Metodologia</label>
+                <textarea
+                  rows={4}
+                  value={metodologia}
+                  onChange={(e) => setMetodologia(e.target.value)}
+                  placeholder="Como o trabalho será desenvolvido? Quais técnicas/ferramentas?"
+                  className={inputClassName}
+                />
+              </div>
+            </div>
+          </div>
+
+          <hr className="border-white/5" />
+
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-primary uppercase tracking-wider">3. Planejamento e Conclusões</h3>
+            <div className="grid gap-6 md:grid-cols-2">
+              <div>
+                <label className={labelClassName}>Resultados Esperados</label>
+                <textarea
+                  rows={3}
+                  value={resultados}
+                  onChange={(e) => setResultados(e.target.value)}
+                  placeholder="O que será entregue ou provado?"
+                  className={inputClassName}
+                />
+              </div>
+
+              <div>
+                <label className={labelClassName}>Trabalhos Futuros</label>
+                <textarea
+                  rows={3}
+                  value={trabalhosFuturos}
+                  onChange={(e) => setTrabalhosFuturos(e.target.value)}
+                  placeholder="Possíveis extensões que não caberão neste escopo"
+                  className={inputClassName}
+                />
+              </div>
+
+              <div>
+                <label className={labelClassName}>Materiais e Custos</label>
+                <textarea
+                  rows={3}
+                  value={custos}
+                  onChange={(e) => setCustos(e.target.value)}
+                  placeholder="Recursos computacionais, licenças, hardware..."
+                  className={inputClassName}
+                />
+              </div>
+
+              <div>
+                <label className={labelClassName}>Cronograma</label>
+                <textarea
+                  rows={3}
+                  value={cronograma}
+                  onChange={(e) => setCronograma(e.target.value)}
+                  placeholder="Estimativa de tempo para as fases do projeto"
+                  className={inputClassName}
+                />
+              </div>
+
+              <div className="md:col-span-2">
+                <label className={labelClassName}>Referências Bibliográficas</label>
+                <textarea
+                  rows={4}
+                  value={referencias}
+                  onChange={(e) => setReferencias(e.target.value)}
+                  placeholder="Cite os principais autores e trabalhos correlatos"
+                  className={inputClassName}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4">
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary md:w-auto md:px-10"
             >
-              <option value="Pesquisa">
-                Projeto de Pesquisa
-              </option>
-
-              <option value="Implementacao">
-                Projeto de Implementação
-              </option>
-            </select>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="mr-2 size-4 animate-spin" />
+                  Enviando Proposta...
+                </>
+              ) : (
+                "Enviar Proposta para Avaliação"
+              )}
+            </Button>
           </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Orientador *
-            </label>
-
-            <input
-              type="text"
-              value={orientador}
-              onChange={(e) =>
-                setOrientador(
-                  e.target.value
-                )
-              }
-              placeholder="Nome do orientador"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Linha de Pesquisa *
-            </label>
-
-            <input
-              type="text"
-              value={linhaPesquisa}
-              onChange={(e) =>
-                setLinhaPesquisa(
-                  e.target.value
-                )
-              }
-              placeholder="Ex: IA, Redes, Segurança..."
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Problema e Justificativa *
-            </label>
-
-            <textarea
-              rows={4}
-              value={justificativa}
-              onChange={(e) =>
-                setJustificativa(e.target.value)
-              }
-              placeholder="Contextualize o problema do trabalho"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Objetivo Geral
-            </label>
-
-            <textarea
-              rows={3}
-              value={objetivoGeral}
-              onChange={(e) =>
-                setObjetivoGeral(e.target.value)
-              }
-              placeholder="Descreva o objetivo geral"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Objetivos Específicos
-            </label>
-
-            <textarea
-              rows={3}
-              value={objetivosEspecificos}
-              onChange={(e) =>
-                setObjetivosEspecificos(e.target.value)
-              }
-              placeholder="Liste os objetivos específicos"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Metodologia
-            </label>
-
-            <textarea
-              rows={4}
-              value={metodologia}
-              onChange={(e) =>
-                setMetodologia(e.target.value)
-              }
-              placeholder="Explique a metodologia utilizada"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Resultados Esperados
-            </label>
-
-            <textarea
-              rows={3}
-              value={resultados}
-              onChange={(e) =>
-                setResultados(e.target.value)
-              }
-              placeholder="O que se espera alcançar"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Trabalhos Futuros
-            </label>
-
-            <textarea
-              rows={3}
-              value={trabalhosFuturos}
-              onChange={(e) =>
-                setTrabalhosFuturos(e.target.value)
-              }
-              placeholder="Melhorias futuras"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Materiais e Recursos
-            </label>
-
-            <textarea
-              rows={3}
-              value={custos}
-              onChange={(e) =>
-                setCustos(e.target.value)
-              }
-              placeholder="Recursos necessários"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Cronograma
-            </label>
-
-            <textarea
-              rows={3}
-              value={cronograma}
-              onChange={(e) =>
-                setCronograma(e.target.value)
-              }
-              placeholder="Etapas do projeto"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <label className="block text-sm font-medium">
-              Referências
-            </label>
-
-            <textarea
-              rows={3}
-              value={referencias}
-              onChange={(e) =>
-                setReferencias(e.target.value)
-              }
-              placeholder="Cite as referências em ABNT"
-              className="w-full rounded-lg border border-slate-700 bg-[#0b121e] p-3 outline-none focus:border-[#c9a063]"
-            />
-          </div>
-
-          <Button
-            type="submit"
-            className="w-full"
-          >
-            Enviar Proposta
-          </Button>
         </form>
       </CardContent>
     </Card>

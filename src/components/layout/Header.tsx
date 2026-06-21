@@ -29,38 +29,37 @@ export default function Header({
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const user = useAuthStore((state) => state.user);
 
-  const normalizedRole =
-    (user?.user_metadata?.role as string)?.toLowerCase() ?? "";
+  const normalizedRole = (user?.user_metadata?.role as string | undefined)?.toLowerCase() ?? "";
   const roleLabel = roleLabels[normalizedRole] ?? 'Sem perfil';
 
   return (
-    <header className="mb-10 flex flex-col gap-5 border-b border-white/5 pb-5 text-white md:flex-row md:items-center md:justify-between">
-      <div className="flex min-w-0 items-center gap-3">
-        {showMenuButton ? (
+    <header className="mb-8 flex flex-col gap-5 border-b border-white/10 pb-5 md:flex-row md:items-center md:justify-between">
+      <div className="flex min-w-0 items-center gap-4">
+        {showMenuButton && (
           <Button
             type="button"
-            size="icon-lg"
+            size="icon"
             aria-label="Abrir menu lateral"
             onClick={onMenuClick}
-            className="bg-[#8b2521] text-white shadow-[0_4px_10px_rgba(139,37,33,0.3)] hover:bg-[#7a201d] md:hidden"
+            className="bg-accent text-accent-foreground shadow-md shadow-accent/30 hover:bg-[#7a201d] md:hidden focus-visible:ring-2 focus-visible:ring-primary"
           >
             <Menu className="size-5" aria-hidden="true" />
           </Button>
-        ) : null}
+        )}
 
         <Image
           src="/img/logo_capacete.png"
           alt="Logo Aptus Defensio"
           width={44}
           height={44}
-          className="h-11 w-11 shrink-0 object-contain"
+          className="h-11 w-11 shrink-0 object-contain drop-shadow-sm"
         />
 
         <div className="min-w-0">
-          <span className="block text-xs font-semibold uppercase tracking-[1px] text-[#c9a063]/80">
+          <span className="block text-xs font-semibold uppercase tracking-wider text-primary/80">
             Aptus Defensio
           </span>
-          <h1 className="font-heading truncate text-2xl font-bold tracking-[1px] text-[#c9a063] md:text-[32px]">
+          <h1 className="font-heading truncate text-2xl font-bold tracking-wide text-primary md:text-3xl">
             {title}
           </h1>
         </div>
@@ -73,39 +72,38 @@ export default function Header({
           aria-expanded={isProfileOpen}
           aria-haspopup="menu"
           onClick={() => setIsProfileOpen((current) => !current)}
-          className="h-auto gap-3 rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 text-white/80 hover:bg-[#2c3e50] hover:text-white"
+          className="h-auto gap-3 rounded-xl border border-white/10 bg-white/5 px-4 py-2 hover:bg-white/10 transition-colors focus-visible:ring-2 focus-visible:ring-primary"
         >
-          <span className="flex size-9 items-center justify-center rounded-full border border-[#c9a063]/30 bg-[#0b121e] text-[#c9a063]">
+          <span className="flex size-9 items-center justify-center rounded-full border border-primary/30 bg-background text-primary">
             <UserRound className="size-4" aria-hidden="true" />
           </span>
 
           <span className="min-w-0 text-left">
-            <span className="block max-w-40 truncate text-sm font-semibold">
+            <span className="block max-w-40 truncate text-sm font-semibold text-foreground">
               Olá, {user?.user_metadata?.nome ?? userName}!
             </span>
-            <span className="block text-xs text-white/55">{roleLabel}</span>
+            <span className="block text-xs text-foreground/60">{roleLabel}</span>
           </span>
 
           <ChevronDown
-            className={[
-              'size-4 text-[#c9a063] transition-transform',
-              isProfileOpen ? 'rotate-180' : '',
-            ].join(' ')}
+            className={`size-4 text-primary transition-transform duration-200 ${
+              isProfileOpen ? 'rotate-180' : ''
+            }`}
             aria-hidden="true"
           />
         </Button>
 
-        {isProfileOpen ? (
+        {isProfileOpen && (
           <div
             role="menu"
-            className="absolute right-0 z-40 mt-2 w-56 rounded-xl border border-[#c9a063]/20 bg-[#1a2c41] p-3 text-sm text-white shadow-[0_12px_30px_rgba(0,0,0,0.35)]"
+            className="absolute right-0 z-40 mt-2 w-56 animate-in fade-in zoom-in-95 rounded-xl border border-primary/20 bg-sidebar p-4 shadow-xl"
           >
-            <p className="font-semibold text-[#c9a063]">
+            <p className="font-semibold text-primary truncate">
               {user?.user_metadata?.nome ?? userName}
             </p>
-            <p className="mt-1 text-white/60">Perfil: {roleLabel}</p>
+            <p className="mt-1 text-sm text-foreground/70">Perfil: {roleLabel}</p>
           </div>
-        ) : null}
+        )}
       </div>
     </header>
   );

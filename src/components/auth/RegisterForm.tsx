@@ -3,14 +3,11 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import {
   registerSchema,
   type RegisterSchema,
 } from "@/schemas/register.schema";
-
 import { Button } from "@/components/ui/button";
-
 import { useRouter } from "next/navigation";
 import { authService } from "@/services/auth.service";
 
@@ -40,7 +37,6 @@ export default function RegisterForm() {
 
     if (error) {
       alert("Não foi possível realizar o cadastro.");
-
       return;
     }
 
@@ -51,142 +47,135 @@ export default function RegisterForm() {
     router.push("/login");
   }
 
+  // Classe utilitária comum para os inputs para manter DRY e consistência
+  const inputClassName = "w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
 
   return (
-    <div className="w-full max-w-md rounded-2xl bg-[#1a2c41] p-8 shadow-lg">
-      <h1 className="mb-8 text-center text-3xl font-bold text-[#c9a063]">
+    <div className="w-full max-w-md rounded-2xl border border-sidebar-border bg-sidebar p-8 shadow-2xl">
+      <h1 className="mb-8 text-center text-3xl font-bold tracking-wider text-primary font-heading">
         Cadastro
       </h1>
 
       <form
-        className="space-y-5"
+        className="space-y-4"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Tipo de usuário
           </label>
-
           <select
             {...register("role")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={`${inputClassName} appearance-none cursor-pointer`}
           >
-            <option value="aluno">
-              Aluno
-            </option>
-
-            <option value="professor">
-              Professor
-            </option>
+            <option value="aluno" className="bg-sidebar text-foreground">Aluno</option>
+            <option value="professor" className="bg-sidebar text-foreground">Professor</option>
           </select>
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Nome
           </label>
-
           <input
             type="text"
             autoComplete="off"
             {...register("nome")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={inputClassName}
+            placeholder="Seu nome completo"
           />
-
           {errors.nome && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.nome.message}
             </p>
           )}
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             E-mail
           </label>
-
           <input
             type="email"
             autoComplete="off"
             {...register("email")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={inputClassName}
+            placeholder="seu@email.com"
           />
-
           {errors.email && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.email.message}
             </p>
           )}
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Matrícula
           </label>
-
           <input
             type="text"
             autoComplete="off"
             {...register("matricula")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={inputClassName}
+            placeholder="Sua matrícula"
           />
-
           {errors.matricula && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.matricula.message}
             </p>
           )}
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Senha
           </label>
-
           <input
             type="password"
             autoComplete="off"
             {...register("password")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={inputClassName}
+            placeholder="••••••••"
           />
-
           {errors.password && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.password.message}
             </p>
           )}
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Confirmar senha
           </label>
-
           <input
             type="password"
             autoComplete="off"
             {...register("confirmPassword")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className={inputClassName}
+            placeholder="••••••••"
           />
-
           {errors.confirmPassword && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.confirmPassword.message}
             </p>
           )}
         </div>
 
-        <Button
-          type="submit"
-          className="w-full bg-[#8b2521]"
-          disabled={isSubmitting}
-        >
-          Cadastrar
-        </Button>
+        <div className="pt-2">
+          <Button
+            type="submit"
+            className="w-full bg-accent text-accent-foreground shadow-md transition-colors hover:bg-accent/90"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? "Cadastrando..." : "Cadastrar"}
+          </Button>
+        </div>
 
         <Link
           href="/login"
-          className="block text-center text-sm text-[#c9a063]"
+          className="mt-4 block text-center text-sm font-medium text-primary transition-colors hover:text-primary/80 focus-visible:outline-none focus-visible:underline"
         >
           Voltar para login
         </Link>

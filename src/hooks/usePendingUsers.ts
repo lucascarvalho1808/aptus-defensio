@@ -7,6 +7,13 @@ export function usePendingUsers() {
   return useQuery({
     queryKey: ["pending-users"],
 
-    queryFn: () => userService.getPendingUsers(),
+    queryFn: async () => {
+      const { data, error } =
+        await userService.getPendingUsers();
+
+      if (error) throw error;
+
+      return data;
+    },
   });
 }

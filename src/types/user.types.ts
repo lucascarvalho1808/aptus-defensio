@@ -1,9 +1,3 @@
-export interface UserData {
-  id: string;
-  nome: string;
-  email: string;
-  matricula: string;
-  role: string;
-  status: string;
-  created_at: string;
-}
+import { Tables } from "@/database.types";
+
+export type User = Tables<"users">;

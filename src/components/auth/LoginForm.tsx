@@ -1,17 +1,11 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-
 import { useForm } from "react-hook-form";
-
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { loginSchema, type LoginSchema } from "@/schemas/login.schema";
-
 import { authService } from "@/services/auth.service";
-
 import { useAuthStore } from "@/store/useAuthStore";
-
 import { Button } from "@/components/ui/button";
 
 export default function LoginForm() {
@@ -39,8 +33,8 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="w-full max-w-md rounded-2xl bg-[#1a2c41] p-8 shadow-lg">
-      <h1 className="mb-8 text-center text-3xl font-bold text-[#c9a063]">
+    <div className="w-full max-w-md rounded-2xl border border-sidebar-border bg-sidebar p-8 shadow-2xl">
+      <h1 className="mb-8 text-center text-3xl font-bold tracking-wider text-primary font-heading">
         Aptus Defensio
       </h1>
 
@@ -48,37 +42,35 @@ export default function LoginForm() {
         className="space-y-5"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             E-mail
           </label>
-
           <input
             type="email"
             {...register("email")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className="w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+            placeholder="seu@email.com"
           />
-
           {errors.email && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.email.message}
             </p>
           )}
         </div>
 
-        <div>
-          <label className="mb-2 block text-sm text-white">
+        <div className="space-y-2">
+          <label className="block text-sm font-medium text-foreground/90">
             Senha
           </label>
-
           <input
             type="password"
             {...register("password")}
-            className="w-full rounded-lg border border-gray-600 bg-transparent p-3 text-white"
+            className="w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50"
+            placeholder="••••••••"
           />
-
           {errors.password && (
-            <p className="mt-1 text-sm text-red-400">
+            <p className="text-xs font-medium text-destructive">
               {errors.password.message}
             </p>
           )}
@@ -86,7 +78,7 @@ export default function LoginForm() {
 
         <Button
           type="submit"
-          className="w-full bg-[#8b2521]"
+          className="mt-6 w-full bg-accent text-accent-foreground shadow-md transition-colors hover:bg-accent/90"
           disabled={isSubmitting}
         >
           {isSubmitting ? "Entrando..." : "Entrar"}

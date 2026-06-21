@@ -1,32 +1,23 @@
+import ProfessoresHero from "@/components/professores/ProfessoresHero";
 import ProfessoresTable from "@/components/professores/ProfessoresTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function ProfessoresPage() {
   return (
-    <div className="space-y-6">
+    <div className="flex flex-col gap-8">
+      <ProfessoresHero />
 
-      <section className="rounded-xl border p-6">
-        <h1 className="text-3xl font-bold">
-          Professores
-        </h1>
-
-        <p className="text-muted-foreground">
-          Gestão do corpo docente.
-        </p>
-      </section>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>
+      <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
+        <CardHeader className="border-b border-white/5 pb-5">
+          <CardTitle className="font-heading text-xl text-primary">
             Professores ativos no sistema
           </CardTitle>
         </CardHeader>
 
-        <CardContent>
+        <CardContent className="pt-6">
           <ProfessoresTable />
         </CardContent>
       </Card>
-
     </div>
   );
 }

@@ -1,20 +1,29 @@
 import { supabase } from "@/lib/supabase";
-import type { UserData } from "@/types/user.types";
+import type { Tables } from "@/database.types";
 
-// Serviço responsável pelas consultas de usuários
+export type UserDB = Tables<"users">;
+
 export const userService = {
-  // Busca usuários pendentes
-  async getPendingUsers(): Promise<UserData[]> {
-    const { data, error } = await supabase
+  async getProfessores() {
+    return await supabase
       .from("users")
       .select("*")
-      .eq("status", "pendente")
-      .order("created_at");
+      .eq("role", "professor")
+      .eq("status", "ativo");
+  },
 
-    if (error) {
-      throw error;
-    }
+  async getAlunos() {
+    return await supabase
+      .from("users")
+      .select("*")
+      .eq("role", "aluno")
+      .eq("status", "ativo");
+  },
 
-    return data;
+  async getPendingUsers() {
+    return await supabase
+      .from("users")
+      .select("*")
+      .eq("status", "pendente");
   },
 };
