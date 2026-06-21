@@ -33,10 +33,7 @@ export default function AppShell({ children }: AppShellProps) {
 
       <div className="flex min-h-screen flex-col md:pl-[280px]">
         <main className="flex flex-1 flex-col px-5 py-6 sm:px-8 md:px-12 md:py-8 lg:px-[60px]">
-          <Header
-            title="Dashboard"
-            onMenuClick={() => setIsSidebarOpen(true)}
-          />
+          <Header onMenuClick={() => setIsSidebarOpen(true)} />
 
           <div className="flex flex-1 flex-col">{children}</div>
         </main>

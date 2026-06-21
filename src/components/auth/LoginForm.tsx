@@ -1,14 +1,30 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@/components/ui/button";
 import { loginSchema, type LoginSchema } from "@/schemas/login.schema";
 import { authService } from "@/services/auth.service";
-import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/useAuthStore";
+
+function getAuthErrorMessage(message?: string) {
+  if (!message) return "E-mail ou senha inválidos.";
+
+  const normalizedMessage = message.toLowerCase();
+
+  if (normalizedMessage.includes("invalid login credentials")) {
+    return "E-mail ou senha inválidos.";
+  }
+
+  return message;
+}
 
 export default function LoginForm() {
   const router = useRouter();
+  const setAuth = useAuthStore((state) => state.setAuth);
+  const [authError, setAuthError] = useState<string | null>(null);
 
   const {
     register,
@@ -18,17 +34,18 @@ export default function LoginForm() {
     resolver: zodResolver(loginSchema),
   });
 
-  // Realiza login
   async function onSubmit(dataForm: LoginSchema) {
-    const { error } = await authService.signIn(dataForm);
+    setAuthError(null);
 
-    if (error) {
-      alert("E-mail ou senha inválidos.");
+    const { data, error } = await authService.signIn(dataForm);
+
+    if (error || !data?.user) {
+      setAuthError(getAuthErrorMessage(error?.message));
       return;
     }
 
-    // O hook useSession atualiza a store automaticamente
-    router.push("/");
+    setAuth(data.user, data.role);
+    router.push("/dashboard");
   }
 
   return (
@@ -37,10 +54,16 @@ export default function LoginForm() {
         Aptus Defensio
       </h1>
 
-      <form
-        className="space-y-5"
-        onSubmit={handleSubmit(onSubmit)}
-      >
+      {authError && (
+        <p
+          role="alert"
+          className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive"
+        >
+          {authError}
+        </p>
+      )}
+
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <div className="space-y-2">
           <label className="block text-sm font-medium text-foreground/90">
             E-mail
