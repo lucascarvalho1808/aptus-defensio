@@ -1,9 +1,15 @@
 "use client";
 
-import { UserPlus, Loader2 } from "lucide-react";
+import { useState } from "react";
 
+import { Loader2, UserPlus } from "lucide-react";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { userService } from "@/services/user.service";
 import { usePendingUsers } from "@/hooks/usePendingUsers";
 import type { User } from "@/types/user.types";
+
+import { Button } from "@/components/ui/button";
 
 import {
   Table,
@@ -15,6 +21,11 @@ import {
 } from "@/components/ui/table";
 
 export default function PendingUsersTable() {
+  const queryClient = useQueryClient();
+
+  const [processingId, setProcessingId] =
+    useState<string | null>(null);
+
   const {
     data,
     isLoading,
@@ -22,6 +33,46 @@ export default function PendingUsersTable() {
   } = usePendingUsers();
 
   const usuarios = (data ?? []) as User[];
+
+  async function handleApprove(id: string) {
+    try {
+      setProcessingId(id);
+
+      const { error } =
+        await userService.approveUser(id);
+
+      if (error) throw error;
+
+      await queryClient.invalidateQueries({
+        queryKey: ["pending-users"],
+      });
+    } finally {
+      setProcessingId(null);
+    }
+  }
+
+  async function handleReject(id: string) {
+    const confirmed = window.confirm(
+      "Deseja realmente rejeitar este cadastro?"
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setProcessingId(id);
+
+      const { error } =
+        await userService.rejectUser(id);
+
+      if (error) throw error;
+
+      await queryClient.invalidateQueries({
+        queryKey: ["pending-users"],
+      });
+    } finally {
+      setProcessingId(null);
+    }
+  }
 
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
@@ -43,13 +94,17 @@ export default function PendingUsersTable() {
             <TableHead className="font-semibold text-primary text-center">
               PERFIL
             </TableHead>
+
+            <TableHead className="font-semibold text-primary text-center">
+              AÇÕES
+            </TableHead>
           </TableRow>
         </TableHeader>
 
         <TableBody>
           {isLoading ? (
             <TableRow>
-              <TableCell colSpan={4} className="h-32 text-center">
+              <TableCell colSpan={5} className="h-32 text-center">
                 <div className="flex flex-col items-center justify-center text-foreground/50">
                   <Loader2 className="mb-2 size-6 animate-spin text-primary" />
                   <span className="text-sm font-medium">
@@ -60,13 +115,13 @@ export default function PendingUsersTable() {
             </TableRow>
           ) : isError ? (
             <TableRow>
-              <TableCell colSpan={4} className="h-32 text-center text-red-400">
+              <TableCell colSpan={5} className="h-32 text-center text-red-400">
                 Erro ao carregar usuários pendentes.
               </TableCell>
             </TableRow>
           ) : usuarios.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={4} className="h-48 text-center">
+              <TableCell colSpan={5} className="h-48 text-center">
                 <div className="flex flex-col items-center justify-center text-foreground/50">
                   <UserPlus className="mb-3 size-10 text-white/20" />
 
@@ -105,6 +160,31 @@ export default function PendingUsersTable() {
                       aria-hidden="true"
                     />
                     {usuario.role}
+                  </div>
+                </TableCell>
+
+                <TableCell>
+                  <div className="flex justify-center gap-2">
+                    <Button
+                      size="sm"
+                      disabled={processingId === usuario.id}
+                      onClick={() =>
+                        handleApprove(usuario.id)
+                      }
+                    >
+                      Aprovar
+                    </Button>
+
+                    <Button
+                      size="sm"
+                      variant="destructive"
+                      disabled={processingId === usuario.id}
+                      onClick={() =>
+                        handleReject(usuario.id)
+                      }
+                    >
+                      Rejeitar
+                    </Button>
                   </div>
                 </TableCell>
               </TableRow>
