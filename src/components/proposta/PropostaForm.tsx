@@ -11,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { toast } from "sonner";
 
 export default function PropostaForm() {
 
@@ -37,12 +38,16 @@ export default function PropostaForm() {
     event.preventDefault();
 
     if (!titulo || !orientador || !linhaPesquisa || !justificativa) {
-      alert("Preencha todos os campos obrigatórios marcados com *.");
+      toast.error("Campos obrigatórios", {
+        description: "Preencha todos os campos antes de enviar.",
+      });
       return;
     }
 
     if (!user) {
-      alert("Usuário não autenticado.");
+      toast.error("Acesso Negado", {
+        description: "Usuário não autenticado.",
+      });
       return;
     }
 
@@ -69,7 +74,9 @@ export default function PropostaForm() {
 
       if (error) throw error;
 
-      alert("Proposta enviada com sucesso!");
+      toast.success("Proposta enviada", {
+        description: "Sua proposta foi enviada com sucesso.",
+      });
 
       // Limpar formulário
       setTitulo("");
@@ -87,7 +94,9 @@ export default function PropostaForm() {
       setReferencias("");
     } catch (error) {
       console.error(error);
-      alert("Erro ao salvar proposta. Tente novamente mais tarde.");
+      toast.error("Erro ao enviar proposta", {
+        description: "Não foi possível salvar a proposta.",
+      });
     } finally {
       setIsSubmitting(false);
     }

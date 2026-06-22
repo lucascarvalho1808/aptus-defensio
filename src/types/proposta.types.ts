@@ -3,8 +3,17 @@ import {
   TablesInsert,
 } from "@/database.types";
 
+export type StatusProposta =
+  | "Aguardando Orientador"
+  | "Aceita"
+  | "Recusada";
+
 export type Proposta =
-  Tables<"propostas">;
+  Omit<Tables<"propostas">, "status"> & {
+    status: StatusProposta | null;
+  };
 
 export type NovaProposta =
-  TablesInsert<"propostas">;
+  Omit<TablesInsert<"propostas">, "status"> & {
+    status?: StatusProposta;
+  };
