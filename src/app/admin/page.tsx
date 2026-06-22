@@ -1,6 +1,13 @@
-import { ShieldCheck } from "lucide-react";
+import PendingUsersTable from "@/components/admin/PendingUsersTable";
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { ShieldCheck } from "lucide-react";
 
 export default function AdminPage() {
   return (
@@ -13,16 +20,16 @@ export default function AdminPage() {
 
         <div className="relative z-10 flex items-center gap-4">
           <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary">
-            <ShieldCheck className="size-6" aria-hidden="true" />
+            <ShieldCheck className="size-6" />
           </div>
 
           <div>
             <h1 className="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
-              Administração de Usuários
+              Administração
             </h1>
 
             <p className="mt-2 text-lg text-foreground/70">
-              Gerencie aprovações pendentes e usuários ativos do sistema.
+              Aprovação e gerenciamento de usuários do sistema.
             </p>
           </div>
         </div>
@@ -31,14 +38,12 @@ export default function AdminPage() {
       <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
         <CardHeader className="border-b border-white/5 pb-5">
           <CardTitle className="font-heading text-xl text-primary">
-            Painel Administrativo
+            Aprovações Pendentes
           </CardTitle>
         </CardHeader>
 
         <CardContent className="pt-6">
-          <p className="text-sm text-muted-foreground">
-            A listagem de usuários será implementada nas próximas tasks.
-          </p>
+          <PendingUsersTable />
         </CardContent>
       </Card>
     </div>
