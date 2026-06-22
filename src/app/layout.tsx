@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import AppShell from '@/components/layout/AppShell';
 import { ThemeProvider } from '@/components/theme-provider';
 import { QueryProvider } from '@/providers/QueryProvider';
+import { Toaster } from 'sonner';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -26,6 +27,12 @@ export default function RootLayout({
         >
           <QueryProvider>
             <AppShell>{children}</AppShell>
+
+            <Toaster
+              position="top-right"
+              richColors
+              closeButton
+            />
           </QueryProvider>
         </ThemeProvider>
       </body>

@@ -1,7 +1,5 @@
 import { supabase } from "@/lib/supabase";
-import type {
-  NovaProposta,
-} from "@/types/proposta.types";
+import type { NovaProposta } from "@/types/proposta.types";
 
 export const propostaService = {
   async create(data: NovaProposta) {
@@ -12,13 +10,12 @@ export const propostaService = {
       .single();
   },
 
-  async getByAluno(
-    alunoId: string
-  ) {
+  async getByAluno(alunoId: string) {
     return supabase
       .from("propostas")
       .select("*")
-      .eq("aluno_id", alunoId);
+      .eq("aluno_id", alunoId)
+      .maybeSingle();
   },
 
   async getAll() {
