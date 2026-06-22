@@ -20,6 +20,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { toast } from "sonner";
+
 export default function PendingUsersTable() {
   const queryClient = useQueryClient();
 
@@ -43,9 +45,13 @@ export default function PendingUsersTable() {
 
       if (error) throw error;
 
+      toast.success("Usuário aprovado com sucesso.");
+
       await queryClient.invalidateQueries({
         queryKey: ["pending-users"],
       });
+    } catch {
+      toast.error("Erro ao aprovar usuário.");
     } finally {
       setProcessingId(null);
     }
@@ -66,9 +72,13 @@ export default function PendingUsersTable() {
 
       if (error) throw error;
 
+      toast.success("Usuário rejeitado com sucesso.");
+
       await queryClient.invalidateQueries({
         queryKey: ["pending-users"],
       });
+    } catch {
+      toast.error("Erro ao rejeitar usuário.");
     } finally {
       setProcessingId(null);
     }
