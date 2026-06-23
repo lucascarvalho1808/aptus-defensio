@@ -1,5 +1,14 @@
+"use client";
+
+import { ShieldCheck } from "lucide-react";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 import PendingUsersTable from "@/components/admin/PendingUsersTable";
 import ActiveUsersTable from "@/components/admin/ActiveUsersTable";
+import { useRequireCoordinator } from "@/hooks/useRequireCoordinator";
+
+import { useAuthStore } from "@/store/useAuthStore";
 
 import {
   Card,
@@ -8,9 +17,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-import { ShieldCheck } from "lucide-react";
-
 export default function AdminPage() {
+  const { isAuthorized } =
+    useRequireCoordinator();
+
+  if (!isAuthorized) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <section className="relative overflow-hidden rounded-2xl border border-primary/20 bg-sidebar p-8 shadow-xl">
