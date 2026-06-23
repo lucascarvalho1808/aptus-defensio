@@ -17,3 +17,9 @@ on users
 for all
 using (true)
 with check (true);
+
+create policy "allow all temas"
+on temas
+for all
+using (true)
+with check (true);

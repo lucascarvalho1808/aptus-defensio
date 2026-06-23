@@ -65,7 +65,7 @@ export default function TemaForm() {
   return (
     <div className="flex flex-wrap gap-4">
       <input
-        className="flex-1 rounded-lg border p-3 bg-transparent"
+        className="h-11 flex-1 rounded-lg border px-3 bg-transparent"
         placeholder="Ex: Inteligência Artificial na Saúde"
         value={titulo}
         onChange={(e) =>
@@ -74,7 +74,7 @@ export default function TemaForm() {
       />
 
       <Button
-        className="min-w-[170px]"
+        className="h-11 min-w-[170px]"
         disabled={
           createTemaMutation.isPending
         }
