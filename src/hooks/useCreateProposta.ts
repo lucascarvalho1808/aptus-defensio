@@ -15,32 +15,32 @@ export function useCreateProposta() {
     useQueryClient();
 
   return useMutation<
-  Proposta,
-  Error,
-  NovaProposta
->({
-  mutationFn: async (
-    proposta: NovaProposta
-  ) => {
-    const { data, error } =
-      await propostaService.create(
-        proposta
-      );
+    Proposta,
+    Error,
+    NovaProposta
+  >({
+    mutationFn: async (
+      proposta: NovaProposta
+    ) => {
+      const { data, error } =
+        await propostaService.create(
+          proposta
+        );
 
-    if (error) {
-      throw error;
-    }
+      if (error) {
+        throw error;
+      }
 
-    return data as Proposta;
-  },
+      return data as Proposta;
+    },
 
-  onSuccess: (_, variables) => {
-    queryClient.invalidateQueries({
-      queryKey: [
-        "proposta",
-        variables.aluno_id,
-      ],
-    });
-  },
-});
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: [
+          "proposta",
+          variables.aluno_id,
+        ],
+      });
+    },
+  });
 }
