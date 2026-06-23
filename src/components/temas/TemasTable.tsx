@@ -1,13 +1,6 @@
 "use client";
 
-import {
-  useEffect,
-  useState,
-} from "react";
-
-import { temaService } from "@/services/tema.service";
-
-import type { Tema } from "@/types/tema.types";
+import { Button } from "@/components/ui/button";
 
 import {
   Table,
@@ -18,39 +11,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button";
-
 import { toast } from "sonner";
 
+import { useDeleteTema } from "@/hooks/useDeleteTema";
+import { useTemas } from "@/hooks/useTemas";
+
 export default function TemasTable() {
-  const [temas, setTemas] =
-    useState<Tema[]>([]);
+  const {
+    data: temas = [],
+    isLoading,
+  } = useTemas();
 
-  const [loading, setLoading] =
-    useState(true);
-
-  async function carregarTemas() {
-    try {
-      setLoading(true);
-
-      const { data, error } =
-        await temaService.getTemas();
-
-      if (error) {
-        throw error;
-      }
-
-      setTemas(
-        (data ?? []) as Tema[]
-      );
-    } catch {
-      toast.error(
-        "Erro ao carregar temas."
-      );
-    } finally {
-      setLoading(false);
-    }
-  }
+  const deleteTemaMutation =
+    useDeleteTema();
 
   async function removerTema(
     id: string
@@ -65,30 +38,19 @@ export default function TemasTable() {
     }
 
     try {
-      const { error } =
-        await temaService.deleteTema(
-          id
-        );
-
-      if (error) {
-        throw error;
-      }
+      await deleteTemaMutation.mutateAsync(
+        id
+      );
 
       toast.success(
         "Tema removido com sucesso."
       );
-
-      await carregarTemas();
     } catch {
       toast.error(
         "Erro ao remover tema."
       );
     }
   }
-
-  useEffect(() => {
-    void carregarTemas();
-  }, []);
 
   return (
     <Table>
@@ -109,19 +71,15 @@ export default function TemasTable() {
       </TableHeader>
 
       <TableBody>
-        {loading ? (
+        {isLoading ? (
           <TableRow>
-            <TableCell
-              colSpan={3}
-            >
+            <TableCell colSpan={3}>
               Carregando temas...
             </TableCell>
           </TableRow>
         ) : temas.length === 0 ? (
           <TableRow>
-            <TableCell
-              colSpan={3}
-            >
+            <TableCell colSpan={3}>
               Nenhum tema cadastrado.
             </TableCell>
           </TableRow>
@@ -142,6 +100,9 @@ export default function TemasTable() {
                 <TableCell className="text-center">
                   <Button
                     variant="destructive"
+                    disabled={
+                      deleteTemaMutation.isPending
+                    }
                     onClick={() =>
                       removerTema(
                         tema.id

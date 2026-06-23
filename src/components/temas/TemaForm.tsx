@@ -3,9 +3,10 @@
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
-import { temaService } from "@/services/tema.service";
 
 import { toast } from "sonner";
+
+import { useCreateTema } from "@/hooks/useCreateTema";
 
 interface Props {
   onCreated: () => void;
@@ -17,8 +18,8 @@ export default function TemaForm({
   const [titulo, setTitulo] =
     useState("");
 
-  const [isLoading, setIsLoading] =
-    useState(false);
+  const createTemaMutation =
+    useCreateTema();
 
   async function handleSubmit() {
     if (!titulo.trim()) {
@@ -29,16 +30,9 @@ export default function TemaForm({
     }
 
     try {
-      setIsLoading(true);
-
-      const { error } =
-        await temaService.createTema(
-          titulo
-        );
-
-      if (error) {
-        throw error;
-      }
+      await createTemaMutation.mutateAsync(
+        titulo
+      );
 
       toast.success(
         "Tema cadastrado com sucesso."
@@ -50,8 +44,6 @@ export default function TemaForm({
       toast.error(
         "Erro ao cadastrar tema."
       );
-    } finally {
-      setIsLoading(false);
     }
   }
 
@@ -67,10 +59,12 @@ export default function TemaForm({
       />
 
       <Button
-        disabled={isLoading}
+        disabled={
+          createTemaMutation.isPending
+        }
         onClick={handleSubmit}
       >
-        {isLoading
+        {createTemaMutation.isPending
           ? "Salvando..."
           : "Cadastrar Tema"}
       </Button>
