@@ -5,6 +5,10 @@ import { Loader2, Users } from "lucide-react";
 import { useActiveUsers } from "@/hooks/useActiveUsers";
 import type { User } from "@/types/user.types";
 
+import { useMemo, useState } from "react";
+
+import AdminFilter from "@/components/admin/AdminFilter";
+
 import {
   Table,
   TableBody,
@@ -23,8 +27,28 @@ export default function ActiveUsersTable() {
 
   const usuarios = (data ?? []) as User[];
 
+  const [roleFilter, setRoleFilter] = useState<
+    "todos" | "aluno" | "professor" | "coordenador"
+  >("todos");
+
+  const filteredUsers = useMemo(() => {
+    if (roleFilter === "todos") {
+      return usuarios;
+    }
+
+    return usuarios.filter(
+      (user) => user.role === roleFilter
+    );
+  }, [usuarios, roleFilter]);
+  
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
+      <div className="m-4">
+        <AdminFilter
+          value={roleFilter}
+          onChange={setRoleFilter}
+        />
+      </div>
       <Table>
         <TableHeader className="bg-white/5">
           <TableRow className="border-white/10 hover:bg-transparent">
@@ -64,7 +88,7 @@ export default function ActiveUsersTable() {
                 Erro ao carregar usuários ativos.
               </TableCell>
             </TableRow>
-          ) : usuarios.length === 0 ? (
+          ) : filteredUsers.length === 0 ? (
             <TableRow>
               <TableCell colSpan={4} className="h-48 text-center">
                 <div className="flex flex-col items-center justify-center text-foreground/50">
@@ -81,7 +105,7 @@ export default function ActiveUsersTable() {
               </TableCell>
             </TableRow>
           ) : (
-            usuarios.map((usuario) => (
+            filteredUsers.map((usuario) => (
               <TableRow
                 key={usuario.id}
                 className="border-white/5 transition-colors hover:bg-white/5"
