@@ -1,8 +1,13 @@
 "use client";
 
 import { useState } from "react";
+
 import TemaForm from "@/components/temas/TemaForm";
 import TemasTable from "@/components/temas/TemasTable";
+import TemasHero from "@/components/temas/TemasHero";
+
+import { useRequireCoordinator } from "@/hooks/useRequireCoordinator";
+
 import {
   Card,
   CardContent,
@@ -11,31 +16,49 @@ import {
 } from "@/components/ui/card";
 
 export default function TemasPage() {
-  const [refreshKey, setRefreshKey] = useState(0);
+  const [refreshKey, setRefreshKey] =
+    useState(0);
+
+  const { isAuthorized } =
+    useRequireCoordinator();
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   function atualizarTabela() {
     setRefreshKey((prev) => prev + 1);
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle>Adicionar Novo Tema</CardTitle>
+    <div className="flex flex-col gap-8">
+      <TemasHero />
+
+      <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
+        <CardHeader className="border-b border-white/5 pb-5">
+          <CardTitle className="font-heading text-xl text-primary">
+            Adicionar Novo Tema
+          </CardTitle>
         </CardHeader>
 
-        <CardContent>
-          <TemaForm onCreated={atualizarTabela} />
+        <CardContent className="pt-6">
+          <TemaForm
+            onCreated={atualizarTabela}
+          />
         </CardContent>
       </Card>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Temas Cadastrados</CardTitle>
+      <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
+        <CardHeader className="border-b border-white/5 pb-5">
+          <CardTitle className="font-heading text-xl text-primary">
+            Temas Cadastrados
+          </CardTitle>
         </CardHeader>
 
-        <CardContent>
-          <TemasTable key={refreshKey} />
+        <CardContent className="pt-6">
+          <TemasTable
+            key={refreshKey}
+          />
         </CardContent>
       </Card>
     </div>
