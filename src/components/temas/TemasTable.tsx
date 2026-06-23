@@ -1,8 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useState,
+} from "react";
 
 import { temaService } from "@/services/tema.service";
+
 import type { Tema } from "@/types/tema.types";
 
 import {
@@ -16,69 +20,140 @@ import {
 
 import { Button } from "@/components/ui/button";
 
+import { toast } from "sonner";
+
 export default function TemasTable() {
-  const [temas, setTemas] = useState<Tema[]>([]);
+  const [temas, setTemas] =
+    useState<Tema[]>([]);
+
+  const [loading, setLoading] =
+    useState(true);
 
   async function carregarTemas() {
-    const { data } = await temaService.getTemas();
+    try {
+      setLoading(true);
 
-    if (data) {
-      setTemas(data as Tema[]);
+      const { data, error } =
+        await temaService.getTemas();
+
+      if (error) {
+        throw error;
+      }
+
+      setTemas(
+        (data ?? []) as Tema[]
+      );
+    } catch {
+      toast.error(
+        "Erro ao carregar temas."
+      );
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function removerTema(id: string) {
-    await temaService.deleteTema(id);
+  async function removerTema(
+    id: string
+  ) {
+    const confirmed =
+      window.confirm(
+        "Deseja realmente excluir este tema?"
+      );
 
-    carregarTemas();
+    if (!confirmed) {
+      return;
+    }
+
+    try {
+      const { error } =
+        await temaService.deleteTema(
+          id
+        );
+
+      if (error) {
+        throw error;
+      }
+
+      toast.success(
+        "Tema removido com sucesso."
+      );
+
+      await carregarTemas();
+    } catch {
+      toast.error(
+        "Erro ao remover tema."
+      );
+    }
   }
 
   useEffect(() => {
-    const timeoutId = window.setTimeout(() => {
-      void carregarTemas();
-    }, 0);
-
-    return () => window.clearTimeout(timeoutId);
+    void carregarTemas();
   }, []);
 
   return (
     <Table>
       <TableHeader>
         <TableRow>
-          <TableHead>IDENTIFICADOR</TableHead>
-          <TableHead>NOME DOS TEMAS</TableHead>
-          <TableHead>AÇÕES</TableHead>
+          <TableHead>
+            IDENTIFICADOR
+          </TableHead>
+
+          <TableHead>
+            NOME DOS TEMAS
+          </TableHead>
+
+          <TableHead>
+            AÇÕES
+          </TableHead>
         </TableRow>
       </TableHeader>
 
       <TableBody>
-        {temas.length === 0 ? (
+        {loading ? (
           <TableRow>
-            <TableCell colSpan={3}>
+            <TableCell
+              colSpan={3}
+            >
+              Carregando temas...
+            </TableCell>
+          </TableRow>
+        ) : temas.length === 0 ? (
+          <TableRow>
+            <TableCell
+              colSpan={3}
+            >
               Nenhum tema cadastrado.
             </TableCell>
           </TableRow>
         ) : (
-          temas.map((tema, index) => (
-            <TableRow key={tema.id}>
-              <TableCell>
-                #TM-{index + 1}
-              </TableCell>
+          temas.map(
+            (tema, index) => (
+              <TableRow
+                key={tema.id}
+              >
+                <TableCell>
+                  #TM-{index + 1}
+                </TableCell>
 
-              <TableCell>
-                {tema.titulo}
-              </TableCell>
+                <TableCell>
+                  {tema.titulo}
+                </TableCell>
 
-              <TableCell className="text-center">
-                <Button
-                  variant="destructive"
-                  onClick={() => removerTema(tema.id)}
-                >
-                  Excluir
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))
+                <TableCell className="text-center">
+                  <Button
+                    variant="destructive"
+                    onClick={() =>
+                      removerTema(
+                        tema.id
+                      )
+                    }
+                  >
+                    Excluir
+                  </Button>
+                </TableCell>
+              </TableRow>
+            )
+          )
         )}
       </TableBody>
     </Table>
