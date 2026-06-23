@@ -3,13 +3,15 @@ import type { Tables } from "@/database.types";
 
 export type UserDB = Tables<"users">;
 
+const activeStatuses = ["ativo", "aprovado"];
+
 export const userService = {
   async getProfessores() {
     return await supabase
       .from("users")
       .select("*")
       .eq("role", "professor")
-      .eq("status", "ativo");
+      .in("status", activeStatuses);
   },
 
   async getAlunos() {
@@ -17,7 +19,7 @@ export const userService = {
       .from("users")
       .select("*")
       .eq("role", "aluno")
-      .eq("status", "ativo");
+      .in("status", activeStatuses);
   },
 
   async getPendingUsers() {
@@ -31,7 +33,7 @@ export const userService = {
     return await supabase
       .from("users")
       .update({
-        status: "ativo",
+        status: "aprovado",
       })
       .eq("id", userId);
   },
@@ -44,9 +46,9 @@ export const userService = {
   },
 
   async getActiveUsers() {
-  return await supabase
-    .from("users")
-    .select("*")
-    .eq("status", "ativo");
-},
+    return await supabase
+      .from("users")
+      .select("*")
+      .in("status", activeStatuses);
+  },
 };

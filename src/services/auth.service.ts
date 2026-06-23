@@ -44,12 +44,21 @@ async function getUserProfile(userId: string) {
     .from("users")
     .select("id, nome, email, role, status")
     .eq("id", userId)
-    .single();
+    .maybeSingle();
 
-  if (error || !data) {
+  if (error) {
     return {
       data: null,
-      error: error ?? createAuthError("Perfil de usuário não encontrado."),
+      error,
+    };
+  }
+
+  if (!data) {
+    return {
+      data: null,
+      error: createAuthError(
+        "Perfil de usuário não encontrado. Verifique se o cadastro está vinculado corretamente."
+      ),
     };
   }
 

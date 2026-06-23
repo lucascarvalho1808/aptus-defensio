@@ -1,10 +1,13 @@
 'use client';
 
-import { ChevronDown, Menu, Moon, Sun, UserRound } from 'lucide-react';
+import { ChevronDown, LogOut, Menu, Moon, Sun, UserRound } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useState, useSyncExternalStore } from 'react';
 
 import { Button } from '@/components/ui/button';
+import { clearStoredAuth } from '@/lib/auth-storage';
+import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/useAuthStore';
 
 interface HeaderProps {
@@ -28,6 +31,7 @@ export default function Header({
   showMenuButton = true,
   onMenuClick,
 }: HeaderProps) {
+  const router = useRouter();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const mounted = useSyncExternalStore(
     subscribeToClientMount,
@@ -37,6 +41,7 @@ export default function Header({
   const { resolvedTheme, setTheme } = useTheme();
   const user = useAuthStore((state) => state.user);
   const role = useAuthStore((state) => state.role);
+  const clearAuth = useAuthStore((state) => state.clearAuth);
 
   const roleLabel = role ? roleLabels[role] : 'Sem perfil';
   const isDarkTheme = resolvedTheme === 'dark';
@@ -44,6 +49,15 @@ export default function Header({
 
   function toggleTheme() {
     setTheme(isDarkTheme ? 'light' : 'dark');
+  }
+
+  async function handleLogout() {
+    await authService.signOut();
+    clearStoredAuth();
+    clearAuth();
+    setIsProfileOpen(false);
+    router.replace('/login');
+    router.refresh();
   }
 
   return (
@@ -124,6 +138,15 @@ export default function Header({
               <p className="mt-1 text-sm text-muted-foreground">
                 Perfil: {roleLabel}
               </p>
+              <Button
+                type="button"
+                variant="ghost"
+                onClick={handleLogout}
+                className="mt-4 w-full justify-start gap-2 border border-border text-destructive hover:bg-destructive/10 hover:text-destructive"
+              >
+                <LogOut className="size-4" aria-hidden="true" />
+                Sair
+              </Button>
             </div>
           )}
         </div>
