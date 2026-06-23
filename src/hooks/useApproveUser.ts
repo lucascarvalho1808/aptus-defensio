@@ -14,9 +14,15 @@ export function useApproveUser() {
     },
 
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: ["pending-users"],
-      });
+      await Promise.all([
+        queryClient.invalidateQueries({
+          queryKey: ["pending-users"],
+        }),
+
+        queryClient.invalidateQueries({
+          queryKey: ["active-users"],
+        }),
+      ]);
     },
   });
 }
