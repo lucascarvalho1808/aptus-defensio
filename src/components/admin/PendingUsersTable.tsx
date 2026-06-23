@@ -30,6 +30,9 @@ export default function PendingUsersTable() {
   const [roleFilter, setRoleFilter] =
     useState("todos");
 
+  const [search, setSearch] =
+    useState("");
+
   const approveMutation = useApproveUser();
 
   const rejectMutation = useRejectUser();
@@ -43,14 +46,27 @@ export default function PendingUsersTable() {
   const usuarios = (data ?? []) as User[];
 
   const usuariosFiltrados = useMemo(() => {
-    if (roleFilter === "todos") {
-      return usuarios;
-    }
+    return usuarios.filter((usuario) => {
+      const roleMatch =
+        roleFilter === "todos" ||
+        usuario.role === roleFilter;
 
-    return usuarios.filter(
-      (usuario) => usuario.role === roleFilter
-    );
-  }, [usuarios, roleFilter]);
+      const searchMatch =
+        search.trim() === "" ||
+        usuario.nome
+          ?.toLowerCase()
+          .includes(search.toLowerCase()) ||
+        usuario.email
+          ?.toLowerCase()
+          .includes(search.toLowerCase());
+
+      return roleMatch && searchMatch;
+    });
+  }, [
+    usuarios,
+    roleFilter,
+    search,
+  ]);
 
   async function handleApprove(id: string) {
     try {
@@ -99,6 +115,8 @@ export default function PendingUsersTable() {
       <AdminFilter
         value={roleFilter}
         onChange={setRoleFilter}
+        search={search}
+        onSearchChange={setSearch}
       />
 
       <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">

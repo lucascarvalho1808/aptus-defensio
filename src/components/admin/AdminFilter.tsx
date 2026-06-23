@@ -42,10 +42,6 @@ export default function AdminFilter({
           <option value="professor">
             Professores
           </option>
-
-          <option value="coordenador">
-            Coordenadores
-          </option>
         </select>
       </div>
 

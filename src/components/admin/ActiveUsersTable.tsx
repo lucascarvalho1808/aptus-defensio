@@ -56,7 +56,9 @@ export default function ActiveUsersTable() {
       <div className="m-4">
         <AdminFilter
           value={roleFilter}
-          onChange={setRoleFilter}
+          onChange={(value) =>
+            setRoleFilter(value as "todos" | "aluno" | "professor")
+          }
           search={search}
           onSearchChange={setSearch}
         />
