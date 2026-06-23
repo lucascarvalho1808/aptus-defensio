@@ -24,22 +24,32 @@ export default function ActiveUsersTable() {
     isLoading,
     isError,
   } = useActiveUsers();
-
+  
   const usuarios = (data ?? []) as User[];
-
+  
   const [roleFilter, setRoleFilter] = useState<
-    "todos" | "aluno" | "professor" | "coordenador"
-  >("todos");
+    "todos" | "aluno" | "professor" >("todos");
+
+  const [search, setSearch] = useState("");
 
   const filteredUsers = useMemo(() => {
-    if (roleFilter === "todos") {
-      return usuarios;
-    }
+    return usuarios.filter((user) => {
+      const roleMatch =
+        roleFilter === "todos" ||
+        user.role === roleFilter;
 
-    return usuarios.filter(
-      (user) => user.role === roleFilter
-    );
-  }, [usuarios, roleFilter]);
+      const searchMatch =
+        search.trim() === "" ||
+        user.nome
+          ?.toLowerCase()
+          .includes(search.toLowerCase()) ||
+        user.email
+          ?.toLowerCase()
+          .includes(search.toLowerCase());
+
+      return roleMatch && searchMatch;
+    });
+  }, [usuarios, roleFilter, search]);
   
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
@@ -47,6 +57,8 @@ export default function ActiveUsersTable() {
         <AdminFilter
           value={roleFilter}
           onChange={setRoleFilter}
+          search={search}
+          onSearchChange={setSearch}
         />
       </div>
       <Table>
