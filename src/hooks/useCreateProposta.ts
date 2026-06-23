@@ -7,35 +7,40 @@ import { propostaService } from "@/services/proposta.service";
 
 import type {
   NovaProposta,
+  Proposta,
 } from "@/types/proposta.types";
 
 export function useCreateProposta() {
   const queryClient =
     useQueryClient();
 
-  return useMutation({
-    mutationFn: async (
-      proposta: NovaProposta
-    ) => {
-      const { data, error } =
-        await propostaService.create(
-          proposta
-        );
+  return useMutation<
+  Proposta,
+  Error,
+  NovaProposta
+>({
+  mutationFn: async (
+    proposta: NovaProposta
+  ) => {
+    const { data, error } =
+      await propostaService.create(
+        proposta
+      );
 
-      if (error) {
-        throw error;
-      }
+    if (error) {
+      throw error;
+    }
 
-      return data;
-    },
+    return data as Proposta;
+  },
 
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({
-        queryKey: [
-          "proposta",
-          variables.aluno_id,
-        ],
-      });
-    },
-  });
+  onSuccess: (_, variables) => {
+    queryClient.invalidateQueries({
+      queryKey: [
+        "proposta",
+        variables.aluno_id,
+      ],
+    });
+  },
+});
 }

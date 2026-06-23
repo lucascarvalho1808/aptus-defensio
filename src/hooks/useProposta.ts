@@ -2,8 +2,12 @@ import { useQuery } from "@tanstack/react-query";
 
 import { propostaService } from "@/services/proposta.service";
 
+import type {
+  Proposta,
+} from "@/types/proposta.types";
+
 export function useProposta(alunoId?: string) {
-  return useQuery({
+  return useQuery<Proposta | null>({
     queryKey: ["proposta", alunoId],
 
     enabled: !!alunoId,
@@ -18,7 +22,7 @@ export function useProposta(alunoId?: string) {
         throw error;
       }
 
-      return data;
+      return data as Proposta | null;
     },
   });
 }

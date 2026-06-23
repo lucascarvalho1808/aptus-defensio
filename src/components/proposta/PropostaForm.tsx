@@ -96,12 +96,15 @@ export default function PropostaForm() {
       setReferencias("");
     } catch (error) {
       console.error(error);
+
       toast.error("Erro ao enviar proposta", {
         description: "Não foi possível salvar a proposta.",
       });
+    }
   }
 
-  const inputClassName = "w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
+  const inputClassName =
+    "w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
   const labelClassName = "mb-2 block text-sm font-medium text-foreground/90";
 
   return (
