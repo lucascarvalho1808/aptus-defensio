@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -13,6 +15,13 @@ function getAuthErrorMessage(message?: string) {
   if (!message) return "E-mail ou senha inválidos.";
 
   const normalizedMessage = message.toLowerCase();
+
+  if (
+    normalizedMessage.includes("email not confirmed") ||
+    normalizedMessage.includes("email_not_confirmed")
+  ) {
+    return "Por favor, confirme seu e-mail clicando no link que enviamos para você antes de entrar.";
+  }
 
   if (normalizedMessage.includes("invalid login credentials")) {
     return "E-mail ou senha inválidos.";
@@ -50,9 +59,19 @@ export default function LoginForm() {
 
   return (
     <div className="w-full max-w-md rounded-2xl border border-sidebar-border bg-sidebar p-8 shadow-2xl">
-      <h1 className="mb-8 text-center text-3xl font-bold tracking-wider text-primary font-heading">
-        Aptus Defensio
-      </h1>
+      <div className="mb-8 flex flex-col items-center gap-3 text-center">
+        <Image
+          src="/img/logo_capacete.png"
+          alt="Logo Aptus Defensio"
+          width={86}
+          height={86}
+          className="h-auto w-20 drop-shadow-md"
+          priority
+        />
+        <h1 className="font-heading text-3xl font-bold tracking-wider text-primary">
+          Aptus Defensio
+        </h1>
+      </div>
 
       {authError && (
         <p
@@ -106,6 +125,19 @@ export default function LoginForm() {
           {isSubmitting ? "Entrando..." : "Entrar"}
         </Button>
       </form>
+
+      <div className="mt-5 border-t border-white/10 pt-5 text-center">
+        <p className="mb-3 text-sm text-muted-foreground">
+          Ainda não tem uma conta?
+        </p>
+        <Button
+          asChild
+          variant="outline"
+          className="w-full border-primary/30 bg-transparent text-primary hover:bg-primary/10"
+        >
+          <Link href="/register">Criar conta</Link>
+        </Button>
+      </div>
     </div>
   );
 }

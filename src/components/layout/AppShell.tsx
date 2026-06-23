@@ -1,18 +1,26 @@
 'use client';
 
 import { useState, type ReactNode } from 'react';
+import { usePathname } from 'next/navigation';
 import Header from '@/components/layout/Header';
 import Sidebar from '@/components/layout/Sidebar';
-import { useSession } from "@/hooks/useSession";
+import { useSession } from '@/hooks/useSession';
 
 interface AppShellProps {
   children: ReactNode;
 }
 
+const publicRoutes = ['/login', '/register'];
+
 export default function AppShell({ children }: AppShellProps) {
   useSession();
 
+  const pathname = usePathname();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  if (publicRoutes.includes(pathname)) {
+    return <main className="min-h-screen">{children}</main>;
+  }
 
   function closeSidebar() {
     setIsSidebarOpen(false);

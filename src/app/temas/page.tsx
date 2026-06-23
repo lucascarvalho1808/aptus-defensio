@@ -1,13 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-import AppShell from "@/components/layout/AppShell";
-
-import TemasHero from "@/components/temas/TemasHero";
 import TemaForm from "@/components/temas/TemaForm";
 import TemasTable from "@/components/temas/TemasTable";
-
 import {
   Card,
   CardContent,
@@ -23,36 +18,26 @@ export default function TemasPage() {
   }
 
   return (
-    <AppShell>
-      <div className="space-y-6">
-        <TemasHero />
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Adicionar Novo Tema</CardTitle>
+        </CardHeader>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              Adicionar Novo Tema
-            </CardTitle>
-          </CardHeader>
+        <CardContent>
+          <TemaForm onCreated={atualizarTabela} />
+        </CardContent>
+      </Card>
 
-          <CardContent>
-            <TemaForm
-              onCreated={atualizarTabela}
-            />
-          </CardContent>
-        </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Temas Cadastrados</CardTitle>
+        </CardHeader>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>
-              Temas Cadastrados
-            </CardTitle>
-          </CardHeader>
-
-          <CardContent>
-            <TemasTable key={refreshKey} />
-          </CardContent>
-        </Card>
-      </div>
-    </AppShell>
+        <CardContent>
+          <TemasTable key={refreshKey} />
+        </CardContent>
+      </Card>
+    </div>
   );
 }

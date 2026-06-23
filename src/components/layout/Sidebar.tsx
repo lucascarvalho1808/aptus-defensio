@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
+import { clearStoredAuth } from '@/lib/auth-storage';
 import { authService } from '@/services/auth.service';
 import { useAuthStore } from '@/store/useAuthStore';
 
@@ -29,6 +30,7 @@ const navItems: NavItem[] = [
 
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const role = useAuthStore((state) => state.role);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
@@ -39,9 +41,11 @@ export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
 
   async function handleLogout() {
     await authService.signOut();
-    sessionStorage.removeItem('usuarioAtivo');
+    clearStoredAuth();
     clearAuth();
     onNavigate?.();
+    router.replace('/login');
+    router.refresh();
   }
 
   return (
