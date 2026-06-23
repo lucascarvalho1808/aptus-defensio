@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 import { useCreateTema } from "@/hooks/useCreateTema";
+import { useTemas } from "@/hooks/useTemas";
 
 export default function TemaForm() {
   const [titulo, setTitulo] =
@@ -15,17 +16,38 @@ export default function TemaForm() {
   const createTemaMutation =
     useCreateTema();
 
+  const { data: temas = [] } =
+    useTemas();
+
   async function handleSubmit() {
-    if (!titulo.trim()) {
+    const tituloNormalizado =
+      titulo.trim();
+
+    if (!tituloNormalizado) {
       toast.error(
         "Informe o nome do tema."
       );
       return;
     }
 
+    const temaJaExiste = temas.some(
+      (tema) =>
+        tema.titulo
+          .trim()
+          .toLowerCase() ===
+        tituloNormalizado.toLowerCase()
+    );
+
+    if (temaJaExiste) {
+      toast.error(
+        "Já existe um tema cadastrado com esse nome."
+      );
+      return;
+    }
+
     try {
       await createTemaMutation.mutateAsync(
-        titulo
+        tituloNormalizado
       );
 
       toast.success(
@@ -52,6 +74,7 @@ export default function TemaForm() {
       />
 
       <Button
+        className="min-w-[170px]"
         disabled={
           createTemaMutation.isPending
         }
