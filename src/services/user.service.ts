@@ -26,4 +26,27 @@ export const userService = {
       .select("*")
       .eq("status", "pendente");
   },
+
+  async approveUser(userId: string) {
+    return await supabase
+      .from("users")
+      .update({
+        status: "ativo",
+      })
+      .eq("id", userId);
+  },
+
+  async rejectUser(userId: string) {
+    return await supabase
+      .from("users")
+      .delete()
+      .eq("id", userId);
+  },
+
+  async getActiveUsers() {
+  return await supabase
+    .from("users")
+    .select("*")
+    .eq("status", "ativo");
+},
 };
