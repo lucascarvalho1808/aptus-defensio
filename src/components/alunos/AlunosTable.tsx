@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { userService } from "@/services/user.service";
-import type { User } from "@/types/user.types";
+import { useAlunos } from "@/hooks/useAlunos";
 import { Users, Loader2 } from "lucide-react";
 
 import {
@@ -15,24 +13,10 @@ import {
 } from "@/components/ui/table";
 
 export default function AlunosTable() {
-  const [alunos, setAlunos] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      setIsLoading(true);
-      try {
-        const { data } = await userService.getAlunos();
-        if (data) {
-          setAlunos(data as User[]);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    load();
-  }, []);
+  const {
+  data: alunos = [],
+  isLoading,
+} = useAlunos();
 
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
