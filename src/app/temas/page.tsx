@@ -1,7 +1,5 @@
 "use client";
 
-import { useState } from "react";
-
 import TemaForm from "@/components/temas/TemaForm";
 import TemasTable from "@/components/temas/TemasTable";
 import TemasHero from "@/components/temas/TemasHero";
@@ -16,18 +14,11 @@ import {
 } from "@/components/ui/card";
 
 export default function TemasPage() {
-  const [refreshKey, setRefreshKey] =
-    useState(0);
-
   const { isAuthorized } =
     useRequireCoordinator();
 
   if (!isAuthorized) {
     return null;
-  }
-
-  function atualizarTabela() {
-    setRefreshKey((prev) => prev + 1);
   }
 
   return (
@@ -42,9 +33,7 @@ export default function TemasPage() {
         </CardHeader>
 
         <CardContent className="pt-6">
-          <TemaForm
-            onCreated={atualizarTabela}
-          />
+          <TemaForm />
         </CardContent>
       </Card>
 
@@ -56,9 +45,7 @@ export default function TemasPage() {
         </CardHeader>
 
         <CardContent className="pt-6">
-          <TemasTable
-            key={refreshKey}
-          />
+          <TemasTable />
         </CardContent>
       </Card>
     </div>

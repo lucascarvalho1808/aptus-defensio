@@ -8,13 +8,7 @@ import { toast } from "sonner";
 
 import { useCreateTema } from "@/hooks/useCreateTema";
 
-interface Props {
-  onCreated: () => void;
-}
-
-export default function TemaForm({
-  onCreated,
-}: Props) {
+export default function TemaForm() {
   const [titulo, setTitulo] =
     useState("");
 
@@ -39,7 +33,6 @@ export default function TemaForm({
       );
 
       setTitulo("");
-      onCreated();
     } catch {
       toast.error(
         "Erro ao cadastrar tema."
