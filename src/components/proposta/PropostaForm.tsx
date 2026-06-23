@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { propostaService } from "@/services/proposta.service";
+import { useCreateProposta } from "@/hooks/useCreateProposta";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
@@ -15,9 +15,12 @@ import { toast } from "sonner";
 
 export default function PropostaForm() {
 
-  const user = useAuthStore((state) => state.user);
+  const user = useAuthStore(
+    (state) => state.user
+  );
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const createPropostaMutation =
+    useCreateProposta();
 
   // Estados do Formulário
   const [titulo, setTitulo] = useState("");
@@ -51,10 +54,8 @@ export default function PropostaForm() {
       return;
     }
 
-    setIsSubmitting(true);
-
     try {
-      const { error } = await propostaService.create({
+      await createPropostaMutation.mutateAsync({
         aluno_id: user.id,
         titulo,
         tipo,
@@ -62,17 +63,18 @@ export default function PropostaForm() {
         linha_pesquisa: linhaPesquisa,
         justificativa,
         objetivo_geral: objetivoGeral,
-        objetivos_especificos: objetivosEspecificos,
+        objetivos_especificos:
+          objetivosEspecificos,
         metodologia,
         resultados,
-        trabalhos_futuros: trabalhosFuturos,
+        trabalhos_futuros:
+          trabalhosFuturos,
         custos,
         cronograma,
         referencias,
-        status: "Aguardando Orientador",
+        status:
+          "Aguardando Orientador",
       });
-
-      if (error) throw error;
 
       toast.success("Proposta enviada", {
         description: "Sua proposta foi enviada com sucesso.",
@@ -97,9 +99,6 @@ export default function PropostaForm() {
       toast.error("Erro ao enviar proposta", {
         description: "Não foi possível salvar a proposta.",
       });
-    } finally {
-      setIsSubmitting(false);
-    }
   }
 
   const inputClassName = "w-full rounded-lg border border-white/10 bg-black/20 p-3 text-foreground transition-all duration-200 placeholder:text-white/30 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/50";
@@ -284,10 +283,12 @@ export default function PropostaForm() {
           <div className="pt-4">
             <Button
               type="submit"
-              disabled={isSubmitting}
+              disabled={
+                createPropostaMutation.isPending
+              }
               className="w-full bg-primary text-primary-foreground transition-colors hover:bg-primary/90 focus-visible:ring-2 focus-visible:ring-primary md:w-auto md:px-10"
             >
-              {isSubmitting ? (
+              {createPropostaMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 size-4 animate-spin" />
                   Enviando Proposta...
