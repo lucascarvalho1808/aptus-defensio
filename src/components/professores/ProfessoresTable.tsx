@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { userService } from "@/services/user.service";
-import type { User } from "@/types/user.types";
+import { useProfessores } from "@/hooks/useProfessores";
 import { GraduationCap, Loader2 } from "lucide-react";
 
 import {
@@ -15,24 +13,10 @@ import {
 } from "@/components/ui/table";
 
 export default function ProfessoresTable() {
-  const [professores, setProfessores] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    async function load() {
-      setIsLoading(true);
-      try {
-        const { data } = await userService.getProfessores();
-        if (data) {
-          setProfessores(data as User[]);
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-
-    load();
-  }, []);
+  const {
+  data: professores = [],
+  isLoading,
+} = useProfessores();
 
   return (
     <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
