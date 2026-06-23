@@ -42,4 +42,11 @@ export const userService = {
       .delete()
       .eq("id", userId);
   },
+
+  async getActiveUsers() {
+  return await supabase
+    .from("users")
+    .select("*")
+    .eq("status", "ativo");
+},
 };

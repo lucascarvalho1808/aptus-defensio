@@ -1,4 +1,5 @@
 import PendingUsersTable from "@/components/admin/PendingUsersTable";
+import ActiveUsersTable from "@/components/admin/ActiveUsersTable";
 
 import {
   Card,
@@ -44,6 +45,18 @@ export default function AdminPage() {
 
         <CardContent className="pt-6">
           <PendingUsersTable />
+        </CardContent>
+      </Card>
+
+      <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
+        <CardHeader className="border-b border-white/5 pb-5">
+          <CardTitle className="font-heading text-xl text-primary">
+            Usuários Ativos
+          </CardTitle>
+        </CardHeader>
+
+        <CardContent className="pt-6">
+          <ActiveUsersTable />
         </CardContent>
       </Card>
     </div>
