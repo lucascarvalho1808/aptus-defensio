@@ -3,9 +3,9 @@
 import { useState } from "react";
 
 import { Loader2, UserPlus } from "lucide-react";
-import { useQueryClient } from "@tanstack/react-query";
+import { useApproveUser } from "@/hooks/useApproveUser";
 
-import { userService } from "@/services/user.service";
+import { useRejectUser } from "@/hooks/useRejectUser";
 import { usePendingUsers } from "@/hooks/usePendingUsers";
 import type { User } from "@/types/user.types";
 
@@ -23,10 +23,13 @@ import {
 import { toast } from "sonner";
 
 export default function PendingUsersTable() {
-  const queryClient = useQueryClient();
 
   const [processingId, setProcessingId] =
     useState<string | null>(null);
+
+  const approveMutation = useApproveUser();
+
+  const rejectMutation = useRejectUser();
 
   const {
     data,
@@ -40,18 +43,15 @@ export default function PendingUsersTable() {
     try {
       setProcessingId(id);
 
-      const { error } =
-        await userService.approveUser(id);
+      await approveMutation.mutateAsync(id);
 
-      if (error) throw error;
-
-      toast.success("Usuário aprovado com sucesso.");
-
-      await queryClient.invalidateQueries({
-        queryKey: ["pending-users"],
-      });
+      toast.success(
+        "Usuário aprovado com sucesso."
+      );
     } catch {
-      toast.error("Erro ao aprovar usuário.");
+      toast.error(
+        "Erro ao aprovar usuário."
+      );
     } finally {
       setProcessingId(null);
     }
@@ -67,18 +67,15 @@ export default function PendingUsersTable() {
     try {
       setProcessingId(id);
 
-      const { error } =
-        await userService.rejectUser(id);
+      await rejectMutation.mutateAsync(id);
 
-      if (error) throw error;
-
-      toast.success("Usuário rejeitado com sucesso.");
-
-      await queryClient.invalidateQueries({
-        queryKey: ["pending-users"],
-      });
+      toast.success(
+        "Usuário rejeitado com sucesso."
+      );
     } catch {
-      toast.error("Erro ao rejeitar usuário.");
+      toast.error(
+        "Erro ao rejeitar usuário."
+      );
     } finally {
       setProcessingId(null);
     }
