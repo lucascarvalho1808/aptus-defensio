@@ -73,6 +73,8 @@ create table orientacoes (
 
     proposta_id uuid references propostas(id),
 
+    mensagem text,
+
     status text default 'ativa',
 
     created_at timestamp default now()
