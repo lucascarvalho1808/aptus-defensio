@@ -23,3 +23,9 @@ on temas
 for all
 using (true)
 with check (true);
+
+create policy "allow authenticated students to create orientacoes"
+on orientacoes
+for insert
+to authenticated
+with check ((select auth.uid()) = aluno_id);

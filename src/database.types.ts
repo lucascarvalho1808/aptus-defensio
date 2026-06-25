@@ -125,6 +125,7 @@ export type Database = {
           aluno_id: string | null
           created_at: string | null
           id: string
+          mensagem: string | null
           professor_id: string | null
           proposta_id: string | null
           status: string | null
@@ -133,6 +134,7 @@ export type Database = {
           aluno_id?: string | null
           created_at?: string | null
           id?: string
+          mensagem?: string | null
           professor_id?: string | null
           proposta_id?: string | null
           status?: string | null
@@ -141,6 +143,7 @@ export type Database = {
           aluno_id?: string | null
           created_at?: string | null
           id?: string
+          mensagem?: string | null
           professor_id?: string | null
           proposta_id?: string | null
           status?: string | null
