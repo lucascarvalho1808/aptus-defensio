@@ -1,12 +1,14 @@
 import { supabase } from "@/lib/supabase";
 import type { Tables } from "@/database.types";
+import type { PostgrestSingleResponse } from "@supabase/supabase-js";
+import type { User } from "@/types/user.types";
 
 export type UserDB = Tables<"users">;
 
 const activeStatuses = ["ativo", "aprovado"];
 
 export const userService = {
-  async getProfessores() {
+  async getProfessores(): Promise<PostgrestSingleResponse<User[]>> {
     return await supabase
       .from("users")
       .select("*")
