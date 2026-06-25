@@ -16,7 +16,8 @@ export const userService = {
       .in("status", activeStatuses);
   },
 
-  async getAlunos() {
+  // Busca todos os alunos ativos/aprovados
+  async getAlunos(): Promise<PostgrestSingleResponse<User[]>> {
     return await supabase
       .from("users")
       .select("*")
