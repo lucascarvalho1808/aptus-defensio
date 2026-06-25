@@ -9,6 +9,7 @@ const privateRoutes = [
   "/alunos",
   "/professores",
   "/proposta",
+  "/orientacao",
 ];
 
 const publicRoutes = ["/login", "/register"];
