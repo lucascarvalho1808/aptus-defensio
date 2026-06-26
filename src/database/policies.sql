@@ -29,3 +29,19 @@ on orientacoes
 for insert
 to authenticated
 with check ((select auth.uid()) = aluno_id);
+
+create policy "Aluno pode criar a propria proposta"
+on propostas
+for insert
+to authenticated
+with check (
+    auth.uid() = aluno_id
+);
+
+create policy "Aluno pode visualizar a propria proposta"
+on propostas
+for select
+to authenticated
+using (
+    auth.uid() = aluno_id
+);
