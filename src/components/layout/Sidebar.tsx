@@ -26,6 +26,7 @@ const navItems: NavItem[] = [
   { label: 'Alunos', href: '/alunos', roles: ['coordenador'] },
   { label: 'Temas', href: '/temas', roles: ['coordenador', 'professor'] },
   { label: 'Proposta', href: '/proposta', roles: ['aluno'] },
+  { label: 'Orientação', href: '/orientacao', roles: ['aluno'] },
 ];
 
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {

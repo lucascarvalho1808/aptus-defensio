@@ -1,5 +1,7 @@
 "use client";
 
+
+import { useProfessores } from "@/hooks/useProfessores";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -21,6 +23,7 @@ import { useAuthStore } from "@/store/useAuthStore";
 export default function OrientacaoForm() {
   const user = useAuthStore((state) => state.user);
   const createOrientacao = useCreateOrientacao();
+  const { data: professores = [] } = useProfessores();
 
   const {
     register,
@@ -80,10 +83,11 @@ export default function OrientacaoForm() {
               disabled={isSending}
             >
               <option value="">Selecione um professor...</option>
-              {/* TODO: Substituir pelas options dinâmicas da T6.2. */}
-              <option value="44b9b946-e9df-44c7-a429-96af90e7c897">
-                Professor Teste (Mock)
-              </option>
+              {professores.map((prof) => (
+                <option key={prof.id} value={prof.id}>
+                  {prof.nome}
+                </option>
+              ))}
             </select>
             {errors.id_professor && (
               <p className="mt-2 text-sm text-red-500">
