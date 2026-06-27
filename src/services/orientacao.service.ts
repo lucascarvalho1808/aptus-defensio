@@ -12,4 +12,13 @@ export const orientacaoService = {
       .select()
       .single();
   },
+
+
+async getProfessoresAtivos() {
+    return supabase
+      .from("users")
+      .select("*")
+      .eq("role", "professor")
+      .eq("status", "ativo");
+  },
 };
