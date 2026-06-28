@@ -5,7 +5,7 @@ import { useProfessores } from "@/hooks/useProfessores";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -24,6 +24,7 @@ export default function OrientacaoForm() {
   const user = useAuthStore((state) => state.user);
   const createOrientacao = useCreateOrientacao();
   const { data: professores = [] } = useProfessores();
+  const [sucesso, setSucesso] = useState(false);
 
   const {
     register,
@@ -55,9 +56,11 @@ export default function OrientacaoForm() {
         mensagem: data.mensagem,
         status: "pendente",
       });
-
-      toast.success("Solicitação enviada com sucesso!");
+      setSucesso(true);
       reset();
+      setTimeout(() => {
+        setSucesso(false);
+      }, 2700);
     } catch {
       toast.error("Erro ao enviar solicitação de orientação.");
     }
@@ -111,6 +114,11 @@ export default function OrientacaoForm() {
               </p>
             )}
           </div>
+          {sucesso && (
+            <p className="text-sm text-green-500">
+               Solicitação enviada com sucesso!
+            </p>
+          )}
 
           <Button
             type="submit"
