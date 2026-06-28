@@ -4,6 +4,7 @@ import PropostaHero from "@/components/proposta/PropostaHero";
 import PropostaForm from "@/components/proposta/PropostaForm";
 import PropostaCard from "@/components/proposta/PropostaCard";
 
+import { useRequireRole } from "@/hooks/useRequireRole";
 import { useAuthStore } from "@/store/useAuthStore";
 
 import { Loader2 } from "lucide-react";
@@ -11,6 +12,7 @@ import { Loader2 } from "lucide-react";
 import { useProposta } from "@/hooks/useProposta";
 
 export default function PropostaPage() {
+  const { isAuthorized } = useRequireRole(["aluno"]);
   const user = useAuthStore(
     (state) => state.user
   );
@@ -19,6 +21,10 @@ export default function PropostaPage() {
     data: proposta,
     isLoading,
   } = useProposta(user?.id);
+
+  if (!isAuthorized) {
+    return null;
+  }
 
   return (
     <div className="flex flex-col gap-8">

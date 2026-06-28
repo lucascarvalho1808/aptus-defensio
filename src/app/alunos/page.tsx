@@ -1,8 +1,17 @@
+"use client";
+
 import AlunosTable from "@/components/alunos/AlunosTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRequireCoordinator } from "@/hooks/useRequireCoordinator";
 import { Users } from "lucide-react";
 
 export default function AlunosPage() {
+  const { isAuthorized } = useRequireCoordinator();
+
+  if (!isAuthorized) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <section className="relative overflow-hidden rounded-2xl border border-primary/20 bg-sidebar p-8 shadow-xl">
