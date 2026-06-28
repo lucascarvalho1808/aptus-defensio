@@ -166,8 +166,9 @@ export default function FilaOrientacoesTable() {
 
       <dialog
         ref={dialogRef}
+        onClose={() => setSelectedOrientacao(null)}
         onCancel={() => setSelectedOrientacao(null)}
-        className="w-[min(92vw,640px)] rounded-xl border border-white/10 bg-card p-0 text-card-foreground shadow-2xl backdrop:bg-black/70"
+        className="fixed inset-0 m-auto max-h-[85vh] w-[min(92vw,640px)] max-w-none overflow-hidden rounded-xl border border-white/10 bg-card p-0 text-card-foreground shadow-2xl backdrop:bg-black/70"
       >
         {selectedOrientacao && (
           <div className="flex flex-col">

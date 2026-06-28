@@ -4,6 +4,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+import {
+  canAccessRoute,
+  protectedRoutes,
+} from "@/config/rbac";
 import { clearStoredAuth } from "@/lib/auth-storage";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -13,37 +17,15 @@ interface SidebarProps {
   onNavigate?: () => void;
 }
 
-interface NavItem {
-  label: string;
-  href: string;
-  roles?: string[];
-}
-
-const navItems: NavItem[] = [
-  { label: "Dashboard", href: "/dashboard" },
-  { label: "Administração", href: "/admin", roles: ["coordenador"] },
-  { label: "Professores", href: "/professores", roles: ["coordenador"] },
-  { label: "Alunos", href: "/alunos", roles: ["coordenador"] },
-  { label: "Temas", href: "/temas", roles: ["coordenador", "professor"] },
-  { label: "Proposta", href: "/proposta", roles: ["aluno"] },
-  { label: "Orientação", href: "/orientacao", roles: ["aluno"] },
-  {
-    label: "Orientações Recebidas",
-    href: "/orientacoes-recebidas",
-    roles: ["professor", "coordenador"],
-  },
-];
-
 export default function Sidebar({ isOpen = false, onNavigate }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
   const role = useAuthStore((state) => state.role);
   const clearAuth = useAuthStore((state) => state.clearAuth);
 
-  const visibleNavItems = navItems.filter((item) => {
-    if (!item.roles) return true;
-    return role && item.roles.includes(role);
-  });
+  const visibleNavItems = protectedRoutes.filter((item) =>
+    canAccessRoute(item, role)
+  );
 
   async function handleLogout() {
     await authService.signOut();

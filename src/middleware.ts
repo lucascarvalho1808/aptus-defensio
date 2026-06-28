@@ -1,17 +1,12 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
-import type { Database } from "@/database.types";
 
-const privateRoutes = [
-  "/dashboard",
-  "/admin",
-  "/temas",
-  "/alunos",
-  "/professores",
-  "/proposta",
-  "/orientacao",
-  "/orientacoes-recebidas",
-];
+import {
+  getProtectedRoute,
+  isAuthRole,
+  privateRoutes,
+} from "@/config/rbac";
+import type { Database } from "@/database.types";
 
 const publicRoutes = ["/login", "/register"];
 
@@ -80,6 +75,22 @@ export async function middleware(request: NextRequest) {
 
   if (user && (isRootRoute || isPublicRoute)) {
     return redirectTo("/dashboard");
+  }
+
+  const protectedRoute = getProtectedRoute(pathname);
+
+  if (user && protectedRoute?.roles) {
+    const { data: profile } = await supabase
+      .from("users")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    const role = profile?.role?.toLowerCase();
+
+    if (!isAuthRole(role) || !protectedRoute.roles.includes(role)) {
+      return redirectTo("/dashboard");
+    }
   }
 
   return supabaseResponse;

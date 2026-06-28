@@ -4,7 +4,7 @@ import TemaForm from "@/components/temas/TemaForm";
 import TemasTable from "@/components/temas/TemasTable";
 import TemasHero from "@/components/temas/TemasHero";
 
-import { useRequireCoordinator } from "@/hooks/useRequireCoordinator";
+import { useRequireProfessor } from "@/hooks/useRequireProfessor";
 
 import {
   Card,
@@ -15,7 +15,7 @@ import {
 
 export default function TemasPage() {
   const { isAuthorized } =
-    useRequireCoordinator();
+    useRequireProfessor();
 
   if (!isAuthorized) {
     return null;

@@ -1,7 +1,16 @@
+"use client";
+
 import OrientacaoForm from "@/components/orientacao/OrientacaoForm";
+import { useRequireRole } from "@/hooks/useRequireRole";
 import { GraduationCap } from "lucide-react";
 
 export default function OrientacaoPage() {
+  const { isAuthorized } = useRequireRole(["aluno"]);
+
+  if (!isAuthorized) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <section className="relative overflow-hidden rounded-2xl border border-primary/20 bg-sidebar/50 p-8">

@@ -1,8 +1,17 @@
+"use client";
+
 import ProfessoresHero from "@/components/professores/ProfessoresHero";
 import ProfessoresTable from "@/components/professores/ProfessoresTable";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useRequireCoordinator } from "@/hooks/useRequireCoordinator";
 
 export default function ProfessoresPage() {
+  const { isAuthorized } = useRequireCoordinator();
+
+  if (!isAuthorized) {
+    return null;
+  }
+
   return (
     <div className="flex flex-col gap-8">
       <ProfessoresHero />
