@@ -53,3 +53,14 @@ to authenticated
 using (
     auth.uid() = professor_id
 );
+
+create policy "professor pode atualizar suas orientacoes"
+on orientacoes
+for update
+to authenticated
+using (
+    auth.uid() = professor_id
+)
+with check (
+    auth.uid() = professor_id
+);

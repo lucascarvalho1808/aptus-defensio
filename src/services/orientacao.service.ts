@@ -43,4 +43,15 @@ export const orientacaoService = {
         ascending: false,
       });
   },
+
+    async updateStatus(orientacaoId: string, status: "aceita" | "recusada") {
+    return supabase
+      .from("orientacoes")
+      .update({
+        status,
+      })
+      .eq("id", orientacaoId)
+      .select()
+      .single();
+  },
 };
