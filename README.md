@@ -1,100 +1,252 @@
 # Aptus Defensio 
 
-O **Aptus Defensio** é um sistema para a gestão ágil de qualificações e defesas de TCC, dissertações e teses. Desenvolvido para simplificar a burocracia da pós-graduação, a plataforma permite que alunos, professores e coordenações foquem no que realmente importa: a excelência acadêmica e a pesquisa.
+## Grupo
 
-Projeto desenvolvido para as disciplinas de Programação Web II e Engenharia de Requisitos, no curso superior Bacharelado em Engenharia de Software do Instituto Federal da Paraíba (IFPB).
-
-**Equipe de Desenvolvimento:**
-* Vinícius Rocha Leite Gomes
-* Lucas Montenegro de Carvalho
-* José Carlos Abreu 
-* Gabriel Reis
+- Lucas Montenegro de Carvalho
+- José Carlos Abreu
+- Gabriel Reis
+- Vinícius Rocha
 
 ---
 
-## 🚀 Como Executar o Projeto
+## Sobre o Projeto
 
-O projeto foi inicializado utilizando o template Vanilla do **Vite**. Para rodar localmente, siga os passos:
+O **Aptus Defensio** é uma plataforma acadêmica para apoiar o fluxo de propostas, orientações, temas e acompanhamento de projetos de TCC. O projeto foi construído para uma stack moderna baseada em **Next.js App Router**, **TypeScript**, **Tailwind CSS**, **Supabase** e **Zustand**.
 
-1. Clone o repositório.
-   ```bash
-   git clone https://github.com/lucascarvalho1808/aptus-defensio.git
-   ```
-2. Instale as dependências:
-   ```bash
-   npm install
-   ```
-3. Inicie o servidor de desenvolvimento:
-   ```bash
-   npm run dev
-   ```
+A aplicação contempla três perfis principais:
 
+- **Aluno**: cadastra proposta e solicita orientação.
+- **Professor**: visualiza solicitações recebidas e acompanha orientandos.
+- **Coordenador**: administra usuários, professores, alunos e temas.
 
-## 🛠️ Parte Técnica
+---
 
-Este projeto foi construído com foco em simplicidade, performance e boas práticas para aplicações web modernas. Principais pontos técnicos:
+## Funcionalidades Implementadas
 
-- Stack:
-   - Frontend: Vanilla JavaScript + Vite (bundler/dev server)
-   - Estilos: CSS tradicional (arquivo style.css) com uso de grid e flexbox
-   - Build/Dev: Node.js + npm
+### Autenticação e Perfis
 
-- Estrutura do projeto:
-   - src/: código-fonte do frontend
-   - public/: ativos estáticos (imagens, ícones)
-   - scripts utilitários: módulos como feedback.js para notificações e módulos de proteção de rota
+- Login com Supabase Auth.
+- Cadastro de usuários com confirmação de e-mail.
+- Recuperação do perfil do usuário pela tabela `users`.
+- Controle de status do cadastro, incluindo bloqueio de usuários pendentes.
+- Estado global de autenticação com Zustand.
+- Persistência e hidratação da sessão ao recarregar a aplicação.
+- Logout completo com limpeza de estado local e sessão Supabase.
 
-- Boas práticas adotadas:
-   - Separação clara entre lógica, marcação e estilos
-   - Componentização simples via módulos ES (import/export)
-   - Tratamento de erros e feedbacks ao usuário sem dependência de alerts nativos
-   - Rotas protegidas e controle de acesso básico no frontend (redirecionamento amigável para 404 quando necessário)
+### Controle de Acesso
 
-- Requisitos de desenvolvimento:
-   - Node.js v14+ 
-   - npm v6+
+- Rotas protegidas por middleware.
+- Controle de acesso por perfil usando RBAC.
+- Menus laterais renderizados de acordo com o tipo de usuário.
+- Redirecionamento de usuários sem sessão para `/login`.
+- Redirecionamento de usuários autenticados para `/dashboard`.
 
-## 🎨 UX/UI
-O design do **Aptus Defensio** foi planejado com rigor estético e funcional:
-* **Responsividade**: O sistema de grids e flexbox foi utilizado no `style.css` para garantir que as tabelas de dados, formulários e painéis administrativos se adaptem organicamente a dispositivos móveis e desktops.
-* **Feedback Visual**: Implementação do módulo unificado `feedback.js`, que injeta dinamicamente notificações (sucesso/erro) contextuais na tela, evitando a dependência de `alerts` nativos intrusivos.
-* **Segurança na Experiência**: Telas protegidas redirecionam de forma invisível usuários sem permissão de acesso (ex: alunos tentando acessar `admin.js`), retornando uma página 404 amigável.
+Regras principais:
 
+- `coordenador`: dashboard, administração, professores, alunos, temas e orientações recebidas.
+- `professor`: dashboard, temas e orientações recebidas.
+- `aluno`: dashboard, proposta e solicitação de orientação.
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### Dashboard e Layout
 
-## Getting Started
+- Shell global com `Sidebar`, `Header` e área central para conteúdo.
+- Layout responsivo para desktop e mobile.
+- Tema claro/escuro com `next-themes`.
+- Identidade visual com paleta azul escuro, dourado e vinho.
+- Header com botão de alternância de tema e menu de perfil.
 
-First, run the development server:
+### Administração
+
+- Página administrativa para coordenadores.
+- Listagem de usuários pendentes.
+- Aprovação e rejeição de cadastros.
+- Listagem de usuários ativos.
+- Filtros por nome, e-mail e perfil.
+
+### Temas
+
+- Cadastro de temas de pesquisa.
+- Listagem de temas cadastrados.
+- Exclusão de temas.
+- Acesso para coordenadores e professores.
+
+### Propostas
+
+- Página para o aluno preencher proposta de TCC.
+- Validação e envio da proposta.
+- Exibição da proposta já enviada.
+- Persistência dos dados na tabela `propostas`.
+
+### Orientações
+
+- Formulário para aluno solicitar orientação.
+- Seleção dinâmica de professores ativos.
+- Envio da solicitação para a tabela `orientacoes`.
+- Mensagem do aluno persistida no banco.
+- Fila de solicitações recebidas pelo professor.
+- Ações de aceitar e recusar orientação.
+- Página de orientandos aceitos.
+
+---
+
+## Tecnologias Utilizadas
+
+- **Next.js 16** com App Router.
+- **React 19**.
+- **TypeScript**.
+- **Tailwind CSS 4**.
+- **Supabase Auth** para autenticação.
+- **Supabase Database** como backend principal.
+- **Zustand** para estado global de autenticação.
+- **TanStack Query** para cache e mutações assíncronas.
+- **React Hook Form** para formulários.
+- **Zod** para validação de dados.
+- **Sonner** para feedback visual com toasts.
+- **Lucide React** para ícones.
+- **next-themes** para tema claro/escuro.
+- **shadcn/ui** como base de componentes de interface.
+
+---
+
+## Estrutura do Projeto
+
+```txt
+src/
+  app/                  Rotas do App Router
+  components/           Componentes visuais e de layout
+  components/ui/        Componentes base da interface
+  config/               Configurações globais, como RBAC
+  hooks/                Hooks de sessão, guards e React Query
+  lib/                  Clientes e utilitários compartilhados
+  providers/            Providers globais da aplicação
+  schemas/              Schemas Zod de validação
+  services/             Camada de acesso ao Supabase
+  store/                Stores Zustand
+  types/                Tipos compartilhados
+  database/             Schema SQL, policies e tipos do banco
+
+public/
+  img/                  Imagens e identidade visual
+
+supabase/
+  .temp/                Configurações temporárias locais do Supabase
+```
+
+---
+
+## Banco de Dados
+
+O projeto utiliza Supabase com as principais tabelas:
+
+- `users`: perfis da aplicação, status e papéis.
+- `temas`: temas de pesquisa cadastrados.
+- `propostas`: propostas enviadas pelos alunos.
+- `orientacoes`: solicitações e vínculos de orientação.
+
+Os arquivos locais de referência ficam em:
+
+- `src/database/schema.sql`
+- `src/database/policies.sql`
+- `src/database.types.ts`
+
+---
+
+## Variáveis de Ambiente
+
+Crie um arquivo `.env.local` na raiz do projeto:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=https://seu-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=sua-chave-publica-anon-ou-publishable
+```
+
+Esses valores ficam no painel do Supabase em:
+
+```txt
+Project Settings > API
+```
+---
+
+## Como Executar Localmente
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/lucascarvalho1808/aptus-defensio.git
+cd aptus-defensio
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+Crie `.env.local` com as variáveis do Supabase.
+
+### 4. Rode o servidor de desenvolvimento
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Acesse:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```txt
+http://localhost:3000
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### 5. Rode as verificações
 
-## Learn More
+```bash
+npm run lint
+npm run build
+```
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Scripts Disponíveis
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npm run dev
+```
 
-## Deploy on Vercel
+Inicia o servidor local de desenvolvimento.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```bash
+npm run build
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Gera o build de produção.
 
+```bash
+npm run start
+```
+
+Executa o build de produção localmente.
+
+```bash
+npm run lint
+```
+
+Executa o ESLint.
+
+---
+
+## Boas Práticas Adotadas
+
+- Separação entre componentes, serviços, hooks, schemas e estado global.
+- Regras de acesso centralizadas em `src/config/rbac.ts`.
+- Formulários validados com Zod e React Hook Form.
+- Acesso ao Supabase isolado em services.
+- Feedback de ações por toast, sem dependência de `alert`.
+- Client Components usados apenas quando necessário.
+- Sidebar e rotas protegidas sincronizadas com os perfis da aplicação.
+- Middleware responsável por proteger rotas privadas.
+- Estado global mínimo com Zustand para sessão e perfil.
+- Cache e mutações assíncronas com TanStack Query.
+- Design responsivo e consistente com a identidade visual da Sprint 1.
+
+---
