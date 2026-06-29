@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import {
   CheckCircle2,
+  Loader2,
   MailOpen,
   XCircle,
 } from "lucide-react";
@@ -20,6 +21,7 @@ import {
 
 import { useAuthStore } from "@/store/useAuthStore";
 import { useOrientacoes } from "@/hooks/useOrientacoes";
+import { useUpdateOrientacaoStatus } from "@/hooks/useUpdateOrientacaoStatus";
 
 const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
   day: "2-digit",
@@ -33,6 +35,8 @@ export default function FilaOrientacoesTable() {
   const user = useAuthStore((state) => state.user);
 
   const { data: orientacoes = [] } = useOrientacoes(user?.id);
+
+  const updateStatus = useUpdateOrientacaoStatus();
 
   const [selectedOrientacao, setSelectedOrientacao] = useState<
     (typeof orientacoes)[number] | null
@@ -51,12 +55,28 @@ export default function FilaOrientacoesTable() {
     setSelectedOrientacao(null);
   }
 
-  function handleAccept() {
-    toast.success("Aceito (Mock)");
-  }
+  async function handleUpdateStatus(
+    id: string,
+    status: "aceita" | "recusada"
+  ) {
+    try {
+      await updateStatus.mutateAsync({
+        id,
+        status,
+      });
 
-  function handleReject() {
-    toast.info("Recusado (Mock)");
+      toast.success(
+        status === "aceita"
+          ? "Solicitação aceita com sucesso."
+          : "Solicitação recusada com sucesso."
+      );
+
+      if (selectedOrientacao?.id === id) {
+        closeDialog();
+      }
+    } catch {
+      toast.error("Erro ao atualizar a solicitação.");
+    }
   }
 
   return (
@@ -128,27 +148,47 @@ export default function FilaOrientacoesTable() {
                       size="sm"
                       onClick={() => setSelectedOrientacao(orientacao)}
                     >
-                      <MailOpen className="size-4" aria-hidden="true" />
+                      <MailOpen className="size-4" />
                       Ler Mensagem
                     </Button>
 
                     <Button
                       type="button"
                       size="sm"
+                      disabled={updateStatus.isPending}
                       className="bg-emerald-600 text-white hover:bg-emerald-500"
-                      onClick={handleAccept}
+                      onClick={() =>
+                        handleUpdateStatus(
+                          orientacao.id,
+                          "aceita"
+                        )
+                      }
                     >
-                      <CheckCircle2 className="size-4" aria-hidden="true" />
+                      {updateStatus.isPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <CheckCircle2 className="size-4" />
+                      )}
                       Aceitar
                     </Button>
 
                     <Button
                       type="button"
                       size="sm"
+                      disabled={updateStatus.isPending}
                       className="bg-red-600 text-white hover:bg-red-500"
-                      onClick={handleReject}
+                      onClick={() =>
+                        handleUpdateStatus(
+                          orientacao.id,
+                          "recusada"
+                        )
+                      }
                     >
-                      <XCircle className="size-4" aria-hidden="true" />
+                      {updateStatus.isPending ? (
+                        <Loader2 className="size-4 animate-spin" />
+                      ) : (
+                        <XCircle className="size-4" />
+                      )}
                       Recusar
                     </Button>
                   </div>
@@ -179,7 +219,8 @@ export default function FilaOrientacoesTable() {
 
             <div className="px-6 py-5">
               <p className="whitespace-pre-line text-sm leading-7 text-foreground/80">
-                {selectedOrientacao.mensagem ?? "Nenhuma mensagem informada."}
+                {selectedOrientacao.mensagem ??
+                  "Nenhuma mensagem informada."}
               </p>
             </div>
 
