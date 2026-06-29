@@ -11,6 +11,16 @@ export type OrientacaoRecebida =
     } | null;
   };
 
+export type MeuOrientado =
+  Database["public"]["Tables"]["orientacoes"]["Row"] & {
+    aluno: {
+      id: string;
+      nome: string;
+      email: string;
+      matricula: string | null;
+    } | null;
+  };
+
 export const orientacaoService = {
   async create(data: NovaOrientacao) {
     return supabase
@@ -44,7 +54,29 @@ export const orientacaoService = {
       });
   },
 
-    async updateStatus(orientacaoId: string, status: "aceita" | "recusada") {
+  async getMeusOrientados(professorId: string) {
+    return supabase
+      .from("orientacoes")
+      .select(`
+        *,
+        aluno:users!orientacoes_aluno_id_fkey(
+          id,
+          nome,
+          email,
+          matricula
+        )
+      `)
+      .eq("professor_id", professorId)
+      .eq("status", "aceita")
+      .order("created_at", {
+        ascending: false,
+      });
+  },
+
+  async updateStatus(
+    orientacaoId: string,
+    status: "aceita" | "recusada"
+  ) {
     return supabase
       .from("orientacoes")
       .update({

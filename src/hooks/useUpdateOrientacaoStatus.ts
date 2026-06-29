@@ -24,16 +24,20 @@ export function useUpdateOrientacaoStatus() {
     },
 
     onSuccess: async (_, variables) => {
-      await queryClient.invalidateQueries({
-        queryKey: [
-          "orientacoes",
-          variables.id,
-        ],
-      });
+        await queryClient.invalidateQueries({
+            queryKey: [
+            "orientacoes",
+            variables.id,
+            ],
+        });
 
-      await queryClient.invalidateQueries({
-        queryKey: ["orientacoes"],
-      });
+        await queryClient.invalidateQueries({
+            queryKey: ["orientacoes"],
+        });
+
+        await queryClient.invalidateQueries({
+            queryKey: ["meus-orientados"],
+        });
     },
   });
 }
