@@ -45,3 +45,11 @@ to authenticated
 using (
     auth.uid() = aluno_id
 );
+
+create policy "professor pode visualizar suas orientacoes"
+on orientacoes
+for select
+to authenticated
+using (
+    auth.uid() = professor_id
+);
