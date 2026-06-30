@@ -18,7 +18,7 @@ export default function AdminFilter({
       <div className="flex items-center gap-3">
         <label
           htmlFor="role-filter"
-          className="text-sm font-medium text-white/70"
+          className="text-sm font-medium text-foreground/70"
         >
           Perfil:
         </label>
@@ -29,17 +29,17 @@ export default function AdminFilter({
           onChange={(e) =>
             onChange(e.target.value)
           }
-          className="rounded-lg border border-white/10 bg-sidebar px-3 py-2 text-sm text-white outline-none"
+          className="rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-sidebar px-3 py-2 text-sm text-foreground outline-none shadow-sm dark:shadow-none"
         >
-          <option value="todos">
+          <option value="todos" className="text-neutral-900 dark:text-white bg-white dark:bg-sidebar">
             Todos
           </option>
 
-          <option value="aluno">
+          <option value="aluno" className="text-neutral-900 dark:text-white bg-white dark:bg-sidebar">
             Alunos
           </option>
 
-          <option value="professor">
+          <option value="professor" className="text-neutral-900 dark:text-white bg-white dark:bg-sidebar">
             Professores
           </option>
         </select>
@@ -53,7 +53,7 @@ export default function AdminFilter({
           onChange={(e) =>
             onSearchChange(e.target.value)
           }
-          className="rounded-lg border border-white/10 bg-sidebar px-3 py-2 text-sm text-white outline-none placeholder:text-white/40"
+           className="rounded-lg border border-neutral-200 dark:border-white/10 bg-white dark:bg-sidebar px-3 py-2 text-sm text-foreground outline-none placeholder:text-muted-foreground/60 shadow-sm dark:shadow-none"
         />
       )}
     </div>
