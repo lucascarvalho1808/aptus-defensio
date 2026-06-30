@@ -52,7 +52,7 @@ export default function ActiveUsersTable() {
   }, [usuarios, roleFilter, search]);
   
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
+     <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-black/20">
       <div className="m-4">
         <AdminFilter
           value={roleFilter}
@@ -64,8 +64,8 @@ export default function ActiveUsersTable() {
         />
       </div>
       <Table>
-        <TableHeader className="bg-white/5">
-          <TableRow className="border-white/10 hover:bg-transparent">
+        <TableHeader className="bg-neutral-100 dark:bg-white/5">
+          <TableRow className="border-neutral-200 dark:border-white/10 hover:bg-transparent">
             <TableHead className="font-semibold text-primary">
               MATRÍCULA
             </TableHead>
@@ -106,13 +106,13 @@ export default function ActiveUsersTable() {
             <TableRow>
               <TableCell colSpan={4} className="h-48 text-center">
                 <div className="flex flex-col items-center justify-center text-foreground/50">
-                  <Users className="mb-3 size-10 text-white/20" />
+                  <Users className="mb-3 size-10 text-foreground/20" />
 
-                  <p className="text-base font-medium text-white/70">
+                  <p className="text-base font-medium text-foreground/70">
                     Nenhum usuário ativo
                   </p>
 
-                  <p className="text-sm">
+                  <p className="text-sm text-foreground/50">
                     Não existem usuários aprovados.
                   </p>
                 </div>
@@ -122,22 +122,22 @@ export default function ActiveUsersTable() {
             filteredUsers.map((usuario) => (
               <TableRow
                 key={usuario.id}
-                className="border-white/5 transition-colors hover:bg-white/5"
+                className="border-neutral-200 dark:border-white/5 transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
               >
-                <TableCell className="font-mono text-sm text-white/80">
+                <TableCell className="font-mono text-sm text-foreground/80">
                   {usuario.matricula ?? "---"}
                 </TableCell>
 
-                <TableCell className="font-medium text-white">
+                <TableCell className="font-medium text-foreground">
                   {usuario.nome}
                 </TableCell>
 
-                <TableCell className="text-white/70">
+                <TableCell className="text-foreground/70">
                   {usuario.email}
                 </TableCell>
 
                 <TableCell className="text-center">
-                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
                     <span
                       className="size-1.5 rounded-full bg-emerald-500"
                       aria-hidden="true"
