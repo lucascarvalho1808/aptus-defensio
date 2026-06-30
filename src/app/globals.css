@@ -45,7 +45,6 @@
 }
 
 :root {
-  /* Aptus Defensio - tema claro com identidade da paleta legada */
   --background: #f5f0e8;
   --foreground: #0b121e;
 
@@ -87,7 +86,6 @@
 }
 
 .dark {
-  /* Aptus Defensio - paleta original da sprint legacy */
   --background: #0b121e;
   --foreground: #ffffff;
 
