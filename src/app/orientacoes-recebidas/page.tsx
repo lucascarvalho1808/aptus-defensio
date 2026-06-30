@@ -26,7 +26,7 @@ export default function OrientacoesRecebidasPage() {
             <Inbox className="size-6 text-primary" aria-hidden="true" />
           </div>
           <div>
-            <h1 className="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+            <h1 className="font-heading text-3xl font-bold tracking-tight text-[#8b2521] dark:text-white sm:text-4xl">
               Solicitações Recebidas
             </h1>
             <p className="mt-2 text-lg text-foreground/70">

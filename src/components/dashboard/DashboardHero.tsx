@@ -7,7 +7,7 @@ export default function DashboardHero() {
       <div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-primary/5 blur-[80px]" aria-hidden="true" />
 
       <div className="relative z-10 max-w-3xl">
-        <h1 className="font-heading mb-4 text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl lg:text-balance">
+        <h1 className="font-heading mb-4 text-3xl font-bold tracking-tight text-[#8b2521] dark:text-white sm:text-4xl md:text-5xl lg:text-balance">
           CONTROLE DE <span className="text-primary">DEFESA E PRAZOS</span>
         </h1>
 

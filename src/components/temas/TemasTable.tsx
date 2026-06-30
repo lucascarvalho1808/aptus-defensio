@@ -1,6 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { Trash2 } from "lucide-react";
 
 import {
   Table,
@@ -53,70 +54,70 @@ export default function TemasTable() {
   }
 
   return (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>
-            IDENTIFICADOR
-          </TableHead>
+    <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-black/20">
+      <Table>
+        <TableHeader className="bg-neutral-100 dark:bg-white/5">
+          <TableRow className="border-neutral-200 dark:border-white/10 hover:bg-transparent">
+            <TableHead className="font-semibold text-primary">
+              IDENTIFICADOR
+            </TableHead>
 
-          <TableHead>
-            NOME DOS TEMAS
-          </TableHead>
+            <TableHead className="font-semibold text-primary">
+              NOME DOS TEMAS
+            </TableHead>
 
-          <TableHead>
-            AÇÕES
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-
-      <TableBody>
-        {isLoading ? (
-          <TableRow>
-            <TableCell colSpan={3}>
-              Carregando temas...
-            </TableCell>
+            <TableHead className="text-center font-semibold text-primary">
+              AÇÕES
+            </TableHead>
           </TableRow>
-        ) : temas.length === 0 ? (
-          <TableRow>
-            <TableCell colSpan={3}>
-              Nenhum tema cadastrado.
-            </TableCell>
-          </TableRow>
-        ) : (
-          temas.map(
-            (tema, index) => (
-              <TableRow
+        </TableHeader>
+
+        <TableBody>
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={3} className="py-10 text-center text-foreground/60">
+                Carregando temas...
+              </TableCell>
+            </TableRow>
+          ) : temas.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={3} className="py-10 text-center text-foreground/60">
+                Nenhum tema cadastrado.
+              </TableCell>
+            </TableRow>
+          ) : (
+            temas.map((tema, index) => (
+              <TableRow 
                 key={tema.id}
+                className="border-neutral-200 dark:border-white/5 transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
               >
-                <TableCell>
+                <TableCell className="font-mono text-sm text-foreground/80">
                   #TM-{index + 1}
                 </TableCell>
 
-                <TableCell>
+                <TableCell className="font-medium text-foreground">
                   {tema.titulo}
                 </TableCell>
 
                 <TableCell className="text-center">
-                  <Button
-                    variant="destructive"
-                    disabled={
-                      deleteTemaMutation.isPending
-                    }
-                    onClick={() =>
-                      removerTema(
-                        tema.id
-                      )
-                    }
-                  >
-                    Excluir
-                  </Button>
+                  <div className="flex justify-center items-center">
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="gap-1.5 h-8 px-3"
+                      disabled={deleteTemaMutation.isPending}
+                      onClick={() => removerTema(tema.id)}
+                    >
+                      <Trash2 className="size-3.5" />
+                      Excluir
+                    </Button>
+                  </div>
                 </TableCell>
               </TableRow>
-            )
-          )
-        )}
-      </TableBody>
-    </Table>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </div>
   );
 }

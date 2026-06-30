@@ -1,7 +1,7 @@
 export default function TemasHero() {
   return (
     <section className="rounded-2xl border p-6">
-      <h1 className="text-3xl font-bold mb-2">
+      <h1 className="text-3xl text-[#8b2521] dark:text-white font-bold mb-2" >
         Banco de Áreas de Estudo
       </h1>
 
