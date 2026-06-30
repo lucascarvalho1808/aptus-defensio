@@ -81,10 +81,10 @@ export default function FilaOrientacoesTable() {
 
   return (
     <>
-      <div className="w-full overflow-x-auto rounded-lg border border-white/10 bg-black/20">
+      <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-black/20">
         <Table>
-          <TableHeader className="bg-white/5">
-            <TableRow className="border-white/10 hover:bg-transparent">
+           <TableHeader className="bg-neutral-100 dark:bg-white/5">
+            <TableRow className="border-neutral-200 dark:border-white/10 hover:bg-transparent">
               <TableHead className="font-semibold text-primary">
                 ALUNO
               </TableHead>
@@ -108,7 +108,7 @@ export default function FilaOrientacoesTable() {
               <TableRow>
                 <TableCell
                   colSpan={4}
-                  className="py-10 text-center text-white/60"
+                  className="py-10 text-center text-foreground/60"
                 >
                   Nenhuma solicitação pendente.
                 </TableCell>
@@ -118,13 +118,13 @@ export default function FilaOrientacoesTable() {
             {orientacoes.map((orientacao) => (
               <TableRow
                 key={orientacao.id}
-                className="border-white/5 transition-colors hover:bg-white/5"
+                className="border-neutral-200 dark:border-white/5 transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
               >
-                <TableCell className="font-medium text-white">
+                <TableCell className="font-medium text-foreground">
                   {orientacao.aluno?.nome ?? "Aluno"}
                 </TableCell>
 
-                <TableCell className="text-white/70">
+                <TableCell className="text-foreground/70">
                   {orientacao.created_at
                     ? dateFormatter.format(new Date(orientacao.created_at))
                     : "-"}
@@ -203,16 +203,16 @@ export default function FilaOrientacoesTable() {
         ref={dialogRef}
         onClose={() => setSelectedOrientacao(null)}
         onCancel={() => setSelectedOrientacao(null)}
-        className="fixed inset-0 m-auto max-h-[85vh] w-[min(92vw,640px)] max-w-none overflow-hidden rounded-xl border border-white/10 bg-card p-0 text-card-foreground shadow-2xl backdrop:bg-black/70"
+        className="fixed inset-0 m-auto max-h-[85vh] w-[min(92vw,640px)] max-w-none overflow-hidden rounded-xl border border-neutral-200 dark:border-white/10 bg-card p-0 text-card-foreground shadow-2xl backdrop:bg-black/70"
       >
         {selectedOrientacao && (
           <div className="flex flex-col">
-            <div className="border-b border-white/10 px-6 py-5">
+             <div className="border-b border-neutral-200 dark:border-white/10 px-6 py-5">
               <p className="text-sm font-medium uppercase tracking-wide text-primary">
                 Mensagem do aluno
               </p>
 
-              <h2 className="mt-2 font-heading text-2xl font-bold text-white">
+              <h2 className="mt-2 font-heading text-2xl font-bold text-foreground">
                 {selectedOrientacao.aluno?.nome ?? "Aluno"}
               </h2>
             </div>
@@ -224,7 +224,7 @@ export default function FilaOrientacoesTable() {
               </p>
             </div>
 
-            <div className="flex justify-end border-t border-white/10 px-6 py-4">
+            <div className="flex justify-end border-t border-neutral-200 dark:border-white/10 px-6 py-4">
               <Button type="button" onClick={closeDialog}>
                 Fechar
               </Button>
