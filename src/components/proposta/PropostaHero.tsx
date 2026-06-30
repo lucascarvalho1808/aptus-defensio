@@ -10,7 +10,7 @@ export default function PropostaHero() {
           <FileSignature className="size-6" aria-hidden="true" />
         </div>
         <div>
-          <h1 className="font-heading text-3xl font-bold tracking-tight text-white sm:text-4xl">
+          <h1 className="font-heading text-3xl font-bold tracking-tight text-[#8b2521] dark:text-white sm:text-4xl">
             Registro de Proposta
           </h1>
           <p className="mt-2 text-lg text-foreground/70 sm:max-w-2xl text-balance">
