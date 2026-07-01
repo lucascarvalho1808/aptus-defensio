@@ -1,6 +1,7 @@
 import {
   Tables,
   TablesInsert,
+  TablesUpdate,
 } from "@/database.types";
 
 export type StatusProposta =
@@ -15,5 +16,10 @@ export type Proposta =
 
 export type NovaProposta =
   Omit<TablesInsert<"propostas">, "status"> & {
+    status?: StatusProposta;
+  };
+
+export type AtualizarProposta =
+  Omit<TablesUpdate<"propostas">, "status"> & {
     status?: StatusProposta;
   };
