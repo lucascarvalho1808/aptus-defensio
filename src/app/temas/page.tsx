@@ -1,8 +1,8 @@
 "use client";
 
+import TemasHero from "@/components/temas/TemasHero";
 import TemaForm from "@/components/temas/TemaForm";
 import TemasTable from "@/components/temas/TemasTable";
-import TemasHero from "@/components/temas/TemasHero";
 
 import { useRequireProfessor } from "@/hooks/useRequireProfessor";
 
@@ -14,8 +14,7 @@ import {
 } from "@/components/ui/card";
 
 export default function TemasPage() {
-  const { isAuthorized } =
-    useRequireProfessor();
+  const { isAuthorized } = useRequireProfessor();
 
   if (!isAuthorized) {
     return null;
@@ -26,9 +25,9 @@ export default function TemasPage() {
       <TemasHero />
 
       <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
-        <CardHeader className="border-b border-white/5 pb-5">
+        <CardHeader className="border-b border-white/10">
           <CardTitle className="font-heading text-xl text-primary">
-            Adicionar Novo Tema
+            Cadastrar Novo Tema
           </CardTitle>
         </CardHeader>
 
@@ -38,7 +37,7 @@ export default function TemasPage() {
       </Card>
 
       <Card className="border-white/10 bg-sidebar/50 shadow-lg backdrop-blur-sm">
-        <CardHeader className="border-b border-white/5 pb-5">
+        <CardHeader className="border-b border-white/10">
           <CardTitle className="font-heading text-xl text-primary">
             Temas Cadastrados
           </CardTitle>

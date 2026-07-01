@@ -6,23 +6,31 @@ import {
 import { propostaService } from "@/services/proposta.service";
 
 import type {
-  NovaProposta,
+  AtualizarProposta,
   Proposta,
 } from "@/types/proposta.types";
 
-export function useCreateProposta() {
+interface UpdatePropostaPayload {
+  id: string;
+  alunoId: string;
+  proposta: AtualizarProposta;
+}
+
+export function useUpdateProposta() {
   const queryClient = useQueryClient();
 
   return useMutation<
     Proposta,
     Error,
-    NovaProposta
+    UpdatePropostaPayload
   >({
-    mutationFn: async (
-      proposta: NovaProposta
-    ) => {
+    mutationFn: async ({
+      id,
+      proposta,
+    }) => {
       const { data, error } =
-        await propostaService.create(
+        await propostaService.update(
+          id,
           proposta
         );
 
@@ -37,8 +45,12 @@ export function useCreateProposta() {
       await queryClient.invalidateQueries({
         queryKey: [
           "proposta",
-          variables.aluno_id,
+          variables.alunoId,
         ],
+      });
+
+      await queryClient.invalidateQueries({
+        queryKey: ["propostas"],
       });
     },
   });
