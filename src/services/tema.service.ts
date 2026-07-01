@@ -1,26 +1,30 @@
 import { supabase } from "@/lib/supabase";
-import type { TemaInsert } from "@/types/tema.types";
+
+import type {
+  Tema,
+  TemaInsert,
+} from "@/types/tema.types";
 
 export const temaService = {
   async getTemas() {
-    return supabase
+    return await supabase
       .from("temas")
       .select("*")
-      .order("created_at", { ascending: false });
+      .order("titulo", {
+        ascending: true,
+      });
   },
 
-  async createTema(titulo: string) {
-    const novoTema: TemaInsert = {
-      titulo,
-    };
-
-    return supabase
+  async createTema(data: TemaInsert) {
+    return await supabase
       .from("temas")
-      .insert(novoTema);
+      .insert(data)
+      .select()
+      .single();
   },
 
-  async deleteTema(id: string) {
-    return supabase
+  async deleteTema(id: Tema["id"]) {
+    return await supabase
       .from("temas")
       .delete()
       .eq("id", id);
