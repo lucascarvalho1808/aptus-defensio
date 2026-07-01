@@ -1,0 +1,84 @@
+"use client";
+
+import { useAlunos } from "@/hooks/useAlunos";
+import { Users, Loader2 } from "lucide-react";
+
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+
+export default function AlunosTable() {
+  const {
+  data: alunos = [],
+  isLoading,
+} = useAlunos();
+
+  return (
+    <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-black/20">
+      <Table>
+        <TableHeader className="bg-neutral-100 dark:bg-white/5">
+          <TableRow className="border-neutral-200 dark:border-white/10 hover:bg-transparent">
+            <TableHead className="font-semibold text-primary">MATRÍCULA</TableHead>
+            <TableHead className="font-semibold text-primary">NOME COMPLETO</TableHead>
+            <TableHead className="font-semibold text-primary">E-MAIL ACADÊMICO</TableHead>
+            <TableHead className="font-semibold text-primary text-center">STATUS</TableHead>
+          </TableRow>
+        </TableHeader>
+
+        <TableBody>
+          {isLoading ? (
+            <TableRow>
+              <TableCell colSpan={4} className="h-32 text-center">
+                <div className="flex flex-col items-center justify-center text-foreground/50">
+                  <Loader2 className="mb-2 size-6 animate-spin text-primary" />
+                  <span className="text-sm font-medium">Carregando alunos...</span>
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : alunos.length === 0 ? (
+            <TableRow>
+              <TableCell colSpan={4} className="h-48 text-center">
+                <div className="flex flex-col items-center justify-center text-foreground/50">
+                  <Users className="mb-3 size-10 text-foreground/20" />
+                  <p className="text-base font-medium text-foreground/70">Nenhum aluno encontrado</p>
+                  <p className="text-sm text-foreground/50">Não há alunos ativos cadastrados no momento.</p>
+                </div>
+              </TableCell>
+            </TableRow>
+          ) : (
+            alunos.map((aluno) => (
+              <TableRow 
+                key={aluno.id} 
+                className="border-neutral-200 dark:border-white/5 transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
+              >
+                <TableCell className="font-mono text-sm text-foreground/80">
+                  {aluno.matricula ?? "---"}
+                </TableCell>
+
+                <TableCell className="font-medium text-foreground">
+                  {aluno.nome}
+                </TableCell>
+
+                <TableCell className="text-foreground/70">
+                  {aluno.email}
+                </TableCell>
+
+                <TableCell className="text-center">
+                  <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 ring-1 ring-inset ring-emerald-500/20">
+                    <span className="size-1.5 rounded-full bg-emerald-500" aria-hidden="true" />
+                    Ativo
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))
+          )}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
