@@ -1,40 +1,45 @@
 "use client";
 
-import { useState } from "react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 
-import { toast } from "sonner";
+import {
+  temaSchema,
+  type TemaSchema,
+} from "@/schemas/tema.schema";
 
 import { useCreateTema } from "@/hooks/useCreateTema";
 import { useTemas } from "@/hooks/useTemas";
 
 export default function TemaForm() {
-  const [titulo, setTitulo] =
-    useState("");
+  const createTemaMutation = useCreateTema();
 
-  const createTemaMutation =
-    useCreateTema();
+  const { data: temas = [] } = useTemas();
 
-  const { data: temas = [] } =
-    useTemas();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: {
+      errors,
+      isSubmitting,
+    },
+  } = useForm<TemaSchema>({
+    resolver: zodResolver(temaSchema),
+    defaultValues: {
+      titulo: "",
+    },
+  });
 
-  async function handleSubmit() {
-    const tituloNormalizado =
-      titulo.trim();
-
-    if (!tituloNormalizado) {
-      toast.error(
-        "Informe o nome do tema."
-      );
-      return;
-    }
+  async function onSubmit(data: TemaSchema) {
+    const tituloNormalizado = data.titulo.trim();
 
     const temaJaExiste = temas.some(
       (tema) =>
-        tema.titulo
-          .trim()
-          .toLowerCase() ===
+        tema.titulo.trim().toLowerCase() ===
         tituloNormalizado.toLowerCase()
     );
 
@@ -46,44 +51,60 @@ export default function TemaForm() {
     }
 
     try {
-      await createTemaMutation.mutateAsync(
-        tituloNormalizado
-      );
+      await createTemaMutation.mutateAsync({
+        titulo: tituloNormalizado,
+      });
 
       toast.success(
         "Tema cadastrado com sucesso."
       );
 
-      setTitulo("");
-    } catch {
-      toast.error(
-        "Erro ao cadastrar tema."
-      );
+      reset();
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error(
+          "Erro ao cadastrar tema."
+        );
+      }
     }
   }
 
   return (
-    <div className="flex flex-wrap gap-4">
-      <input
-        className="h-11 flex-1 rounded-lg border px-3 bg-transparent"
-        placeholder="Ex: Inteligência Artificial na Saúde"
-        value={titulo}
-        onChange={(e) =>
-          setTitulo(e.target.value)
-        }
-      />
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col gap-2"
+    >
+      <div className="flex flex-wrap gap-4">
+        <div className="min-w-[280px] flex-1">
+          <input
+            {...register("titulo")}
+            className="h-11 w-full rounded-lg border bg-transparent px-3"
+            placeholder="Ex: Inteligência Artificial na Saúde"
+          />
 
-      <Button
-        className="h-11 min-w-[170px]"
-        disabled={
+          {errors.titulo && (
+            <p className="mt-2 text-sm text-destructive">
+              {errors.titulo.message}
+            </p>
+          )}
+        </div>
+
+        <Button
+          type="submit"
+          className="h-11 min-w-[170px]"
+          disabled={
+            isSubmitting ||
+            createTemaMutation.isPending
+          }
+        >
+          {isSubmitting ||
           createTemaMutation.isPending
-        }
-        onClick={handleSubmit}
-      >
-        {createTemaMutation.isPending
-          ? "Salvando..."
-          : "Cadastrar Tema"}
-      </Button>
-    </div>
+            ? "Salvando..."
+            : "Cadastrar Tema"}
+        </Button>
+      </div>
+    </form>
   );
 }

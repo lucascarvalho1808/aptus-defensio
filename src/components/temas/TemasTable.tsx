@@ -1,7 +1,10 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
 import { Trash2 } from "lucide-react";
+import { toast } from "sonner";
+
+import { Button } from "@/components/ui/button";
 
 import {
   Table,
@@ -12,8 +15,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { toast } from "sonner";
-
 import { useDeleteTema } from "@/hooks/useDeleteTema";
 import { useTemas } from "@/hooks/useTemas";
 
@@ -23,47 +24,43 @@ export default function TemasTable() {
     isLoading,
   } = useTemas();
 
-  const deleteTemaMutation =
-    useDeleteTema();
+  const deleteTemaMutation = useDeleteTema();
 
-  async function removerTema(
-    id: string
-  ) {
-    const confirmed =
-      window.confirm(
-        "Deseja realmente excluir este tema?"
-      );
+  const [temaSelecionado, setTemaSelecionado] = useState<string | null>(null);
 
-    if (!confirmed) {
-      return;
-    }
+  async function removerTema(id: string) {
+    if (deleteTemaMutation.isPending) return;
+
+    const confirmado = window.confirm(
+      "Deseja realmente excluir este tema?"
+    );
+
+    if (!confirmado) return;
 
     try {
-      await deleteTemaMutation.mutateAsync(
-        id
-      );
+      setTemaSelecionado(id);
 
-      toast.success(
-        "Tema removido com sucesso."
-      );
+      await deleteTemaMutation.mutateAsync(id);
+
+      toast.success("Tema removido com sucesso.");
     } catch {
-      toast.error(
-        "Erro ao remover tema."
-      );
+      toast.error("Erro ao remover tema.");
+    } finally {
+      setTemaSelecionado(null);
     }
   }
 
   return (
-    <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 dark:border-white/10 bg-neutral-50 dark:bg-black/20">
+    <div className="w-full overflow-x-auto rounded-lg border border-neutral-200 bg-neutral-50 dark:border-white/10 dark:bg-black/20">
       <Table>
         <TableHeader className="bg-neutral-100 dark:bg-white/5">
-          <TableRow className="border-neutral-200 dark:border-white/10 hover:bg-transparent">
+          <TableRow className="border-neutral-200 hover:bg-transparent dark:border-white/10">
             <TableHead className="font-semibold text-primary">
               IDENTIFICADOR
             </TableHead>
 
             <TableHead className="font-semibold text-primary">
-              NOME DOS TEMAS
+              NOME DO TEMA
             </TableHead>
 
             <TableHead className="text-center font-semibold text-primary">
@@ -75,24 +72,30 @@ export default function TemasTable() {
         <TableBody>
           {isLoading ? (
             <TableRow>
-              <TableCell colSpan={3} className="py-10 text-center text-foreground/60">
+              <TableCell
+                colSpan={3}
+                className="py-10 text-center text-foreground/60"
+              >
                 Carregando temas...
               </TableCell>
             </TableRow>
           ) : temas.length === 0 ? (
             <TableRow>
-              <TableCell colSpan={3} className="py-10 text-center text-foreground/60">
+              <TableCell
+                colSpan={3}
+                className="py-10 text-center text-foreground/60"
+              >
                 Nenhum tema cadastrado.
               </TableCell>
             </TableRow>
           ) : (
             temas.map((tema, index) => (
-              <TableRow 
+              <TableRow
                 key={tema.id}
-                className="border-neutral-200 dark:border-white/5 transition-colors hover:bg-neutral-100 dark:hover:bg-white/5"
+                className="border-neutral-200 transition-colors hover:bg-neutral-100 dark:border-white/5 dark:hover:bg-white/5"
               >
                 <TableCell className="font-mono text-sm text-foreground/80">
-                  #TM-{index + 1}
+                  #TM-{String(index + 1).padStart(3, "0")}
                 </TableCell>
 
                 <TableCell className="font-medium text-foreground">
@@ -100,18 +103,23 @@ export default function TemasTable() {
                 </TableCell>
 
                 <TableCell className="text-center">
-                  <div className="flex justify-center items-center">
-                    <Button
-                      variant="destructive"
-                      size="sm"
-                      className="gap-1.5 h-8 px-3"
-                      disabled={deleteTemaMutation.isPending}
-                      onClick={() => removerTema(tema.id)}
-                    >
-                      <Trash2 className="size-3.5" />
-                      Excluir
-                    </Button>
-                  </div>
+                  <Button
+                    variant="destructive"
+                    size="sm"
+                    className="gap-2"
+                    disabled={
+                      deleteTemaMutation.isPending &&
+                      temaSelecionado === tema.id
+                    }
+                    onClick={() => removerTema(tema.id)}
+                  >
+                    <Trash2 className="size-4" />
+
+                    {deleteTemaMutation.isPending &&
+                    temaSelecionado === tema.id
+                      ? "Excluindo..."
+                      : "Excluir"}
+                  </Button>
                 </TableCell>
               </TableRow>
             ))
